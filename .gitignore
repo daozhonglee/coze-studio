@@ -60,3 +60,6 @@ values-dev.yaml
 
 *.tsbuildinfo
 .trae/*
+
+
+.claude/
