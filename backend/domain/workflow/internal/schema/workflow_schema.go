@@ -122,40 +122,86 @@ type CompositeNode struct {
 	Children []*NodeSchema
 }
 
+// Init 初始化WorkflowSchema的内部状态和缓存
+//
+// 这个方法是WorkflowSchema的核心初始化函数，确保schema在执行前
+// 具备所有必要的内部数据结构和计算结果。
+//
+// 初始化过程是线程安全的，只会执行一次（once模式）。
+//
+// 初始化内容：
+// 1. 构建节点快速查找映射
+// 2. 计算复合节点结构
+// 3. 计算历史对话轮数
+// 4. 确定检查点需求
+// 5. 确定流式输出需求
+//
+// 为什么需要初始化：
+// - 优化运行时性能：预先构建查找表
+// - 缓存计算结果：避免重复计算
+// - 确定执行特性：为执行引擎提供必要信息
+//
+// 注意：
+//   - 该方法是幂等的，多次调用不会产生副作用
+//   - 递归初始化子工作流
+//   - 按需启用检查点和流式输出
 func (w *WorkflowSchema) Init() {
+	// 确保初始化只执行一次（线程安全）
 	w.once.Do(func() {
+		// 第一步：构建节点快速查找映射
+		// 优化：将线性查找O(n)优化为哈希查找O(1)
 		w.nodeMap = make(map[vo.NodeKey]*NodeSchema)
 		for _, node := range w.Nodes {
 			w.nodeMap[node.Key] = node
 		}
 
+		// 第二步：计算复合节点结构
+		// 分析节点层级关系，构建父子节点映射
 		w.doGetCompositeNodes()
 
+		// 第三步：计算历史对话轮数和工作流特性
+		// 遍历所有节点，聚合计算各项指标
 		historyRounds := int64(0)
 		for _, node := range w.Nodes {
+			// 处理子工作流节点
+			// 递归初始化子工作流，并继承其历史轮数和检查点需求
 			if node.Type == entity.NodeTypeSubWorkflow {
+				// 递归初始化子工作流schema
 				node.SubWorkflowSchema.Init()
+
+				// 取最大历史轮数（支持嵌套子工作流）
 				historyRounds = max(historyRounds, node.SubWorkflowSchema.HistoryRounds())
+
+				// 继承子工作流的检查点需求
 				if node.SubWorkflowSchema.requireCheckPoint {
 					w.requireCheckPoint = true
-					break
+					break // 找到一个需要检查点的即可，无需继续检查
 				}
 			}
 
+			// 处理支持聊天历史的节点
+			// 检查节点配置是否实现了ChatHistoryAware接口
 			chatHistoryAware, ok := node.Configs.(ChatHistoryAware)
 			if ok && chatHistoryAware.ChatHistoryEnabled() {
+				// 累加历史对话轮数
 				historyRounds = max(historyRounds, chatHistoryAware.ChatHistoryRounds())
 			}
 
+			// 处理需要检查点的节点
+			// 检查节点配置是否实现了RequireCheckpoint接口
 			if rc, ok := node.Configs.(RequireCheckpoint); ok {
 				if rc.RequireCheckpoint() {
 					w.requireCheckPoint = true
-					break
+					break // 找到一个需要检查点的即可，无需继续检查
 				}
 			}
 		}
 
+		// 设置计算结果
 		w.historyRounds = historyRounds
+
+		// 第四步：确定流式输出需求
+		// 分析节点间的流式数据流，判断是否需要启用流式执行
 		w.requireStreaming = w.doRequireStreaming()
 	})
 }
