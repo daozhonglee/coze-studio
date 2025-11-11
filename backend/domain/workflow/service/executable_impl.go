@@ -390,9 +390,10 @@ func (i *impl) AsyncExecute(ctx context.Context, config workflowModel.ExecuteCon
 // 处理逻辑：
 // 1. 检查是否需要历史数据（historyRounds > 0）
 // 2. 如果需要按名称查找对话：
-//    - 从输入中提取对话名称
-//    - 创建或获取对话
-//    - 设置对话ID和分段ID
+//   - 从输入中提取对话名称
+//   - 创建或获取对话
+//   - 设置对话ID和分段ID
+//
 // 3. 预取聊天历史消息
 // 4. 设置配置中的历史数据
 //

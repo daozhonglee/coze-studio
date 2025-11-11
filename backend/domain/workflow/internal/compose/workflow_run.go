@@ -224,10 +224,11 @@ func WithStreamWriter(sw *schema.StreamWriter[*entity.Message]) WorkflowRunnerOp
 //   - *WorkflowRunner: 配置完成的工作流运行器实例
 //
 // 示例：
-//   runner := NewWorkflowRunner(basic, schema, config,
-//       WithInput(inputJson),
-//       WithStreamWriter(streamWriter),
-//       WithResumeReq(resumeReq))
+//
+//	runner := NewWorkflowRunner(basic, schema, config,
+//	    WithInput(inputJson),
+//	    WithStreamWriter(streamWriter),
+//	    WithResumeReq(resumeReq))
 func NewWorkflowRunner(b *entity.WorkflowBasic, sc *schema2.WorkflowSchema, config model.ExecuteConfig, opts ...WorkflowRunnerOption) *WorkflowRunner {
 	// 初始化默认选项
 	options := &workflowRunOptions{}
@@ -304,11 +305,11 @@ func (r *WorkflowRunner) Prepare(ctx context.Context) (
 		executeID int64
 		repo      = wf.GetRepository() // 获取工作流仓储实例
 		resumeReq = r.resumeReq        // 恢复请求
-		wb        = r.basic             // 工作流基本信息
-		sc        = r.schema            // 工作流schema
-		sw        = r.sw                // 流式写入器
-		container = r.container         // 流式容器
-		config    = r.config            // 执行配置
+		wb        = r.basic            // 工作流基本信息
+		sc        = r.schema           // 工作流schema
+		sw        = r.sw               // 流式写入器
+		container = r.container        // 流式容器
+		config    = r.config           // 执行配置
 	)
 
 	// 生成执行ID：新执行生成新ID，恢复执行使用已有ID
@@ -488,18 +489,18 @@ func (r *WorkflowRunner) Prepare(ctx context.Context) (
 
 		// 创建工作流执行实体
 		wfExec := &entity.WorkflowExecution{
-			ID:                     executeID,           // 执行ID
-			WorkflowID:             wb.ID,               // 工作流ID
-			Version:                wb.Version,           // 工作流版本
-			SpaceID:                wb.SpaceID,           // 所属空间
-			ExecuteConfig:          config,              // 执行配置
+			ID:                     executeID,              // 执行ID
+			WorkflowID:             wb.ID,                  // 工作流ID
+			Version:                wb.Version,             // 工作流版本
+			SpaceID:                wb.SpaceID,             // 所属空间
+			ExecuteConfig:          config,                 // 执行配置
 			Status:                 entity.WorkflowRunning, // 初始状态为运行中
-			Input:                  ptr.Of(r.input),      // 输入参数
-			RootExecutionID:        executeID,           // 根执行ID
-			NodeCount:              sc.NodeCount(),      // 节点数量
-			CurrentResumingEventID: ptr.Of(int64(0)),    // 当前恢复事件ID（初始为0）
-			CommitID:               wb.CommitID,         // 提交ID
-			LogID:                  logID,               // 日志ID
+			Input:                  ptr.Of(r.input),        // 输入参数
+			RootExecutionID:        executeID,              // 根执行ID
+			NodeCount:              sc.NodeCount(),         // 节点数量
+			CurrentResumingEventID: ptr.Of(int64(0)),       // 当前恢复事件ID（初始为0）
+			CommitID:               wb.CommitID,            // 提交ID
+			LogID:                  logID,                  // 日志ID
 		}
 
 		// 保存执行记录到数据库
