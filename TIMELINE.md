@@ -6,6 +6,7 @@
 
 | 更新时间 | 文件名 | 类型 | 说明 |
 |---------|--------|------|------|
+| 2024-11-11 19:06 | [20251111-1906-execute-package-architecture.md](docs/20251111-1906-execute-package-architecture.md) | 架构分析 | Execute包的完整架构分析，运行时管理核心，包含上下文管理、事件处理、回调机制和Token统计 |
 | 2024-11-11 18:59 | [20251111-1859-compose-package-architecture.md](docs/20251111-1859-compose-package-architecture.md) | 架构分析 | Compose包的完整架构分析，包含核心组件、工作流程、设计模式和技术特点 |
 | 2024-11-11 18:50 | [20251111-1849-workflow-save-api-execution-path.md](docs/20251111-1849-workflow-save-api-execution-path.md) | API调用链路 | 工作流保存API的完整执行路径分析，包含参数提取、状态计算和版本控制逻辑 |
 | 2024-11-11 18:50 | [20251111-1848-workflow-create-api-execution-path.md](docs/20251111-1848-workflow-create-api-execution-path.md) | API调用链路 | 工作流创建API的完整执行路径分析，涵盖元数据创建、画布初始化和事件发布 |
@@ -16,6 +17,7 @@
 ### 新生成的技术文档
 
 #### 架构分析
+- [20251111-1906-execute-package-architecture.md](docs/20251111-1906-execute-package-architecture.md) - Execute包架构分析
 - [20251111-1859-compose-package-architecture.md](docs/20251111-1859-compose-package-architecture.md) - Compose包架构分析
 
 #### API调用链路
@@ -32,6 +34,7 @@
 ## 更新历史
 
 ### 2024-11-11
+- 19:06 创建Execute包架构分析文档
 - 18:59 创建Compose包架构分析文档
 - 18:50 创建工作流保存API执行路径文档
 - 18:50 创建工作流创建API执行路径文档
