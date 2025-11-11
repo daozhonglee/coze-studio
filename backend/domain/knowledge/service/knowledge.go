@@ -496,15 +496,38 @@ func (k *knowledgeSVC) ListDocument(ctx context.Context, request *ListDocumentRe
 	return resp, nil
 }
 
+// MGetDocumentProgress 批量获取文档处理进度
+// 该方法仅用于读取文档状态和进度，不负责更新状态
+//
+// 文档状态更新的位置：
+// 1. 开始索引：在 event_handle.go 的 beginIndexingProcess() 中，设置为 DocumentStatusChunking
+// 2. 完成索引：在 event_handle.go 的 finalizeDocumentIndexing() 中，设置为 DocumentStatusEnable
+// 3. 处理失败：在 event_handle.go 的 handleIndexingErrors() 中，设置为 DocumentStatusFailed
+//
+// 状态更新流程：
+// - 文档创建后发送事件到消息队列（EventTypeIndexDocument）
+// - 消息队列消费者接收到事件后调用 event_handle.go 的 indexDocument() 方法
+// - indexDocument() 在处理的各个阶段通过 documentRepo.SetStatus() 更新数据库状态
+// - 本方法只是读取数据库中的状态和缓存中的进度信息，返回给前端展示
+//
+// 参数:
+//   - ctx: 上下文对象
+//   - request: 获取文档进度请求，包含文档ID列表
+//
+// 返回:
+//   - response: 文档进度响应，包含每个文档的进度信息（状态、进度百分比、剩余时间等）
+//   - err: 错误信息
 func (k *knowledgeSVC) MGetDocumentProgress(ctx context.Context, request *MGetDocumentProgressRequest) (response *MGetDocumentProgressResponse, err error) {
 	if request == nil {
 		return nil, errorx.New(errno.ErrKnowledgeInvalidParamCode, errorx.KV("msg", "request is empty"))
 	}
+	// STEP 1. 从数据库批量查询文档基本信息
 	documents, err := k.documentRepo.MGetByID(ctx, request.DocumentIDs)
 	if err != nil {
 		logs.CtxErrorf(ctx, "mget document failed, err: %v", err)
 		return nil, errorx.New(errno.ErrKnowledgeDBCode, errorx.KV("msg", err.Error()))
 	}
+	// STEP 2. 遍历文档，构建进度信息
 	progresslist := []*DocumentProgress{}
 	for i := range documents {
 		item := DocumentProgress{
@@ -512,9 +535,10 @@ func (k *knowledgeSVC) MGetDocumentProgress(ctx context.Context, request *MGetDo
 			Name:          documents[i].Name,
 			Size:          documents[i].Size,
 			FileExtension: documents[i].FileExtension,
-			Status:        entity.DocumentStatus(documents[i].Status),
+			Status:        entity.DocumentStatus(documents[i].Status), // 从数据库读取状态
 			StatusMsg:     entity.DocumentStatus(documents[i].Status).String(),
 		}
+		// 如果是图片类型文档，获取访问URL
 		if documents[i].DocumentType == int32(knowledgeModel.DocumentTypeImage) && len(documents[i].URI) != 0 {
 			item.URL, err = k.storage.GetObjectUrl(ctx, documents[i].URI)
 			if err != nil {
@@ -522,15 +546,19 @@ func (k *knowledgeSVC) MGetDocumentProgress(ctx context.Context, request *MGetDo
 				return nil, errorx.New(errno.ErrKnowledgeGetObjectURLFailCode, errorx.KV("msg", err.Error()))
 			}
 		}
+		// STEP 3. 根据文档状态确定进度
+		// 如果文档已完成（Enable）或失败（Failed），进度为100%
 		if documents[i].Status == int32(entity.DocumentStatusEnable) || documents[i].Status == int32(entity.DocumentStatusFailed) {
 			item.Progress = progressbar.ProcessDone
 		} else {
+			// 如果文档有失败原因，标记为失败状态
 			if documents[i].FailReason != "" {
 				item.StatusMsg = documents[i].FailReason
 				item.Status = entity.DocumentStatusFailed
 				progresslist = append(progresslist, &item)
 				continue
 			}
+			// 对于处理中的文档，从缓存中获取实时进度（进度百分比、剩余时间等）
 			err = k.getProgressFromCache(ctx, &item)
 			if err != nil {
 				logs.CtxErrorf(ctx, "get progress from cache failed, err: %v", err)
@@ -929,19 +957,40 @@ func getDefaultChunkStrategy() *entity.ChunkingStrategy {
 		TrimURLAndEmail: consts.DefaultTrimURLAndEmail,
 	}
 }
+
+// CreateDocumentReview 创建文档审核/预览记录
+// 该方法用于在知识库中创建文档预览记录，允许用户在正式添加文档之前预览文档内容
+// 主要流程：
+// 1. 参数验证和权限检查
+// 2. 验证知识库是否存在
+// 3. 处理文档信息（如果提供了 DocumentID，则从数据库获取文档信息）
+// 4. 生成 Review ID 并保存 Review 记录到数据库
+// 5. 发送文档审核事件到消息队列，触发异步解析和分块处理
+//
+// 参数:
+//   - ctx: 上下文对象
+//   - request: 创建文档审核请求，包含知识库ID、文档列表、分块策略和解析策略
+//
+// 返回:
+//   - response: 创建结果，包含生成的 Review 列表（包含 ReviewID、文档URL等信息）
+//   - err: 错误信息
 func (k *knowledgeSVC) CreateDocumentReview(ctx context.Context, request *CreateDocumentReviewRequest) (response *CreateDocumentReviewResponse, err error) {
+	// 参数验证
 	if request == nil {
 		return nil, errorx.New(errno.ErrKnowledgeInvalidParamCode, errorx.KV("msg", "request is empty"))
 	}
+	// 如果分块策略为默认类型，则使用默认配置
 	if request.ChunkStrategy != nil {
 		if request.ChunkStrategy.ChunkType == parser.ChunkTypeDefault {
 			request.ChunkStrategy = getDefaultChunkStrategy()
 		}
 	}
+	// 权限检查：获取当前用户ID
 	uid := ctxutil.GetUIDFromCtx(ctx)
 	if uid == nil {
 		return nil, errorx.New(errno.ErrKnowledgePermissionCode, errorx.KV("msg", "session required"))
 	}
+	// 验证知识库是否存在
 	kn, err := k.knowledgeRepo.GetByID(ctx, request.KnowledgeID)
 	if err != nil {
 		logs.CtxErrorf(ctx, "get knowledge failed, err: %v", err)
@@ -950,6 +999,7 @@ func (k *knowledgeSVC) CreateDocumentReview(ctx context.Context, request *Create
 	if kn == nil {
 		return nil, errorx.New(errno.ErrKnowledgeNotExistCode)
 	}
+	// 收集需要查询的文档ID列表（如果请求中提供了 DocumentID）
 	documentIDs := make([]int64, 0, len(request.Reviews))
 	documentMap := make(map[int64]*model.KnowledgeDocument)
 	for _, input := range request.Reviews {
@@ -957,6 +1007,7 @@ func (k *knowledgeSVC) CreateDocumentReview(ctx context.Context, request *Create
 			documentIDs = append(documentIDs, *input.DocumentID)
 		}
 	}
+	// 批量查询文档信息（如果提供了 DocumentID）
 	if len(documentIDs) > 0 {
 		documents, err := k.documentRepo.MGetByID(ctx, documentIDs)
 		if err != nil {
@@ -966,6 +1017,7 @@ func (k *knowledgeSVC) CreateDocumentReview(ctx context.Context, request *Create
 			documentMap[document.ID] = document
 		}
 	}
+	// 构建 Review 列表，如果提供了 DocumentID，则使用数据库中的文档信息
 	reviews := make([]*entity.Review, 0, len(request.Reviews))
 	for _, input := range request.Reviews {
 		review := &entity.Review{
@@ -973,6 +1025,7 @@ func (k *knowledgeSVC) CreateDocumentReview(ctx context.Context, request *Create
 			DocumentType: input.DocumentType,
 			Uri:          input.TosUri,
 		}
+		// 如果提供了 DocumentID，使用数据库中的文档信息（名称、类型、URI）
 		if input.DocumentID != nil && *input.DocumentID > 0 {
 			if document, ok := documentMap[*input.DocumentID]; ok {
 				review.DocumentName = document.Name
@@ -982,6 +1035,7 @@ func (k *knowledgeSVC) CreateDocumentReview(ctx context.Context, request *Create
 				review.Uri = document.URI
 			}
 		}
+		// 获取文档的访问URL
 		review.Url, err = k.storage.GetObjectUrl(ctx, review.Uri)
 		if err != nil {
 			logs.CtxErrorf(ctx, "get object url failed, err: %v", err)
@@ -989,7 +1043,7 @@ func (k *knowledgeSVC) CreateDocumentReview(ctx context.Context, request *Create
 		}
 		reviews = append(reviews, review)
 	}
-	// STEP 1. Generate ID
+	// STEP 1. 生成 Review ID
 	reviewIDs, err := k.genMultiIDs(ctx, len(request.Reviews))
 	if err != nil {
 		return nil, errorx.New(errno.ErrKnowledgeIDGenCode)
@@ -997,6 +1051,7 @@ func (k *knowledgeSVC) CreateDocumentReview(ctx context.Context, request *Create
 	for i := range request.Reviews {
 		reviews[i].ReviewID = ptr.Of(reviewIDs[i])
 	}
+	// STEP 2. 构建数据库模型并批量保存 Review 记录
 	modelReviews := make([]*model.KnowledgeDocumentReview, 0, len(reviews))
 	for _, review := range reviews {
 		modelReviews = append(modelReviews, &model.KnowledgeDocumentReview{
@@ -1014,6 +1069,7 @@ func (k *knowledgeSVC) CreateDocumentReview(ctx context.Context, request *Create
 		logs.CtxErrorf(ctx, "create review failed, err: %v", err)
 		return nil, errorx.New(errno.ErrKnowledgeDBCode, errorx.KV("msg", err.Error()))
 	}
+	// STEP 3. 为每个 Review 发送异步事件到消息队列，触发文档解析和分块处理
 	for i := range reviews {
 		review := reviews[i]
 		doc := &entity.Document{
@@ -1029,12 +1085,14 @@ func (k *knowledgeSVC) CreateDocumentReview(ctx context.Context, request *Create
 			},
 			Source: entity.DocumentSourceLocal,
 		}
+		// 构建文档审核事件
 		reviewEvent := events.NewDocumentReviewEvent(doc, review)
 		body, err := sonic.Marshal(&reviewEvent)
 		if err != nil {
 			logs.CtxErrorf(ctx, "marshal event failed, err: %v", err)
 			return nil, errorx.New(errno.ErrKnowledgeParseJSONCode, errorx.KV("msg", err.Error()))
 		}
+		// 发送事件到消息队列，异步处理文档解析和分块
 		err = k.producer.Send(ctx, body)
 		if err != nil {
 			logs.CtxErrorf(ctx, "send message failed, err: %v", err)

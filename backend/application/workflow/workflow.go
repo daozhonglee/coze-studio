@@ -200,6 +200,14 @@ func (w *ApplicationService) GetNodeTemplateList(ctx context.Context, req *workf
 	return resp, nil
 }
 
+// CreateWorkflow 创建工作流的完整流程：
+// 1. 权限验证：检查用户是否有权限在指定空间创建工作流
+// 2. 会话模板创建：如果是聊天流模式且需要创建会话，则创建会话模板
+// 3. 工作流元数据创建：构建工作流的基本信息（名称、描述、图标等）
+// 4. 初始化画布：根据工作流类型（普通/聊天）生成默认的画布配置
+// 5. 领域层创建：调用领域服务创建工作流实体和草稿版本
+// 6. 资源事件发布：发布工作流创建事件到搜索索引系统
+// 7. 返回结果：返回新创建的工作流ID
 func (w *ApplicationService) CreateWorkflow(ctx context.Context, req *workflow.CreateWorkflowRequest) (
 	_ *workflow.CreateWorkflowResponse, err error,
 ) {

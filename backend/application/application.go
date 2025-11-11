@@ -123,16 +123,19 @@ func Init(ctx context.Context) (err error) {
 
 	eventbus := initEventBus(infra)
 
+	// 基础服务（Basic Services）：仅依赖基础设施的核心服务
 	basicServices, err := initBasicServices(ctx, infra, eventbus)
 	if err != nil {
 		return fmt.Errorf("Init - initBasicServices failed, err: %v", err)
 	}
 
+	// 主要服务（Primary Services）：依赖基础服务的业务服务
 	primaryServices, err := initPrimaryServices(ctx, basicServices)
 	if err != nil {
 		return fmt.Errorf("Init - initPrimaryServices failed, err: %v", err)
 	}
 
+	//复杂服务（Complex Services）：包含主要服务在内的高级业务服务
 	complexServices, err := initComplexServices(ctx, primaryServices)
 	if err != nil {
 		return fmt.Errorf("Init - initVitalServices failed, err: %v", err)

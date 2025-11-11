@@ -415,7 +415,30 @@ func (k *KnowledgeApplicationService) UpdateDocument(ctx context.Context, req *d
 	return &dataset.UpdateDocumentResponse{}, nil
 }
 
+// GetDocumentProgress 批量获取文档处理进度
+// 该方法用于查询文档的上传/处理进度，主要用于前端展示文档处理状态
+// 功能包括：
+// 1. 将字符串格式的文档ID列表转换为int64
+// 2. 调用领域服务层获取文档进度信息（从数据库和缓存中获取）
+// 3. 将领域层响应转换为API模型返回给前端
+//
+// 返回的进度信息包括：
+//   - 文档ID、名称、大小、类型
+//   - 处理进度百分比（0-100）
+//   - 文档状态（处理中、已完成、失败等）
+//   - 状态描述信息
+//   - 预估剩余时间（秒）
+//   - 文档访问URL（如果是图片类型）
+//
+// 参数:
+//   - ctx: 上下文对象
+//   - req: 获取文档进度请求，包含文档ID列表（字符串格式）
+//
+// 返回:
+//   - response: 文档进度响应，包含每个文档的详细进度信息
+//   - err: 错误信息
 func (k *KnowledgeApplicationService) GetDocumentProgress(ctx context.Context, req *dataset.GetDocumentProgressRequest) (*dataset.GetDocumentProgressResponse, error) {
+	// STEP 1. 将字符串格式的文档ID列表转换为int64类型
 	docIDs, err := slices.TransformWithErrorCheck(req.GetDocumentIds(), func(s string) (int64, error) {
 		id, err := strconv.ParseInt(s, 10, 64)
 		return id, err
@@ -424,6 +447,8 @@ func (k *KnowledgeApplicationService) GetDocumentProgress(ctx context.Context, r
 		logs.CtxErrorf(ctx, "convert string ids failed, err: %v", err)
 		return dataset.NewGetDocumentProgressResponse(), err
 	}
+	// STEP 2. 调用领域服务层获取文档进度信息
+	// 领域层会从数据库查询文档基本信息，并从缓存中获取实时处理进度
 	domainResp, err := k.DomainSVC.MGetDocumentProgress(ctx, &service.MGetDocumentProgressRequest{
 		DocumentIDs: docIDs,
 	})
@@ -431,19 +456,20 @@ func (k *KnowledgeApplicationService) GetDocumentProgress(ctx context.Context, r
 		logs.CtxErrorf(ctx, "mget document progress failed, err: %v", err)
 		return dataset.NewGetDocumentProgressResponse(), err
 	}
+	// STEP 3. 将领域层响应转换为API模型返回给前端
 	resp := dataset.NewGetDocumentProgressResponse()
 	resp.Data = make([]*dataset.DocumentProgress, 0)
 	for i := range domainResp.ProgressList {
 		resp.Data = append(resp.Data, &dataset.DocumentProgress{
-			DocumentID:     domainResp.ProgressList[i].ID,
-			Progress:       int32(domainResp.ProgressList[i].Progress),
-			Status:         convertDocumentStatus2Model(domainResp.ProgressList[i].Status),
-			StatusDescript: &domainResp.ProgressList[i].StatusMsg,
-			DocumentName:   domainResp.ProgressList[i].Name,
-			RemainingTime:  &domainResp.ProgressList[i].RemainingSec,
-			Size:           &domainResp.ProgressList[i].Size,
-			Type:           &domainResp.ProgressList[i].FileExtension,
-			URL:            ptr.Of(domainResp.ProgressList[i].URL),
+			DocumentID:     domainResp.ProgressList[i].ID,                                  // 文档ID
+			Progress:       int32(domainResp.ProgressList[i].Progress),                     // 处理进度百分比（0-100）
+			Status:         convertDocumentStatus2Model(domainResp.ProgressList[i].Status), // 文档状态（处理中、已完成、失败等）
+			StatusDescript: &domainResp.ProgressList[i].StatusMsg,                          // 状态描述信息（如错误原因）
+			DocumentName:   domainResp.ProgressList[i].Name,                                // 文档名称
+			RemainingTime:  &domainResp.ProgressList[i].RemainingSec,                       // 预估剩余时间（秒）
+			Size:           &domainResp.ProgressList[i].Size,                               // 文档大小（字节）
+			Type:           &domainResp.ProgressList[i].FileExtension,                      // 文档类型/扩展名
+			URL:            ptr.Of(domainResp.ProgressList[i].URL),                         // 文档访问URL（图片类型会返回）
 		})
 	}
 	return resp, nil
