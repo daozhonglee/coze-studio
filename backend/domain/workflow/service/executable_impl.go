@@ -14,6 +14,29 @@
  * limitations under the License.
  */
 
+// Package service 提供工作流执行服务的实现
+//
+// 这个包实现了工作流的各种执行模式，包括：
+// - 同步执行（SyncExecute）：立即返回执行结果
+// - 异步执行（AsyncExecute）：后台执行，返回执行ID
+// - 单节点调试（AsyncExecuteNode）：只执行指定节点
+// - 流式执行（StreamExecute）：实时流式返回执行事件
+// - 执行恢复（AsyncResume/StreamResume）：从中断处继续执行
+// - 执行取消（Cancel）：取消正在运行的执行
+//
+// 核心功能：
+// 1. 工作流画布到可执行schema的转换
+// 2. 输入参数验证和转换
+// 3. 执行引擎的初始化和运行
+// 4. 执行结果的收集和返回
+// 5. 错误处理和状态管理
+//
+// 执行流程：
+// 1. 获取工作流实体和画布
+// 2. 转换为WorkflowSchema
+// 3. 创建执行引擎（workflow）
+// 4. 转换输入参数
+// 5. 执行并返回结果
 package service
 
 import (
@@ -45,10 +68,45 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// executableImpl 工作流执行服务的具体实现
+//
+// 这个结构体实现了ExecutableService接口，提供工作流的各种执行功能。
+// 它是工作流执行的核心服务实现，负责协调各个组件完成工作流执行任务。
 type executableImpl struct {
+	// repo 工作流数据仓库接口
+	// 用于访问工作流实体、执行记录等持久化数据
 	repo workflow.Repository
 }
 
+// SyncExecute 同步执行工作流
+//
+// 这是工作流执行的主要入口方法，以同步方式执行完整的工作流并返回执行结果。
+// 调用者会等待整个工作流执行完成，然后获得最终的执行结果。
+//
+// 执行流程：
+// 1. 验证执行配置和权限
+// 2. 获取工作流实体和画布
+// 3. 转换为WorkflowSchema
+// 4. 创建执行引擎
+// 5. 转换输入参数
+// 6. 执行工作流
+// 7. 收集和返回执行结果
+//
+// 参数：
+//   - ctx: 上下文，用于取消和超时控制
+//   - config: 执行配置，包含工作流ID、版本、模式等
+//   - input: 工作流输入参数
+//
+// 返回：
+//   - *entity.WorkflowExecution: 完整的执行结果
+//   - vo.TerminatePlan: 工作流的终止计划（返回变量或直接输出）
+//   - error: 执行过程中的错误
+//
+// 注意：
+//   - 这个方法会阻塞直到工作流执行完成
+//   - 支持应用工作流的版本验证
+//   - 自动处理文件输入参数
+//   - 包含完整的错误处理和状态转换
 func (i *impl) SyncExecute(ctx context.Context, config workflowModel.ExecuteConfig, input map[string]any) (*entity.WorkflowExecution, vo.TerminatePlan, error) {
 	var (
 		err      error
@@ -202,9 +260,31 @@ func (i *impl) SyncExecute(ctx context.Context, config workflowModel.ExecuteConf
 	}, wf.TerminatePlan(), nil
 }
 
-// AsyncExecute executes the specified workflow asynchronously, returning the execution ID.
-// Intermediate results are not emitted on the fly.
-// The caller is expected to poll the execution status using the GetExecution method and the returned execution ID.
+// AsyncExecute 异步执行工作流
+//
+// 以异步方式启动工作流执行，立即返回执行ID，工作流在后台执行。
+// 调用者需要通过GetExecution方法轮询执行状态来获取结果。
+//
+// 执行流程：
+// 1. 验证执行配置和权限
+// 2. 获取工作流实体和画布
+// 3. 转换为WorkflowSchema
+// 4. 创建执行引擎并启动异步执行
+// 5. 返回执行ID供后续查询
+//
+// 参数：
+//   - ctx: 上下文，用于取消和超时控制
+//   - config: 执行配置，包含工作流ID、版本、模式等
+//   - input: 工作流输入参数
+//
+// 返回：
+//   - int64: 工作流执行ID，用于后续查询执行状态
+//   - error: 启动执行过程中的错误
+//
+// 注意：
+//   - 方法立即返回，不等待执行完成
+//   - 支持调试模式下的测试运行记录
+//   - 适用于长时间运行的工作流
 func (i *impl) AsyncExecute(ctx context.Context, config workflowModel.ExecuteConfig, input map[string]any) (int64, error) {
 	var (
 		err      error
@@ -303,6 +383,32 @@ func (i *impl) AsyncExecute(ctx context.Context, config workflowModel.ExecuteCon
 	return executeID, nil
 }
 
+// handleHistory 处理聊天历史
+//
+// 为聊天工作流准备历史对话数据，支持按名称查找或直接使用对话ID。
+//
+// 处理逻辑：
+// 1. 检查是否需要历史数据（historyRounds > 0）
+// 2. 如果需要按名称查找对话：
+//    - 从输入中提取对话名称
+//    - 创建或获取对话
+//    - 设置对话ID和分段ID
+// 3. 预取聊天历史消息
+// 4. 设置配置中的历史数据
+//
+// 参数：
+//   - ctx: 上下文
+//   - config: 执行配置，会被修改以包含历史数据
+//   - input: 输入参数，包含对话名称等
+//   - historyRounds: 需要的历史对话轮数
+//   - shouldFetchConversationByName: 是否需要按名称查找对话
+//
+// 返回：
+//   - error: 处理过程中的错误
+//
+// 注意：
+//   - 支持应用ID和代理ID两种业务场景
+//   - 会自动过滤无效的对话信息
 func (i *impl) handleHistory(ctx context.Context, config *workflowModel.ExecuteConfig, input map[string]any, historyRounds int64, shouldFetchConversationByName bool) error {
 	if historyRounds <= 0 {
 		return nil
@@ -347,6 +453,33 @@ func (i *impl) handleHistory(ctx context.Context, config *workflowModel.ExecuteC
 	return nil
 }
 
+// AsyncExecuteNode 异步执行单个节点
+//
+// 用于工作流调试功能，只执行指定的单个节点而不是整个工作流。
+// 这对于开发和调试阶段非常有用，可以快速验证单个节点的逻辑。
+//
+// 执行流程：
+// 1. 验证执行配置和权限
+// 2. 获取工作流实体和画布
+// 3. 创建以指定节点为起点的子工作流schema
+// 4. 处理聊天历史（如果是聊天流）
+// 5. 创建节点执行引擎并启动异步执行
+// 6. 记录节点调试的最新执行ID
+//
+// 参数：
+//   - ctx: 上下文，用于取消和超时控制
+//   - nodeID: 要执行的节点ID
+//   - config: 执行配置，包含工作流ID、版本、模式等
+//   - input: 节点输入参数
+//
+// 返回：
+//   - int64: 节点执行ID，用于后续查询执行状态
+//   - error: 启动执行过程中的错误
+//
+// 注意：
+//   - 只执行从指定节点开始的子工作流
+//   - 支持聊天流的对话历史处理
+//   - 在节点调试模式下会记录最新的执行ID
 func (i *impl) AsyncExecuteNode(ctx context.Context, nodeID string, config workflowModel.ExecuteConfig, input map[string]any) (int64, error) {
 	var (
 		err      error
@@ -446,8 +579,32 @@ func (i *impl) AsyncExecuteNode(ctx context.Context, nodeID string, config workf
 	return executeID, nil
 }
 
-// StreamExecute executes the specified workflow, returning a stream of execution events.
-// The caller is expected to receive from the returned stream immediately.
+// StreamExecute 流式执行工作流
+//
+// 执行工作流并返回实时执行事件的流式读取器。
+// 调用者需要立即开始从返回的流中读取数据，以避免阻塞。
+//
+// 执行流程：
+// 1. 验证执行配置和权限
+// 2. 获取工作流实体和画布
+// 3. 转换为WorkflowSchema
+// 4. 处理聊天历史（如果是聊天流）
+// 5. 创建带有流式写入器的执行引擎
+// 6. 启动异步执行并返回流式读取器
+//
+// 参数：
+//   - ctx: 上下文，用于取消和超时控制
+//   - config: 执行配置，包含工作流ID、版本、模式等
+//   - input: 工作流输入参数
+//
+// 返回：
+//   - *schema.StreamReader[*entity.Message]: 流式读取器，用于读取执行事件
+//   - error: 启动执行过程中的错误
+//
+// 注意：
+//   - 调用者必须立即开始读取流式数据
+//   - 支持实时反馈和渐进式输出
+//   - 适用于需要实时展示执行过程的场景
 func (i *impl) StreamExecute(ctx context.Context, config workflowModel.ExecuteConfig, input map[string]any) (*schema.StreamReader[*entity.Message], error) {
 	var (
 		err      error
@@ -556,6 +713,31 @@ func (i *impl) StreamExecute(ctx context.Context, config workflowModel.ExecuteCo
 	return sr, nil
 }
 
+// GetExecution 获取工作流执行结果
+//
+// 根据执行ID查询工作流的执行状态和结果。
+// 支持获取完整的执行信息，包括节点执行详情。
+//
+// 查询逻辑：
+// 1. 从数据库获取工作流执行记录
+// 2. 如果执行仍在运行，返回基本状态信息
+// 3. 如果执行已完成，获取中断事件信息
+// 4. 根据includeNodes参数决定是否获取节点执行详情
+// 5. 合并复合节点的执行结果
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExe: 包含执行ID的工作流执行对象
+//   - includeNodes: 是否包含节点执行详情
+//
+// 返回：
+//   - *entity.WorkflowExecution: 完整的执行结果
+//   - error: 查询过程中的错误
+//
+// 注意：
+//   - 如果执行仍在运行，只返回基本状态信息
+//   - 中断事件会根据当前状态进行过滤
+//   - 复合节点（如批量节点）的执行结果会被合并
 func (i *impl) GetExecution(ctx context.Context, wfExe *entity.WorkflowExecution, includeNodes bool) (*entity.WorkflowExecution, error) {
 	wfExeID := wfExe.ID
 	wfID := wfExe.WorkflowID
@@ -736,6 +918,29 @@ func (i *impl) GetLatestNodeDebugInput(ctx context.Context, wfID int64, nodeID s
 	return nodeExe, innerExe, true, nil
 }
 
+// mergeCompositeInnerNodes 合并复合节点的内部执行结果
+//
+// 将批量节点或其他复合节点的多个内部执行结果合并为单个节点执行记录。
+// 用于简化前端展示和统计分析，避免显示过多的内部节点详情。
+//
+// 合并策略：
+// 1. 使用第一个执行记录作为基础模板
+// 2. 累加所有执行的Token消耗
+// 3. 取最长执行时间作为总时间
+// 4. 如果任一执行失败，整个节点标记为失败
+// 5. 创建索引化执行数组，保持执行顺序
+//
+// 参数：
+//   - nodeExes: 按索引组织的节点执行结果map
+//   - maxIndex: 最大索引值，用于确定数组大小
+//
+// 返回：
+//   - *entity.NodeExecution: 合并后的节点执行记录
+//
+// 注意：
+//   - 合并后的记录保持了所有关键信息
+//   - IndexedExecutions数组按索引顺序排列
+//   - 状态和Token信息经过适当聚合
 func mergeCompositeInnerNodes(nodeExes map[int]*entity.NodeExecution, maxIndex int) *entity.NodeExecution {
 	var groupNodeExe *entity.NodeExecution
 	for _, v := range nodeExes {
@@ -783,9 +988,30 @@ func mergeCompositeInnerNodes(nodeExes map[int]*entity.NodeExecution, maxIndex i
 	return groupNodeExe
 }
 
-// AsyncResume resumes a workflow execution asynchronously, using the passed in executionID and eventID.
-// Intermediate results during the resuming run are not emitted on the fly.
-// Caller is expected to poll the execution status using the GetExecution method.
+// AsyncResume 异步恢复工作流执行
+//
+// 从中断状态恢复工作流执行，使用传入的执行ID和事件ID。
+// 恢复执行的中间结果不会实时发出，调用者需要轮询GetExecution方法获取状态。
+//
+// 恢复流程：
+// 1. 验证执行状态（必须是中断状态）
+// 2. 验证只能恢复根执行
+// 3. 获取原始工作流实体和画布
+// 4. 根据执行模式选择恢复策略（完整恢复或节点调试恢复）
+// 5. 创建恢复执行引擎并启动异步执行
+//
+// 参数：
+//   - ctx: 上下文，用于取消和超时控制
+//   - req: 恢复请求，包含执行ID和恢复事件信息
+//   - config: 执行配置，包含恢复相关的参数
+//
+// 返回：
+//   - error: 恢复执行过程中的错误
+//
+// 注意：
+//   - 只能恢复处于中断状态的执行
+//   - 只能恢复根执行，不能恢复子执行
+//   - 支持节点调试模式下的恢复
 func (i *impl) AsyncResume(ctx context.Context, req *entity.ResumeRequest, config workflowModel.ExecuteConfig) error {
 	wfExe, found, err := i.repo.GetWorkflowExecution(ctx, req.ExecuteID)
 	if err != nil {
@@ -906,13 +1132,36 @@ func (i *impl) AsyncResume(ctx context.Context, req *entity.ResumeRequest, confi
 	return nil
 }
 
-// StreamResume resumes a workflow execution, using the passed in executionID and eventID.
-// Intermediate results during the resuming run are emitted using the returned StreamReader.
-// Caller is expected to poll the execution status using the GetExecution method.
+// StreamResume 流式恢复工作流执行
+//
+// 从中断状态恢复工作流执行，使用传入的执行ID和事件ID。
+// 恢复执行的中间结果会通过返回的StreamReader实时发出。
+// 调用者需要轮询GetExecution方法获取最终执行状态。
+//
+// 恢复流程：
+// 1. 验证执行状态（必须是中断状态）
+// 2. 验证只能恢复根执行
+// 3. 获取原始工作流实体和画布
+// 4. 创建带有流式写入器的恢复执行引擎
+// 5. 启动异步恢复执行并返回流式读取器
+//
+// 参数：
+//   - ctx: 上下文，用于取消和超时控制
+//   - req: 恢复请求，包含执行ID和恢复事件信息
+//   - config: 执行配置，包含恢复相关的参数
+//
+// 返回：
+//   - *schema.StreamReader[*entity.Message]: 流式读取器，用于读取恢复执行事件
+//   - error: 恢复执行过程中的错误
+//
+// 注意：
+//   - 只能恢复处于中断状态的执行
+//   - 只能恢复根执行，不能恢复子执行
+//   - 恢复过程的中间结果会实时流式输出
 func (i *impl) StreamResume(ctx context.Context, req *entity.ResumeRequest, config workflowModel.ExecuteConfig) (
 	*schema.StreamReader[*entity.Message], error) {
-	// must get the interrupt event
-	// generate the state modifier
+	// 必须获取中断事件
+	// 生成状态修改器
 	wfExe, found, err := i.repo.GetWorkflowExecution(ctx, req.ExecuteID)
 	if err != nil {
 		return nil, err
@@ -993,6 +1242,31 @@ func (i *impl) StreamResume(ctx context.Context, req *entity.ResumeRequest, conf
 	return sr, nil
 }
 
+// Cancel 取消工作流执行
+//
+// 取消正在运行的工作流执行，将状态设置为取消。
+// 只有正在运行或已中断的执行才能被取消。
+//
+// 取消逻辑：
+// 1. 验证执行存在性和权限
+// 2. 检查执行状态（只能取消运行中或中断的执行）
+// 3. 验证只能取消根执行
+// 4. 更新执行状态为取消
+// 5. 取消所有正在运行的节点
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExeID: 要取消的执行ID
+//   - wfID: 工作流ID，用于权限验证
+//   - spaceID: 空间ID，用于权限验证
+//
+// 返回：
+//   - error: 取消过程中的错误
+//
+// 注意：
+//   - 已达到终止状态的执行不需要取消
+//   - 从中断状态取消时需要同时取消所有中断节点
+//   - 会发送取消信号确保执行引擎响应
 func (i *impl) Cancel(ctx context.Context, wfExeID int64, wfID, spaceID int64) error {
 	wfExe, found, err := i.repo.GetWorkflowExecution(ctx, wfExeID)
 	if err != nil {
@@ -1054,6 +1328,31 @@ func (i *impl) checkApplicationWorkflowReleaseVersion(ctx context.Context, appID
 	return nil
 }
 
+// prefetchChatHistory 预取聊天历史
+//
+// 从消息服务获取指定轮数的聊天历史记录，用于LLM上下文记忆。
+// 支持应用和代理两种业务场景的消息历史获取。
+//
+// 获取流程：
+// 1. 验证必要的对话和分段信息
+// 2. 调用消息服务获取最近的运行ID列表
+// 3. 过滤掉当前运行，获取历史运行ID
+// 4. 批量获取历史消息内容
+//
+// 参数：
+//   - ctx: 上下文
+//   - config: 执行配置，包含对话ID、业务ID等
+//   - historyRounds: 需要的历史对话轮数
+//
+// 返回：
+//   - []*crossmessage.WfMessage: 工作流消息格式的历史消息
+//   - []*schema.Message: Schema格式的历史消息
+//   - error: 获取过程中的错误
+//
+// 注意：
+//   - 如果SectionID为空，会跳过历史获取
+//   - 会自动过滤无效的对话信息
+//   - 返回的消息按时间倒序排列
 func (i *impl) prefetchChatHistory(ctx context.Context, config workflowModel.ExecuteConfig, historyRounds int64) ([]*crossmessage.WfMessage, []*schema.Message, error) {
 	convID := config.ConversationID
 	agentID := config.AgentID
