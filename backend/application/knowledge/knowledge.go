@@ -705,19 +705,20 @@ func (k *KnowledgeApplicationService) GetDocumentProgress(ctx context.Context, r
 		logs.CtxErrorf(ctx, "mget document progress failed, err: %v", err)
 		return dataset.NewGetDocumentProgressResponse(), err
 	}
+	// STEP 3. 将领域层响应转换为API模型返回给前端
 	resp := dataset.NewGetDocumentProgressResponse()
 	resp.Data = make([]*dataset.DocumentProgress, 0)
 	for i := range domainResp.ProgressList {
 		resp.Data = append(resp.Data, &dataset.DocumentProgress{
-			DocumentID:     domainResp.ProgressList[i].ID,
-			Progress:       int32(domainResp.ProgressList[i].Progress),
-			Status:         convertDocumentStatus2Model(domainResp.ProgressList[i].Status),
-			StatusDescript: &domainResp.ProgressList[i].StatusMsg,
-			DocumentName:   domainResp.ProgressList[i].Name,
-			RemainingTime:  &domainResp.ProgressList[i].RemainingSec,
-			Size:           &domainResp.ProgressList[i].Size,
-			Type:           &domainResp.ProgressList[i].FileExtension,
-			URL:            ptr.Of(domainResp.ProgressList[i].URL),
+			DocumentID:     domainResp.ProgressList[i].ID,                                  // 文档ID
+			Progress:       int32(domainResp.ProgressList[i].Progress),                     // 处理进度百分比（0-100）
+			Status:         convertDocumentStatus2Model(domainResp.ProgressList[i].Status), // 文档状态（处理中、已完成、失败等）
+			StatusDescript: &domainResp.ProgressList[i].StatusMsg,                          // 状态描述信息（如错误原因）
+			DocumentName:   domainResp.ProgressList[i].Name,                                // 文档名称
+			RemainingTime:  &domainResp.ProgressList[i].RemainingSec,                       // 预估剩余时间（秒）
+			Size:           &domainResp.ProgressList[i].Size,                               // 文档大小（字节）
+			Type:           &domainResp.ProgressList[i].FileExtension,                      // 文档类型/扩展名
+			URL:            ptr.Of(domainResp.ProgressList[i].URL),                         // 文档访问URL（图片类型会返回）
 		})
 	}
 	return resp, nil

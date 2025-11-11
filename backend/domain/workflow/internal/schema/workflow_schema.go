@@ -32,27 +32,82 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/logs"
 )
 
+// WorkflowSchema 工作流执行模式的数据结构定义
+//
+// 这是一个核心的数据结构，将前端的可视化画布转换为可执行的工作流模式。
+// 它是工作流引擎执行的基础，定义了节点、连接关系、分支逻辑等执行要素。
+//
+// 主要用途：
+// 1. 工作流执行引擎的输入数据结构
+// 2. 工作流合法性验证
+// 3. 工作流状态比较和版本控制
+// 4. 工作流执行计划的生成
+//
+// 数据流向：
+// 前端Canvas → CanvasToWorkflowSchema() → WorkflowSchema → 执行引擎
 type WorkflowSchema struct {
-	Nodes       []*NodeSchema                `json:"nodes"`
-	Connections []*Connection                `json:"connections"`
-	Hierarchy   map[vo.NodeKey]vo.NodeKey    `json:"hierarchy,omitempty"` // child node key-> parent node key
-	Branches    map[vo.NodeKey]*BranchSchema `json:"branches,omitempty"`
+	// 可序列化的字段（JSON）
 
-	GeneratedNodes []vo.NodeKey `json:"generated_nodes,omitempty"` // generated nodes for the nodes in batch mode
+	// Nodes 工作流中的所有节点schema定义
+	// 包含节点的配置、输入输出类型、执行逻辑等
+	Nodes []*NodeSchema `json:"nodes"`
 
-	nodeMap           map[vo.NodeKey]*NodeSchema // won't serialize this
-	compositeNodes    []*CompositeNode           // won't serialize this
-	requireCheckPoint bool                       // won't serialize this
-	requireStreaming  bool
-	historyRounds     int64
+	// Connections 节点之间的连接关系
+	// 定义数据流的方向和端口连接
+	Connections []*Connection `json:"connections"`
 
+	// Hierarchy 节点层级关系映射
+	// key: 子节点key, value: 父节点key
+	// 用于处理复合节点（如循环、批量等）中的嵌套关系
+	Hierarchy map[vo.NodeKey]vo.NodeKey `json:"hierarchy,omitempty"`
+
+	// Branches 分支逻辑定义
+	// key: 分支节点key, value: 分支schema
+	// 用于条件分支、选择器等节点的执行逻辑
+	Branches map[vo.NodeKey]*BranchSchema `json:"branches,omitempty"`
+
+	// GeneratedNodes 批量模式下生成的节点列表
+	// 记录因批量处理而动态生成的节点
+	GeneratedNodes []vo.NodeKey `json:"generated_nodes,omitempty"`
+
+	// 不可序列化的字段（运行时使用）
+
+	// nodeMap 节点快速查找映射（运行时构建）
+	// 用于根据节点key快速定位节点schema
+	nodeMap map[vo.NodeKey]*NodeSchema
+
+	// compositeNodes 复合节点列表
+	// 包含所有复合节点及其子节点信息
+	compositeNodes []*CompositeNode
+
+	// requireCheckPoint 是否需要检查点
+	// 某些节点（如长时间运行的任务）需要检查点来支持恢复
+	requireCheckPoint bool
+
+	// requireStreaming 是否需要流式输出
+	// 用于支持实时流式响应的工作流
+	requireStreaming bool
+
+	// historyRounds 历史对话轮数
+	// 聊天工作流中需要保持的历史对话轮数
+	historyRounds int64
+
+	// once 确保初始化只执行一次
 	once sync.Once
 }
 
+// Connection 定义工作流节点之间的连接关系
+// 表示数据从一个节点流向另一个节点的路径
 type Connection struct {
+	// FromNode 数据来源节点的key
 	FromNode vo.NodeKey `json:"from_node"`
-	ToNode   vo.NodeKey `json:"to_node"`
-	FromPort *string    `json:"from_port,omitempty"`
+
+	// ToNode 数据目标节点的key
+	ToNode vo.NodeKey `json:"to_node"`
+
+	// FromPort 数据来源的端口标识（可选）
+	// 用于区分同一个节点的不同输出端口
+	FromPort *string `json:"from_port,omitempty"`
 }
 
 func (c *Connection) ID() string {

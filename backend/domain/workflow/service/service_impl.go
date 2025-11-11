@@ -14,6 +14,25 @@
  * limitations under the License.
  */
 
+// Package service 实现工作流领域的核心业务逻辑
+//
+// 这个包是工作流领域服务的具体实现，提供了工作流生命周期管理的完整功能：
+// - 工作流创建、查询、更新、删除
+// - 版本管理和发布
+// - 画布验证和节点处理
+// - 依赖关系管理和资源绑定
+// - 批量操作和复制功能
+//
+// 主要组件：
+// - impl: 核心服务实现结构体
+// - 节点适配器注册和管理
+// - 工作流验证逻辑
+// - 资源依赖分析
+//
+// 设计模式：
+// - 组合模式：通过嵌入多个实现接口组合功能
+// - 策略模式：不同的查询类型和验证策略
+// - 访问者模式：节点递归处理
 package service
 
 import (
@@ -50,13 +69,33 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// impl 是工作流领域服务的核心实现结构体
+// 通过组合模式嵌入多个功能实现接口，提供完整的工作流管理功能
+//
+// 组合的实现接口：
+// - asToolImpl: 工作流作为工具的功能实现
+// - executableImpl: 工作流执行功能实现
+// - conversationImpl: 会话管理功能实现
+//
+// 主要职责：
+// - 实现 workflow.Service 接口的所有方法
+// - 协调各个子功能模块的协作
+// - 管理工作流的生命周期
 type impl struct {
-	repo workflow.Repository
-	*asToolImpl
-	*executableImpl
-	*conversationImpl
+	repo              workflow.Repository // 工作流仓储接口，用于数据访问
+	*asToolImpl                           // 作为工具使用时的功能实现
+	*executableImpl                       // 工作流执行功能实现
+	*conversationImpl                     // 会话管理功能实现
 }
 
+// NewWorkflowService 创建工作流领域服务实例
+// 初始化核心实现结构体并组合各个功能模块
+//
+// 参数：
+//   - repo: 工作流仓储接口，提供数据访问能力
+//
+// 返回：
+//   - workflow.Service: 工作流领域服务接口
 func NewWorkflowService(repo workflow.Repository) workflow.Service {
 	return &impl{
 		repo: repo,
@@ -75,24 +114,40 @@ func NewWorkflowRepository(idgen idgen.IDGenerator, db *gorm.DB, redis cache.Cmd
 	return repo.NewRepository(idgen, db, redis, tos, cpStore, chatModel, cfg)
 }
 
+// ListNodeMeta 列出节点元数据信息
+// 根据节点类型过滤返回可用的工作流节点元数据，按类别分组
+//
+// 主要功能：
+// - 支持按节点类型过滤
+// - 排除已禁用的节点
+// - 按类别对节点进行分组
+//
+// 参数：
+//   - ctx: 上下文
+//   - nodeTypes: 节点类型过滤器，为空时返回所有节点
+//
+// 返回：
+//   - map[string][]*entity.NodeTypeMeta: 按类别分组的节点元数据
+//   - []entity.Category: 节点类别列表
+//   - error: 错误信息
 func (i *impl) ListNodeMeta(_ context.Context, nodeTypes map[entity.NodeType]bool) (map[string][]*entity.NodeTypeMeta, []entity.Category, error) {
-	// Initialize result maps
+	// 初始化结果映射
 	nodeMetaMap := make(map[string][]*entity.NodeTypeMeta)
 
-	// Helper function to check if a type should be included based on the filter
+	// 辅助函数：检查节点类型是否应该被包含
 	shouldInclude := func(meta *entity.NodeTypeMeta) bool {
 		if meta.Disabled {
-			return false
+			return false // 已禁用的节点不包含
 		}
 		nodeType := meta.Key
 		if nodeTypes == nil || len(nodeTypes) == 0 {
-			return true // No filter, include all
+			return true // 无过滤器，包含所有
 		}
 		_, ok := nodeTypes[nodeType]
-		return ok
+		return ok // 检查是否在过滤器中
 	}
 
-	// Process standard node types
+	// 处理标准节点类型
 	for _, meta := range entity.NodeTypeMetas {
 		if shouldInclude(meta) {
 			nodeMetaMap[meta.Category] = append(nodeMetaMap[meta.Category], meta)
@@ -102,7 +157,23 @@ func (i *impl) ListNodeMeta(_ context.Context, nodeTypes map[entity.NodeType]boo
 	return nodeMetaMap, entity.Categories, nil
 }
 
+// Create 创建新的工作流
+// 这是工作流生命周期的起点，创建工作流的元数据和初始草稿版本
+//
+// 工作流程：
+// 1. 创建工作流元数据记录（名称、描述、创建者等）
+// 2. 保存初始化的画布信息到草稿版本
+// 3. 返回新创建的工作流ID
+//
+// 参数：
+//   - ctx: 上下文
+//   - meta: 工作流创建元数据，包含基本信息和初始画布
+//
+// 返回：
+//   - int64: 新创建的工作流ID
+//   - error: 创建过程中的错误
 func (i *impl) Create(ctx context.Context, meta *vo.MetaCreate) (int64, error) {
+	// 创建工作流元数据记录
 	id, err := i.repo.CreateMeta(ctx, &vo.Meta{
 		CreatorID:   meta.CreatorID,
 		SpaceID:     meta.SpaceID,
@@ -117,7 +188,7 @@ func (i *impl) Create(ctx context.Context, meta *vo.MetaCreate) (int64, error) {
 		return 0, err
 	}
 
-	// save the initialized  canvas information to the draft
+	// 保存初始化的画布信息到草稿版本
 	if err = i.Save(ctx, id, meta.InitCanvasSchema); err != nil {
 		return 0, err
 	}
@@ -125,12 +196,31 @@ func (i *impl) Create(ctx context.Context, meta *vo.MetaCreate) (int64, error) {
 	return id, nil
 }
 
+// Save 保存工作流的草稿版本
+// 解析画布schema，提取输入输出参数，计算测试运行状态，并保存到草稿
+//
+// 工作流程：
+// 1. 反序列化画布schema为Canvas对象
+// 2. 提取输入输出参数的命名信息
+// 3. 计算测试运行成功状态
+// 4. 生成新的提交ID用于版本控制
+// 5. 保存草稿信息到数据库
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流ID
+//   - schema: 画布的JSON schema字符串
+//
+// 返回：
+//   - error: 保存过程中的错误
 func (i *impl) Save(ctx context.Context, id int64, schema string) (err error) {
+	// 反序列化画布schema
 	var draft vo.Canvas
 	if err = sonic.UnmarshalString(schema, &draft); err != nil {
 		return vo.WrapError(errno.ErrSerializationDeserializationFail, err)
 	}
 
+	// 提取输入输出参数信息
 	var inputParams, outputParams string
 	inputs, outputs := extractInputsAndOutputsNamedInfoList(&draft)
 	if inputParams, err = sonic.MarshalString(inputs); err != nil {
@@ -141,16 +231,19 @@ func (i *impl) Save(ctx context.Context, id int64, schema string) (err error) {
 		return vo.WrapError(errno.ErrSerializationDeserializationFail, err)
 	}
 
+	// 计算测试运行成功状态
 	testRunSuccess, err := i.calculateTestRunSuccess(ctx, &draft, id)
 	if err != nil {
 		return err
 	}
 
-	commitID, err := i.repo.GenID(ctx) // generate a new commit ID for this draft version
+	// 生成新的提交ID用于版本控制
+	commitID, err := i.repo.GenID(ctx)
 	if err != nil {
 		return vo.WrapError(errno.ErrIDGenError, err)
 	}
 
+	// 保存草稿信息到数据库
 	return i.repo.CreateOrUpdateDraft(ctx, id, &vo.DraftInfo{
 		Canvas: schema,
 		DraftMeta: &vo.DraftMeta{
@@ -163,21 +256,45 @@ func (i *impl) Save(ctx context.Context, id int64, schema string) (err error) {
 	})
 }
 
+// extractInputsAndOutputsNamedInfoList 从工作流画布中提取输入输出参数的命名信息
+// 这是工作流参数解析的核心函数，用于将画布中的变量定义转换为结构化的参数信息
+//
+// 工作流程：
+// 1. 查找画布中的入口节点（Entry）和出口节点（Exit）
+// 2. 从入口节点的输出中提取输入参数信息
+// 3. 从出口节点的输入中提取输出参数信息
+// 4. 将变量转换为命名类型信息
+//
+// 参数：
+//   - c: 工作流画布对象
+//
+// 返回：
+//   - inputs: 工作流的输入参数列表
+//   - outputs: 工作流的输出参数列表
+//
+// 注意：
+//   - 使用defer recover处理可能的panic，避免影响整个保存流程
+//   - 解析失败时只记录警告，不中断流程
 func extractInputsAndOutputsNamedInfoList(c *vo.Canvas) (inputs []*vo.NamedTypeInfo, outputs []*vo.NamedTypeInfo) {
+	// 异常恢复：防止解析过程中的panic影响整个保存流程
 	defer func() {
 		if err := recover(); err != nil {
 			logs.Warnf("failed to extract inputs and outputs: %v", err)
 		}
 	}()
+
 	var (
-		startNode *vo.Node
-		endNode   *vo.Node
+		startNode *vo.Node // 入口节点
+		endNode   *vo.Node // 出口节点
 	)
+
 	inputs = make([]*vo.NamedTypeInfo, 0)
 	outputs = make([]*vo.NamedTypeInfo, 0)
+
+	// 查找入口和出口节点
 	for _, node := range c.Nodes {
 		if startNode != nil && endNode != nil {
-			break
+			break // 找到后就可以停止查找
 		}
 		if node.Type == entity.NodeTypeEntry.IDStr() {
 			startNode = node
@@ -188,6 +305,8 @@ func extractInputsAndOutputsNamedInfoList(c *vo.Canvas) (inputs []*vo.NamedTypeI
 	}
 
 	var err error
+
+	// 从入口节点的输出中提取输入参数
 	if startNode != nil {
 		inputs, err = slices.TransformWithErrorCheck(startNode.Data.Outputs, func(o any) (*vo.NamedTypeInfo, error) {
 			v, err := vo.ParseVariable(o)
@@ -205,6 +324,7 @@ func extractInputsAndOutputsNamedInfoList(c *vo.Canvas) (inputs []*vo.NamedTypeI
 		}
 	}
 
+	// 从出口节点的输入中提取输出参数
 	if endNode != nil {
 		outputs, err = slices.TransformWithErrorCheck(endNode.Data.Inputs.InputParameters, func(a *vo.Param) (*vo.NamedTypeInfo, error) {
 			return convert.BlockInputToNamedTypeInfo(a.Name, a.Input)
@@ -217,7 +337,23 @@ func extractInputsAndOutputsNamedInfoList(c *vo.Canvas) (inputs []*vo.NamedTypeI
 	return inputs, outputs
 }
 
+// Delete 删除工作流
+// 支持单个删除和批量删除，可以通过ID列表或应用ID进行删除
+//
+// 删除策略：
+// 1. 如果指定了单个ID，直接删除该工作流
+// 2. 如果指定了ID列表，批量删除这些工作流
+// 3. 如果指定了应用ID，删除该应用下的所有工作流
+//
+// 参数：
+//   - ctx: 上下文
+//   - policy: 删除策略，包含删除条件和选项
+//
+// 返回：
+//   - ids: 被删除的工作流ID列表
+//   - error: 删除过程中的错误
 func (i *impl) Delete(ctx context.Context, policy *vo.DeletePolicy) (ids []int64, err error) {
+	// 处理单个ID删除
 	if policy.ID != nil || len(policy.IDs) == 1 {
 		var id int64
 		if policy.ID != nil {
@@ -233,7 +369,10 @@ func (i *impl) Delete(ctx context.Context, policy *vo.DeletePolicy) (ids []int64
 		return []int64{id}, nil
 	}
 
+	// 处理批量删除
 	ids = policy.IDs
+
+	// 如果指定了应用ID，获取该应用下的所有工作流ID
 	if policy.AppID != nil {
 		metas, _, err := i.repo.MGetMetas(ctx, &vo.MetaQuery{
 			AppID: policy.AppID,
@@ -244,6 +383,7 @@ func (i *impl) Delete(ctx context.Context, policy *vo.DeletePolicy) (ids []int64
 		ids = maps.Keys(metas)
 	}
 
+	// 批量删除工作流
 	if err = i.repo.MDelete(ctx, ids); err != nil {
 		return nil, err
 	}
@@ -636,17 +776,34 @@ func (i *impl) PublishChatFlowRole(ctx context.Context, policy *vo.PublishRolePo
 	return nil
 }
 
+// canvasToRefs 分析画布中的工作流引用关系
+// 递归遍历画布节点，找出所有对其他工作流的引用，包括：
+// - 子工作流节点引用
+// - LLM节点中的工具引用
+//
+// 参数：
+//   - referringID: 引用方工作流ID
+//   - canvasStr: 画布的JSON字符串
+//
+// 返回：
+//   - map[entity.WorkflowReferenceKey]struct{}: 引用关系集合
+//   - error: 分析过程中的错误
 func canvasToRefs(referringID int64, canvasStr string) (map[entity.WorkflowReferenceKey]struct{}, error) {
+	// 反序列化画布
 	var canvas vo.Canvas
 	if err := sonic.UnmarshalString(canvasStr, &canvas); err != nil {
 		return nil, vo.WrapError(errno.ErrSerializationDeserializationFail, err)
 	}
 
 	wfRefs := map[entity.WorkflowReferenceKey]struct{}{}
+
+	// 递归函数：遍历节点查找引用关系
 	var getRefFn func([]*vo.Node) error
 	getRefFn = func(nodes []*vo.Node) error {
 		for _, node := range nodes {
-			if node.Type == entity.NodeTypeSubWorkflow.IDStr() {
+			switch node.Type {
+			case entity.NodeTypeSubWorkflow.IDStr():
+				// 子工作流节点引用
 				referredID, err := strconv.ParseInt(node.Data.Inputs.WorkflowID, 10, 64)
 				if err != nil {
 					return vo.WrapError(errno.ErrSchemaConversionFail, err)
@@ -657,7 +814,9 @@ func canvasToRefs(referringID int64, canvasStr string) (map[entity.WorkflowRefer
 					ReferType:        vo.ReferTypeSubWorkflow,
 					ReferringBizType: vo.ReferringBizTypeWorkflow,
 				}] = struct{}{}
-			} else if node.Type == entity.NodeTypeLLM.IDStr() {
+
+			case entity.NodeTypeLLM.IDStr():
+				// LLM节点中的工具引用
 				if node.Data.Inputs.LLM != nil {
 					if node.Data.Inputs.FCParam != nil && node.Data.Inputs.FCParam.WorkflowFCParam != nil {
 						for _, w := range node.Data.Inputs.FCParam.WorkflowFCParam.WorkflowList {
@@ -674,7 +833,10 @@ func canvasToRefs(referringID int64, canvasStr string) (map[entity.WorkflowRefer
 						}
 					}
 				}
-			} else if len(node.Blocks) > 0 {
+			}
+
+			// 递归处理子节点（复合节点的情况）
+			if len(node.Blocks) > 0 {
 				for _, subNode := range node.Blocks {
 					if err := getRefFn([]*vo.Node{subNode}); err != nil {
 						return err
@@ -685,6 +847,7 @@ func canvasToRefs(referringID int64, canvasStr string) (map[entity.WorkflowRefer
 		return nil
 	}
 
+	// 开始分析
 	if err := getRefFn(canvas.Nodes); err != nil {
 		return nil, err
 	}
@@ -692,12 +855,30 @@ func canvasToRefs(referringID int64, canvasStr string) (map[entity.WorkflowRefer
 	return wfRefs, nil
 }
 
+// Publish 发布工作流版本
+// 将草稿版本发布为正式版本，进行版本控制和依赖关系管理
+//
+// 发布流程：
+// 1. 验证版本号递增性
+// 2. 检查测试运行状态（非强制发布时）
+// 3. 分析画布中的依赖关系
+// 4. 创建版本记录
+// 5. 建立引用关系
+//
+// 参数：
+//   - ctx: 上下文
+//   - policy: 发布策略，包含版本信息和发布选项
+//
+// 返回：
+//   - error: 发布过程中的错误
 func (i *impl) Publish(ctx context.Context, policy *vo.PublishPolicy) (err error) {
+	// 获取工作流元数据
 	meta, err := i.repo.GetMeta(ctx, policy.ID)
 	if err != nil {
 		return err
 	}
 
+	// 验证版本号递增性
 	if meta.LatestPublishedVersion != nil {
 		latestVersion, err := parseVersion(*meta.LatestPublishedVersion)
 		if err != nil {
@@ -713,20 +894,24 @@ func (i *impl) Publish(ctx context.Context, policy *vo.PublishPolicy) (err error
 		}
 	}
 
+	// 获取草稿版本
 	draft, err := i.repo.DraftV2(ctx, policy.ID, policy.CommitID)
 	if err != nil {
 		return err
 	}
 
+	// 检查测试运行状态（非强制发布时）
 	if !policy.Force && !draft.TestRunSuccess {
 		return fmt.Errorf("workflow %d's current draft needs to pass the test run before publishing", policy.ID)
 	}
 
+	// 分析画布中的依赖关系
 	wfRefs, err := canvasToRefs(policy.ID, draft.Canvas)
 	if err != nil {
 		return err
 	}
 
+	// 构建版本信息
 	versionInfo := &vo.VersionInfo{
 		VersionMeta: &vo.VersionMeta{
 			Version:            policy.Version,
@@ -741,6 +926,7 @@ func (i *impl) Publish(ctx context.Context, policy *vo.PublishPolicy) (err error
 		CommitID: draft.CommitID,
 	}
 
+	// 创建版本记录和引用关系
 	if err = i.repo.CreateVersion(ctx, policy.ID, versionInfo, wfRefs); err != nil {
 		return err
 	}
@@ -1917,32 +2103,66 @@ func (i *impl) GetConvRelatedInfo(ctx context.Context, convID int64) (*entity.Co
 	return i.repo.GetConvRelatedInfo(ctx, convID)
 }
 
+// calculateTestRunSuccess 计算工作流测试运行的成功状态
+//
+// 这个方法实现了智能的测试运行状态继承机制，避免不必要的重复测试。
+// 通过比较新旧画布的执行逻辑来决定是否需要重新进行测试运行。
+//
+// 工作流程：
+// 1. 将当前画布转换为可执行的工作流schema
+// 2. 获取之前保存的草稿版本
+// 3. 比较新旧schema的执行逻辑差异
+// 4. 根据比较结果决定测试状态
+//
+// 参数：
+//   - ctx: 上下文
+//   - c: 当前的画布对象
+//   - wid: 工作流ID
+//
+// 返回：
+//   - bool: 是否继承之前的测试成功状态
+//   - error: 计算过程中的错误
+//
+// 决策逻辑：
+//   - 当前画布无法转换为schema → false（无法执行）
+//   - 没有之前的草稿版本 → false（没有历史测试记录）
+//   - 旧画布无法转换为schema → false（之前就是无效的）
+//   - 新旧schema执行逻辑不同 → false（需要重新测试）
+//   - 新旧schema执行逻辑相同 → 继承之前的状态
 func (i *impl) calculateTestRunSuccess(ctx context.Context, c *vo.Canvas, wid int64) (bool, error) {
+	// 将当前画布转换为工作流schema，验证其合法性
 	sc, err := adaptor.CanvasToWorkflowSchema(ctx, c)
-	if err != nil { // not even legal, test run can't possibly be successful
+	if err != nil { // 画布不合法，无法执行，测试运行不可能成功
 		return false, nil
 	}
 
+	// 获取之前保存的草稿版本
 	existedDraft, err := i.repo.DraftV2(ctx, wid, "")
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return false, nil // previous draft version not exists, does not have any test run
+			return false, nil // 之前没有草稿版本，自然没有测试运行记录
 		}
 		return false, err
 	}
 
+	// 将之前保存的画布也转换为schema
 	var existedDraftCanvas vo.Canvas
 	err = sonic.UnmarshalString(existedDraft.Canvas, &existedDraftCanvas)
 	existedSc, err := adaptor.CanvasToWorkflowSchema(ctx, &existedDraftCanvas)
-	if err == nil { // the old existing draft is legal, check if it's equal to the new draft in terms of execution
-		if !existedSc.IsEqual(sc) { // there is modification to the execution logic, needs new test run
+
+	if err == nil {
+		// 旧画布也是合法的，比较新旧schema的执行逻辑
+		if !existedSc.IsEqual(sc) {
+			// 执行逻辑发生了变化，需要重新进行测试运行
 			return false, nil
 		}
-	} else { // the old existing draft is not legal, of course haven't any successful test run
+	} else {
+		// 旧画布不合法，自然没有成功的测试运行
 		return false, nil
 	}
 
-	return existedDraft.TestRunSuccess, nil // inherit previous draft snapshot's test run success flag
+	// 执行逻辑没有变化，继承之前草稿的测试运行成功状态
+	return existedDraft.TestRunSuccess, nil
 }
 
 func replaceRelatedWorkflowOrExternalResourceInWorkflowNodes(nodes []*vo.Node, relatedWorkflows map[int64]entity.IDVersionPair, related vo.ExternalResourceRelated) error {
@@ -2127,10 +2347,31 @@ func replaceRelatedWorkflowOrExternalResourceInWorkflowNodes(nodes []*vo.Node, r
 	return nil
 }
 
+// RegisterAllNodeAdaptors 注册所有节点适配器
+// 在服务初始化时调用，确保所有工作流节点类型都能正确处理
+// 这包括LLM节点、HTTP请求节点、数据库节点等各种专用节点类型的适配器
 func RegisterAllNodeAdaptors() {
 	adaptor.RegisterAllNodeAdaptors()
 }
+
+// adaptToChatFlow 将工作流适配为聊天流模式
+// 为聊天流工作流添加必要的输入变量：用户输入和会话名称
+//
+// 适配过程：
+// 1. 获取工作流的草稿画布
+// 2. 查找入口节点
+// 3. 检查是否已存在必需的变量
+// 4. 添加缺失的用户输入变量和会话名称变量
+// 5. 保存更新后的画布
+//
+// 参数：
+//   - ctx: 上下文
+//   - wID: 工作流ID
+//
+// 返回：
+//   - error: 适配过程中的错误
 func (i *impl) adaptToChatFlow(ctx context.Context, wID int64) error {
+	// 获取工作流草稿实体
 	wfEntity, err := i.repo.GetEntity(ctx, &vo.GetPolicy{
 		ID:    wID,
 		QType: workflowModel.FromDraft,
@@ -2139,12 +2380,14 @@ func (i *impl) adaptToChatFlow(ctx context.Context, wID int64) error {
 		return err
 	}
 
+	// 反序列化画布
 	canvas := &vo.Canvas{}
 	err = sonic.UnmarshalString(wfEntity.Canvas, canvas)
 	if err != nil {
 		return err
 	}
 
+	// 查找入口节点
 	var startNode *vo.Node
 	for _, node := range canvas.Nodes {
 		if node.Type == entity.NodeTypeEntry.IDStr() {
@@ -2157,6 +2400,7 @@ func (i *impl) adaptToChatFlow(ctx context.Context, wID int64) error {
 		return fmt.Errorf("can not find start node")
 	}
 
+	// 检查现有变量
 	vMap := make(map[string]bool)
 	for _, o := range startNode.Data.Outputs {
 		v, err := vo.ParseVariable(o)
@@ -2166,12 +2410,15 @@ func (i *impl) adaptToChatFlow(ctx context.Context, wID int64) error {
 		vMap[v.Name] = true
 	}
 
+	// 添加用户输入变量（如果不存在）
 	if _, ok := vMap[vo.UserInputKey]; !ok {
 		startNode.Data.Outputs = append(startNode.Data.Outputs, &vo.Variable{
 			Name: vo.UserInputKey,
 			Type: vo.VariableTypeString,
 		})
 	}
+
+	// 添加会话名称变量（如果不存在）
 	if _, ok := vMap[vo.ConversationNameKey]; !ok {
 		startNode.Data.Outputs = append(startNode.Data.Outputs, &vo.Variable{
 			Name:         vo.ConversationNameKey,
@@ -2179,6 +2426,8 @@ func (i *impl) adaptToChatFlow(ctx context.Context, wID int64) error {
 			DefaultValue: "Default",
 		})
 	}
+
+	// 保存更新后的画布
 	canvasStr, err := sonic.MarshalString(canvas)
 	if err != nil {
 		return err
