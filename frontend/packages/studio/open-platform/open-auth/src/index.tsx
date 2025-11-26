@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file open-platform/open-auth 模块导出
+ * @description 提供 open-platform/open-auth 相关功能
+ */
+
+
 export { type PATProps, PatBody } from './components/pat';
 export {
   disabledDate,

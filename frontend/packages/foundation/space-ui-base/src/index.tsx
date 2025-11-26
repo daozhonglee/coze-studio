@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file space-ui-base 模块导出
+ * @description 提供 space-ui-base 相关功能
+ */
+
+
 export { WorkspaceSubMenu } from './components/workspace-sub-menu';
 export { SpaceIdLayout } from './components/space-id-layout';
 

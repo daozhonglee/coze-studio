@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file Mock 数据共享模块导出
+ * @description 提供 Mock 数据的类型定义、常量和工具函数
+ */
+
+/** Mock 数据类型和状态 */
 export {
   MockDataValueType,
   MockDataStatus,

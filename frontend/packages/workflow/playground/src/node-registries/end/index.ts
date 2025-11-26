@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 结束节点注册导出
+ * @description 结束节点 - 工作流的终止点，输出最终结果
+ */
+
+/** 结束节点注册配置 */
 export { END_NODE_REGISTRY } from './node-registry';
+/** 结束节点内容组件 */
 export { EndContent } from './node-content';

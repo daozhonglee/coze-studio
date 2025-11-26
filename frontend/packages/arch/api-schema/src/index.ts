@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file API Schema 模块导出
+ * @description 提供 API 接口的类型定义和 Schema
+ */
+
+/** Passport 认证相关 API */
 export * as passport from './idl/passport/passport';
+/** 市场探索相关 API */
 export * as explore from './idl/marketplace/public_api';

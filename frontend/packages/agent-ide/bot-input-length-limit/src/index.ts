@@ -14,4 +14,9 @@
  * limitations under the License.
  */
 
+
+/**
+ * @file bot-input-length-limit 模块导出
+ * @description 提供 bot-input-length-limit 相关功能
+ */
 export { botInputLengthService } from './services';

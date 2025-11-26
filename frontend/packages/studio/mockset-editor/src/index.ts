@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file mockset-editor 模块导出
+ * @description 提供 mockset-editor 相关功能
+ */
+
+
 export {
   type MockDataEditorMarkerInfo,
   type MockDataEditorProps,

@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// Package plugin 定义了跨域插件服务接口
+//
+// 本包提供插件跨域服务的契约定义，用于：
+// - Agent 工具绑定
+// - 工具执行
+// - 插件发布
+//
+// 跨域层作为领域层和 API 层之间的桥梁
 package plugin
 
 import (
@@ -26,6 +34,8 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/plugin/entity"
 )
 
+// PluginService 插件跨域服务接口
+//
 //go:generate  mockgen -destination pluginmock/plugin_mock.go --package pluginmock -source plugin.go
 type PluginService interface {
 	BindAgentTools(ctx context.Context, agentID int64, bindTools []*model.BindToolInfo) (err error)
@@ -43,17 +53,21 @@ type PluginService interface {
 	BatchGetSaasPluginToolsInfo(ctx context.Context, pluginIDs []int64) (tools map[int64][]*entity.ToolInfo, plugins map[int64]*model.PluginInfo, err error)
 }
 
+// InvokableTool 可调用工具接口
 type InvokableTool interface {
 	Info(ctx context.Context) (*schema.ToolInfo, error)
 	PluginInvoke(ctx context.Context, argumentsInJSON string, cfg workflow.ExecuteConfig) (string, error)
 }
 
+// defaultSVC 默认服务实例
 var defaultSVC PluginService
 
+// DefaultSVC 获取默认服务实例
 func DefaultSVC() PluginService {
 	return defaultSVC
 }
 
+// SetDefaultSVC 设置默认服务实例
 func SetDefaultSVC(svc PluginService) {
 	defaultSVC = svc
 }

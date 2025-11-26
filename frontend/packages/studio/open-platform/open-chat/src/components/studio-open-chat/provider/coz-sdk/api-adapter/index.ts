@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file coz-sdk API 适配器导出
+ */
 export { useSendMessageAdapter } from './use-send-message';
 export { useClearMessageContextAdapter } from './use-clear-message-context';
 export { useClearHistoryAdapter } from './use-clear-history';

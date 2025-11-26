@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file parsers 模块导出
+ */
 export { defaultParser } from './default-parser';

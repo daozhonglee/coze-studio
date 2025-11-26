@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Package coze 提供 Coze API 的 HTTP 处理器（消息服务）
 package coze
 
 import (
@@ -29,7 +30,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
-// GetMessageList .
+// GetMessageList 获取消息列表
 // @router /api/conversation/get_message_list [POST]
 func GetMessageList(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -54,6 +55,7 @@ func GetMessageList(ctx context.Context, c *app.RequestContext) {
 	c.JSON(consts.StatusOK, resp)
 }
 
+// checkMLParams 校验获取消息列表请求参数
 func checkMLParams(ctx context.Context, req *message.GetMessageListRequest) error {
 	if req.BotID == "" {
 		return errorx.New(errno.ErrConversationInvalidParamCode, errorx.KV("msg", "agent id is required"))
@@ -62,7 +64,7 @@ func checkMLParams(ctx context.Context, req *message.GetMessageListRequest) erro
 	return nil
 }
 
-// DeleteMessage .
+// DeleteMessage 删除消息
 // @router /api/conversation/delete_message [POST]
 func DeleteMessage(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -86,6 +88,7 @@ func DeleteMessage(ctx context.Context, c *app.RequestContext) {
 	c.JSON(consts.StatusOK, resp)
 }
 
+// checkDMParams 校验删除消息请求参数
 func checkDMParams(_ context.Context, req *message.DeleteMessageRequest) error {
 	if req.MessageID <= 0 {
 		return errorx.New(errno.ErrConversationInvalidParamCode, errorx.KV("msg", "message id is invalid"))
@@ -94,7 +97,7 @@ func checkDMParams(_ context.Context, req *message.DeleteMessageRequest) error {
 	return nil
 }
 
-// BreakMessage .
+// BreakMessage 中断消息生成
 // @router /api/conversation/break_message [POST]
 func BreakMessage(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -118,6 +121,7 @@ func BreakMessage(ctx context.Context, c *app.RequestContext) {
 	c.JSON(consts.StatusOK, resp)
 }
 
+// checkBMParams 校验中断消息请求参数
 func checkBMParams(_ context.Context, req *message.BreakMessageRequest) error {
 	if req.AnswerMessageID == nil {
 		return errors.New("answer message id is required")
@@ -129,7 +133,7 @@ func checkBMParams(_ context.Context, req *message.BreakMessageRequest) error {
 	return nil
 }
 
-// GetApiMessageList .
+// GetApiMessageList 获取 OpenAPI 消息列表
 // @router /v1/conversation/message/list [POST]
 func GetApiMessageList(ctx context.Context, c *app.RequestContext) {
 	var err error

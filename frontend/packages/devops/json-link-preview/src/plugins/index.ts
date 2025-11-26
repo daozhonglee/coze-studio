@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 插件导出
+ */
 export { PdfPreview } from './pdf';
 export { ImagePreview } from './image';
 export { JsonPreviewBasePlugin } from './base';

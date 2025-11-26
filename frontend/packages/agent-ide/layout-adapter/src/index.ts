@@ -14,5 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file layout-adapter 模块导出
+ * @description 提供 layout-adapter 相关功能
+ */
+
+
 import { BotEditorLayout } from './layout';
 export default BotEditorLayout;

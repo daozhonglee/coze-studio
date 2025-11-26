@@ -14,5 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file workflow-modal 模块导出
+ * @description 提供 workflow-modal 相关功能
+ */
+
+
 export { BotWorkflowModal } from './components/workflow-modal/base';
 export { useBotWorkFlowListModal } from './components/workflow-modal/hooks';

@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file 表单扩展模块导出
+ * @description 提供工作流节点表单的扩展功能
+ */
+
+/** 表单能力扩展贡献者 - 注册自定义表单组件和设置器 */
 export { FormAbilityExtensionsFormContribution } from './form-ability-extensions-form-contribution';

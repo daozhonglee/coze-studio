@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 核心功能导出
+ */
 import { throttle } from 'lodash-es';
 import EventEmitter from 'eventemitter3';
 

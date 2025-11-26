@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file src 聊天功能导出
+ */
+/**
  * Dependency treeShaking Removes Extraneous Configuration (Argus)
  */
 const sdkRegion = 'cn';

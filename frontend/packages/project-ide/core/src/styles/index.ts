@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 样式导出
+ */
 export { createStylesPlugin } from './create-styles-plugin';
 export {
   StylingContribution,

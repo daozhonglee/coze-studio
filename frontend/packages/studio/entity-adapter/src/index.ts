@@ -14,5 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file entity-adapter 模块导出
+ * @description 提供 entity-adapter 相关功能
+ */
+
+
 export { useCreateAgent } from './hooks/use-create-agent';
 export { useUpdateAgent } from './hooks/use-update-agent';

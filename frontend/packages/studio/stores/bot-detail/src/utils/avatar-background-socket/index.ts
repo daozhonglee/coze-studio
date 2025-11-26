@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file avatar background socket 模块导出
+ */
 import { withSlardarIdButton } from '@coze-studio/bot-utils';
 import { logger } from '@coze-arch/logger';
 import { I18n } from '@coze-arch/i18n';

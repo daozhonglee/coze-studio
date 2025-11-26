@@ -14,6 +14,27 @@
  * limitations under the License.
  */
 
+// Package emitter 实现输出发射器节点
+//
+// 输出发射器用于将工作流的执行结果格式化为最终输出，支持模板渲染。
+// 核心功能：
+//
+// 1. 模板渲染
+//   - 使用 Jinja2 风格的模板语法（双花括号 {{}}）
+//   - 支持访问嵌套变量（如 {{result.name}}）
+//   - 支持流式输出时的增量渲染
+//
+// 2. 流式处理
+//   - 实现 TransformableNode 接口
+//   - 可以处理来自上游节点的流式数据
+//   - 逐块发送渲染后的内容
+//
+// 3. 缓存机制
+//   - 维护流式数据的缓存
+//   - 跟踪各个数据源的完成状态
+//   - 支持中间节点和叶子节点的区分处理
+//
+// 输出发射器是出口节点在 UseAnswerContent 模式下的核心组件。
 package emitter
 
 import (
@@ -38,10 +59,14 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/safego"
 )
 
+// OutputEmitter 输出发射器，负责将输入数据渲染为最终输出
 type OutputEmitter struct {
-	Template    string
+	// Template 输出模板，使用 Jinja2 风格语法
+	Template string
+	// FullSources 完整的输入源信息，用于跟踪数据来源
 	FullSources map[string]*schema2.SourceInfo
-	NodeKey     vo.NodeKey
+	// NodeKey 节点唯一标识
+	NodeKey vo.NodeKey
 }
 
 type Config struct {

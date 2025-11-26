@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
+// workflow.go 工作流组合核心实现
+//
+// 本文件是 compose 包的核心，负责将工作流 Schema 编译为可执行的 Workflow 对象。
+// 主要功能包括：
+//   - 工作流创建和初始化
+//   - 节点添加和连接管理
+//   - 复合节点（循环、批量等）的特殊处理
+//   - 工作流编译和运行器生成
+//
+// 基于 Eino 框架的 compose.Workflow 进行封装，提供更高级的抽象。
+
 package compose
 
 import (
@@ -34,9 +45,23 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/safego"
 )
 
+// workflow 是 Eino 框架工作流的类型别名
 type workflow = compose.Workflow[map[string]any, map[string]any]
 
-type Workflow struct { // TODO: too many fields in this struct, cut them down to the absolutely essentials
+// Workflow 工作流组合对象
+//
+// 封装了 Eino 框架的 Workflow，提供工作流的创建、配置和执行能力。
+// 包含节点层级关系、连接信息、输入输出类型等工作流执行所需的完整信息。
+//
+// 主要字段：
+//   - workflow: Eino 框架的底层工作流对象
+//   - hierarchy: 节点层级关系映射（子节点 -> 父节点）
+//   - connections: 节点间的连接关系
+//   - Runner: 编译后的可运行对象
+//   - input/output: 工作流的输入输出类型定义
+//
+// TODO: 字段过多，需要精简到最必要的部分
+type Workflow struct {
 	*workflow
 	hierarchy         map[vo.NodeKey]vo.NodeKey
 	connections       []*schema.Connection
@@ -52,15 +77,18 @@ type Workflow struct { // TODO: too many fields in this struct, cut them down to
 	schema            *schema.WorkflowSchema
 }
 
+// workflowOptions 工作流创建选项
 type workflowOptions struct {
-	wfID                    int64
-	idAsName                bool
-	parentRequireCheckpoint bool
-	maxNodeCount            int
+	wfID                    int64 // 工作流 ID
+	idAsName                bool  // 是否使用 ID 作为名称
+	parentRequireCheckpoint bool  // 父工作流是否需要检查点
+	maxNodeCount            int   // 最大节点数量限制
 }
 
+// WorkflowOption 工作流选项函数类型
 type WorkflowOption func(*workflowOptions)
 
+// WithIDAsName 设置使用工作流 ID 作为名称
 func WithIDAsName(id int64) WorkflowOption {
 	return func(opts *workflowOptions) {
 		opts.wfID = id
@@ -68,18 +96,40 @@ func WithIDAsName(id int64) WorkflowOption {
 	}
 }
 
+// WithParentRequireCheckpoint 设置父工作流需要检查点
+// 当父工作流需要中断恢复能力时使用
 func WithParentRequireCheckpoint() WorkflowOption {
 	return func(opts *workflowOptions) {
 		opts.parentRequireCheckpoint = true
 	}
 }
 
+// WithMaxNodeCount 设置最大节点数量限制
 func WithMaxNodeCount(c int) WorkflowOption {
 	return func(opts *workflowOptions) {
 		opts.maxNodeCount = c
 	}
 }
 
+// NewWorkflow 创建新的工作流
+//
+// 从 WorkflowSchema 构建可执行的 Workflow 对象。
+// 执行流程：
+//  1. 初始化 Schema
+//  2. 创建 Workflow 实例
+//  3. 添加复合节点（循环、批量等）
+//  4. 添加普通节点
+//  5. 建立节点间的连接
+//  6. 编译工作流
+//
+// 参数：
+//   - ctx: 上下文
+//   - sc: 工作流 Schema，定义了节点和连接关系
+//   - opts: 可选的配置选项
+//
+// 返回值：
+//   - *Workflow: 编译完成的工作流对象
+//   - error: 创建过程中的错误
 func NewWorkflow(ctx context.Context, sc *schema.WorkflowSchema, opts ...WorkflowOption) (*Workflow, error) {
 	sc.Init()
 

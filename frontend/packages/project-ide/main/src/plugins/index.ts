@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 插件导出
+ */
 export { createAppPlugin } from './create-app-plugin';

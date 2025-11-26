@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file prompt-kit/base 模块导出
+ * @description 提供 prompt-kit/base 相关功能
+ */
+
+
 export { PromptEditorRender } from './editor/render';
 export { PromptEditorProvider } from './editor/context';
 export type { PromptEditorRenderProps } from './editor/render';

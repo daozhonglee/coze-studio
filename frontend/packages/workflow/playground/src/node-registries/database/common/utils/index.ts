@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file common 工具函数导出
+ */
 export { getOutputsDefaultValue } from './get-outputs-default-value';

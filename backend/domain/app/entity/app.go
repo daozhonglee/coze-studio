@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// Package entity 定义了应用(APP)领域的核心实体
+//
+// 本包包含应用相关的所有领域实体和值对象：
+// - APP: 应用聚合根，表示一个完整的应用定义
+// - PublishRecord: 发布记录，记录应用的发布历史
+// - Resource: 资源，表示应用关联的资源信息
+//
+// 应用是 Coze Studio 中的核心概念，用于组织和管理 Agent、工作流、插件等资源。
 package entity
 
 import (

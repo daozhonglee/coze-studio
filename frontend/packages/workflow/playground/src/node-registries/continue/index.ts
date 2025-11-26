@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file continue 模块导出
+ */
 export { CONTINUE_NODE_REGISTRY } from './node-registry';
 export { ContinueContent } from './node-content';

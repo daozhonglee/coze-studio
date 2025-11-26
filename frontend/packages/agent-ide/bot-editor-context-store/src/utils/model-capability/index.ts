@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file model capability 模块导出
+ */
 import {
   type Model,
   ModelFuncConfigType,

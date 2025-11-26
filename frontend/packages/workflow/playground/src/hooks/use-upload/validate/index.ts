@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file validate 模块导出
+ */
 import { type FileItem } from '../types';
 import { sizeValidate } from './size-validate';
 import { imageSizeValidate, type ImageSizeRule } from './image-size-validate';

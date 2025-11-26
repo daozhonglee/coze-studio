@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file node field collapse 模块导出
+ */
 export { NodeFieldCollapse } from './collapse';

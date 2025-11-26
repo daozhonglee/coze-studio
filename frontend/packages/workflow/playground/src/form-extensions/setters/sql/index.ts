@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
+/**
+ * @file SQL 编辑器设置器导出
+ * @description 提供 SQL 语句编辑功能，支持 AI 自动生成
+ */
+
 import type { SetterExtension } from '@flowgram-adapter/free-layout-editor';
 
 import { Sql } from './sql';
 
+/**
+ * SQL 设置器扩展
+ *
+ * 用于数据库节点的 SQL 语句编辑，支持：
+ * - SQL 语法高亮
+ * - AI 自动生成 SQL (NL2SQL)
+ */
 export const sql: SetterExtension = {
   key: 'sql',
   component: Sql,

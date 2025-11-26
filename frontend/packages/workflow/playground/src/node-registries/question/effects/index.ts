@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file question 副作用导出
+ */
 export { syncQuestionOutputsEffect } from './sync-question-outputs';
 export { syncQuestionAnswerTypeEffect } from './sync-question-answer-type';
 export { syncQuestionOptionTypeEffect } from './sync-question-option-type';

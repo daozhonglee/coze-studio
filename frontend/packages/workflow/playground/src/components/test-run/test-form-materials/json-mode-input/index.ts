@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file json mode input 模块导出
+ */
 export { JsonModeInput } from './json-mode-input';

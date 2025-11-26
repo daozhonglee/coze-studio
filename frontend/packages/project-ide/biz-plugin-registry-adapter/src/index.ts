@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file biz-plugin-registry-adapter 模块导出
+ * @description 提供 biz-plugin-registry-adapter 相关功能
+ */
+
+
 export { PluginWidgetRegistry } from './registry';

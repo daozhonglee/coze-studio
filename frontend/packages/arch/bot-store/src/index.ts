@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 状态管理模块导出
+ * @description 提供空间、认证等全局状态管理
+ */
+
+/** 空间状态管理 (已废弃，请使用 @code-arch/foundation-sdk) */
 export {
   /** @Deprecated This usage method is deprecated, please use the method exported by @code-arch/foundation-sdk in the future*/
   useSpaceStore,
@@ -23,6 +29,7 @@ export {
   useSpaceList,
 } from '@coze-foundation/space-store';
 
+/** 认证状态管理 */
 export { useAuthStore } from './auth';
 
 /** @Deprecated - problem with persistence scheme, deprecated */

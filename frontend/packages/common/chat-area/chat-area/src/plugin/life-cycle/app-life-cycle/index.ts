@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file app life cycle 模块导出
+ */
 import { createPluginBenchmark } from '../create-plugin-benchmark';
 import {
   type OnRefreshMessageListError,

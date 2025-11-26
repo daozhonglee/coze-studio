@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin tool detail 模块导出
+ */
 export { ToolDetailPage } from '@/components/plugin-tool-detail';

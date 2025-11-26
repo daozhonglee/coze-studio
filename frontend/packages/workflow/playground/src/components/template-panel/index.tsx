@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file 模板面板组件导出
+ * @description 提供工作流模板选择和预览功能
+ */
+
 import { TemplateSlideButton } from './template-slide-button';
 import { TemplatePreview } from './template-preview';
 import { TemplatePanel } from './template-panel';
 
+/** 模板面板组件 */
 export { TemplatePanel, TemplateSlideButton, TemplatePreview };

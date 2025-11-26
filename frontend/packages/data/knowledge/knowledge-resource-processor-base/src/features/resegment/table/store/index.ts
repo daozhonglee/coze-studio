@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file table 状态存储导出
+ */
 export { createTableLocalResegmentStore } from './store';

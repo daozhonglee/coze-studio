@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-background-shared 模块导出
+ * @description 提供 chat-background-shared 相关功能
+ */
+
+
 export {
   useBackgroundContent,
   type UseBackgroundContentProps,

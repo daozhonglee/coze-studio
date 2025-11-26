@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file uploader-adapter 模块导出
+ * @description 提供 uploader-adapter 相关功能
+ */
+
+
 import Uploader, { type ImageXFileOption } from 'tt-uploader';
 import {
   type Config,

@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工作流公共组件导出
+ * @description 提供工作流相关的通用 UI 组件和 Hooks
+ */
+
 /* eslint-disable @coze-arch/no-batch-import-or-export */
+/** 创建工作流弹窗 */
 export { CreateWorkflowModal } from './workflow-edit';
+/** 快捷键帮助组件 */
 export { FlowShortcutsHelp } from './flow-shortcuts-help';
+/** 工作流提交历史列表 */
 export { WorkflowCommitList } from './workflow-commit-list';
+/** 表达式编辑器 */
 export * from './expression-editor';
+/** 工作流弹窗 Hook */
 export { useWorkflowModal } from './hooks/use-workflow-modal';
+/** 工作流列表 Hook */
 export { useWorkflowList } from './hooks/use-workflow-list';
 import WorkflowModalContext from './workflow-modal/workflow-modal-context';
 import { type WorkflowModalContextValue } from './workflow-modal/workflow-modal-context';

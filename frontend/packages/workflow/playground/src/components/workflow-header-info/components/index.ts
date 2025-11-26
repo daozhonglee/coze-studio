@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file workflow-header-info 组件导出
+ */
 export { PublishStatus } from './workflow-status';
 export { EditModal } from './edit-modal';

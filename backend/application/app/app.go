@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// Package app 定义了应用(APP/Project)应用层服务
+//
+// 本包提供应用相关的应用层业务逻辑
 package app
 
 import (
@@ -70,18 +73,29 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// APPApplicationSVC 应用应用服务单例
 var APPApplicationSVC = &APPApplicationService{}
 
+// APPApplicationService 应用应用服务
+//
+// 提供应用相关的应用层业务逻辑
 type APPApplicationService struct {
+	// DomainSVC 应用领域服务
 	DomainSVC service.AppService
-	appRepo   repository.AppRepository
+	// appRepo 应用仓储
+	appRepo repository.AppRepository
 
-	oss             storage.Storage
+	// oss 对象存储服务
+	oss storage.Storage
+	// projectEventBus 项目事件总线
 	projectEventBus search.ProjectEventBus
 
+	// userSVC 用户领域服务
 	userSVC user.User
 
+	// connectorSVC 连接器领域服务
 	connectorSVC connector.Connector
+	// variablesSVC 变量领域服务
 	variablesSVC variables.Variables
 }
 

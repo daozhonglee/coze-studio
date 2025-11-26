@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
+// Package orm 提供 ORM 数据库接口
+//
+// 本包定义数据库访问的 ORM 抽象层，基于 GORM 框架
 package orm
 
 import (
 	"gorm.io/gorm"
 )
 
+// DB 数据库连接类型别名（GORM）
 type DB = gorm.DB

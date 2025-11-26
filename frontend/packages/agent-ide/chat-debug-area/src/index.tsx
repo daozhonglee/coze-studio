@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-debug-area 模块导出
+ * @description 提供 chat-debug-area 相关功能
+ */
+
+
 import { type ReactNode, useEffect, useState } from 'react';
 
 import { useShallow } from 'zustand/react/shallow';

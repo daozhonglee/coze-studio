@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file mouse-pad-selector 模块导出
+ * @description 提供 mouse-pad-selector 相关功能
+ */
+
+
 export {
   MousePadSelector,
   type MousePadSelectorProps,

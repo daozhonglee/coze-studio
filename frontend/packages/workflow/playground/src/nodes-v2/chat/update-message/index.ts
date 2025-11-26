@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file update message 模块导出
+ */
 /** Modify message node */
 
 export { UPDATE_MESSAGE_NODE_REGISTRY } from './node-registry';

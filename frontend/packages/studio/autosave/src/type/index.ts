@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file type 模块导出
+ */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { type StoreApi, type UseBoundStore } from 'zustand';

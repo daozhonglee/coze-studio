@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file dataset-setting 组件导出
+ */
 export { SliderArea } from './SliderArea';
 export { TitleArea } from './TitleArea';
 export { SearchStrategy } from './SearchStrategy';

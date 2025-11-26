@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file observation-components 常量定义导出
+ */
 export const STATUS_CODE_KEY = '_status_code';
 
 export enum ObservationModules {

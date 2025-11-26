@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file actions 模块导出
+ */
 export { InsertInputSlotAction } from './insert-input-slot';
 export { insertInputSlot } from '../input-slot/action/insert-input-slot-action';
 export { CopyAction } from './copy';

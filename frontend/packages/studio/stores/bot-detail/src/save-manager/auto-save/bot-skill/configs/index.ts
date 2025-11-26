@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file configs 模块导出
+ */
 import { type HostedObserverConfig } from '@coze-studio/autosave';
 
 import { type BotSkillStore } from '@/store/bot-skill';

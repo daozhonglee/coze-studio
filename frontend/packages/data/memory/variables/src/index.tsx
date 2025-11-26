@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file memory/variables 模块导出
+ * @description 提供 memory/variables 相关功能
+ */
+
+
 import classNames from 'classnames';
 import { useKnowledgeParams } from '@coze-data/knowledge-stores';
 import { I18n } from '@coze-arch/i18n';

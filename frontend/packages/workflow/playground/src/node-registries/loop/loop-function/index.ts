@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file loop function 模块导出
+ */
 export { createLoopFunction } from './create-loop-function';
 export { LoopFunctionIDPrefix, getLoopFunctionID, getLoopID } from './relation';

@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工作流封装功能模块导出
+ * @description 提供工作流节点封装为子流程的功能
+ */
+
+/** 工作流封装插件创建函数 */
 export { createWorkflowEncapsulatePlugin } from './create-workflow-encapsulate-plugin';
+/** 封装服务 */
 export { EncapsulateService } from './encapsulate';
+/** 封装面板组件 */
 export { EncapsulatePanel } from './render';
+/** 封装快捷键 */
 export { ENCAPSULATE_SHORTCUTS } from './render';

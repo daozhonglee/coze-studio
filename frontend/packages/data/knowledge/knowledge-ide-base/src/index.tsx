@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/knowledge-ide-base 模块导出
+ * @description 提供 knowledge/knowledge-ide-base 相关功能
+ */
+
+
 export { ActionType } from './types';
 export { useGetKnowledgeType } from './hooks/use-case/use-get-knowledge-type';
 export { useReloadKnowledgeIDE } from './hooks/use-case/use-reload-knowledge-ide';

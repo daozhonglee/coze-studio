@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file src 类型定义导出
+ */
+/**
  * Types Since multiple locations are used to avoid circular dependencies, the top layer is mentioned
  */
 export type { UnitItem, ProgressItem } from './common';

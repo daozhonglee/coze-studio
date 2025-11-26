@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file slots 模块导出
+ */
 export { Image, Link } from '@bytedance/calypso';

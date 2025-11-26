@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file input 模块导出
+ */
 export { INPUT_NODE_REGISTRY } from './node-registry';
 export { InputContent } from './node-content';

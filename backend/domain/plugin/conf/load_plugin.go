@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// load_plugin.go 内置插件产品加载
+//
+// 本文件提供内置插件产品的加载和管理功能：
+//   - 从 YAML 配置文件加载插件元数据
+//   - 验证并解析 OpenAPI 文档
+//   - 维护插件和工具的内存缓存
+//
+// 内置插件是预置的系统插件，通过配置文件定义而非用户创建。
+
 package conf
 
 import (
@@ -37,6 +46,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/logs"
 )
 
+// pluginProductMeta 插件产品元数据（YAML 配置结构）
 type pluginProductMeta struct {
 	PluginID       int64                 `yaml:"plugin_id" validate:"required"`
 	Deprecated     bool                  `yaml:"deprecated"`
@@ -47,6 +57,7 @@ type pluginProductMeta struct {
 	Tools          []*toolProductMeta    `yaml:"tools" validate:"required"`
 }
 
+// toolProductMeta 工具产品元数据
 type toolProductMeta struct {
 	ToolID     int64  `yaml:"tool_id" validate:"required"`
 	Deprecated bool   `yaml:"deprecated"`
@@ -54,11 +65,14 @@ type toolProductMeta struct {
 	SubURL     string `yaml:"sub_url" validate:"required"`
 }
 
+// 内置插件和工具的内存缓存
 var (
-	pluginProducts map[int64]*PluginInfo
-	toolProducts   map[int64]*ToolInfo
+	pluginProducts map[int64]*PluginInfo // 插件 ID -> 插件信息
+	toolProducts   map[int64]*ToolInfo   // 工具 ID -> 工具信息
 )
 
+// GetToolProduct 根据工具 ID 获取内置工具产品
+// 返回深拷贝副本，避免外部修改影响缓存
 func GetToolProduct(toolID int64) (*ToolInfo, bool) {
 	ti, ok := toolProducts[toolID]
 	if !ok {
@@ -70,6 +84,7 @@ func GetToolProduct(toolID int64) (*ToolInfo, bool) {
 	return ti_, true
 }
 
+// MGetToolProducts 批量获取内置工具产品
 func MGetToolProducts(toolIDs []int64) []*ToolInfo {
 	tools := make([]*ToolInfo, 0, len(toolIDs))
 	for _, toolID := range toolIDs {
@@ -84,11 +99,13 @@ func MGetToolProducts(toolIDs []int64) []*ToolInfo {
 	return tools
 }
 
+// GetPluginProduct 根据插件 ID 获取内置插件产品
 func GetPluginProduct(pluginID int64) (*PluginInfo, bool) {
 	pl, ok := pluginProducts[pluginID]
 	return pl, ok
 }
 
+// MGetPluginProducts 批量获取内置插件产品
 func MGetPluginProducts(pluginIDs []int64) []*PluginInfo {
 	plugins := make([]*PluginInfo, 0, len(pluginIDs))
 	for _, pluginID := range pluginIDs {
@@ -101,6 +118,7 @@ func MGetPluginProducts(pluginIDs []int64) []*PluginInfo {
 	return plugins
 }
 
+// GetAllPluginProducts 获取所有内置插件产品
 func GetAllPluginProducts() []*PluginInfo {
 	plugins := make([]*PluginInfo, 0, len(pluginProducts))
 	for _, pl := range pluginProducts {
@@ -109,11 +127,13 @@ func GetAllPluginProducts() []*PluginInfo {
 	return plugins
 }
 
+// PluginInfo 内置插件信息结构
 type PluginInfo struct {
-	Info    *model.PluginInfo
-	ToolIDs []int64
+	Info    *model.PluginInfo // 插件基本信息
+	ToolIDs []int64           // 关联的工具 ID 列表
 }
 
+// GetPluginAllTools 获取插件的所有工具
 func (pi PluginInfo) GetPluginAllTools() (tools []*ToolInfo) {
 	tools = make([]*ToolInfo, 0, len(pi.ToolIDs))
 	for _, toolID := range pi.ToolIDs {
@@ -126,10 +146,13 @@ func (pi PluginInfo) GetPluginAllTools() (tools []*ToolInfo) {
 	return tools
 }
 
+// ToolInfo 内置工具信息结构
 type ToolInfo struct {
-	Info *entity.ToolInfo
+	Info *entity.ToolInfo // 工具基本信息
 }
 
+// loadPluginProductMeta 加载插件产品元数据
+// 从 plugin_meta.yaml 文件读取配置并解析 OpenAPI 文档
 func loadPluginProductMeta(ctx context.Context, basePath string) (err error) {
 	root := path.Join(basePath, "pluginproduct")
 	metaFile := path.Join(root, "plugin_meta.yaml")
@@ -256,6 +279,7 @@ func loadPluginProductMeta(ctx context.Context, basePath string) (err error) {
 	return nil
 }
 
+// checkPluginMetaInfo 检查插件元数据的有效性
 func checkPluginMetaInfo(ctx context.Context, m *pluginProductMeta) (continued bool) {
 	if m.Deprecated {
 		return false

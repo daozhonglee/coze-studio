@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file loading-button 模块导出
+ * @description 提供 loading-button 相关功能
+ */
+
+
 import React, { forwardRef, useState } from 'react';
 
 import { isString } from 'lodash-es';

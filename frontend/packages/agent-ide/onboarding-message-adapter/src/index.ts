@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file onboarding-message-adapter 模块导出
+ * @description 提供 onboarding-message-adapter 相关功能
+ */
+
+
 export { OnboardingMessage } from '@coze-agent-ide/space-bot/component';

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file form panel 模块导出
+ */
 export { FormPanelLayout } from './form-panel-layout';

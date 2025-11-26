@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file stores/bot-detail 模块导出
+ * @description 提供 stores/bot-detail 相关功能
+ */
+
+
 export { avatarBackgroundWebSocket } from './utils/avatar-background-socket';
 
 export { useBotDetailIsReadonly } from './hooks/use-bot-detail-readonly';

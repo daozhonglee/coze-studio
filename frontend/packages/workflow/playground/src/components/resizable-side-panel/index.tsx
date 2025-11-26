@@ -15,18 +15,28 @@
  */
 
 /**
- * Nodal side window with adjustable width
+ * @file 可调整大小的侧边面板组件
+ * @description 节点侧边窗口，支持宽度调整
  */
+
 import { type FC } from 'react';
 
 import { type ResizableProps, Resizable } from 're-resizable';
 
 import { useResizable } from './use-resizable';
 
+/**
+ * 可调整大小的侧边面板属性
+ */
 interface ResizableSidePanelProps extends ResizableProps {
   bypass?: boolean;
 }
 
+/**
+ * 可调整大小的侧边面板组件
+ *
+ * 包装 Resizable 组件，提供节点配置面板的宽度调整功能
+ */
 export const ResizableSidePanel: FC<ResizableSidePanelProps> = ({
   children,
   bypass,

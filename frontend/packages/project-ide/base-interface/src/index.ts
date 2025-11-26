@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file base-interface 模块导出
+ * @description 提供 base-interface 相关功能
+ */
+
+
 export {
   IDEGlobalProvider,
   useIDEGlobalContext,

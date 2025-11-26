@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot-semi 模块导出
+ * @description 提供 bot-semi 相关功能
+ */
+
+
 export {
   Input as UIInput,
   /**

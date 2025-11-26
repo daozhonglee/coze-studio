@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 节点图标组件
+ * @description 显示工作流节点的图标
+ */
+
 import { type FC } from 'react';
 
 import { type FlowNodeEntity } from '@flowgram-adapter/free-layout-editor';
@@ -21,15 +26,26 @@ import { usePlayground } from '@flowgram-adapter/free-layout-editor';
 import { type NodeData, WorkflowNodeData } from '@coze-workflow/nodes';
 import { type WithCustomStyle } from '@coze-workflow/base/types';
 import { CustomError } from '@coze-arch/bot-error';
+
+/** 带轮廓的节点图标组件 */
 export {
   NodeIconOutlined,
   type NodeIconOutlinedProps,
 } from './node-icon-outlined';
+
+/**
+ * 节点图标组件属性
+ */
 interface NodeIconProps {
   nodeId: string;
   size?: number;
   alt?: string;
 }
+/**
+ * 节点图标组件
+ *
+ * 根据节点 ID 从画布中获取节点实体，并显示其图标
+ */
 export const NodeIcon: FC<WithCustomStyle<NodeIconProps>> = props => {
   const { nodeId, className, size, alt } = props;
 

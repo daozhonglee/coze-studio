@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file set-variable 验证器导出
+ */
 export { VariableAssignLeftValidator } from './variable-assign-left';
 export { VariableAssignRightValidator } from './variable-assign-right';

@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// Package entity 定义了连接器(Connector)领域的核心实体
+//
+// 本包包含连接器相关的领域实体，连接器用于将应用发布到不同渠道，
+// 如 Chat SDK、API、Coze 平台等。
 package entity
 
 import (
@@ -22,11 +26,14 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/lang/conv"
 )
 
-// Use composition instead of aliasing for domain entities to enhance extensibility
+// Connector 连接器实体
+//
+// 使用组合模式扩展基础连接器模型，便于添加领域特定行为
 type Connector struct {
 	*model.Connector
 }
 
+// ToVO 转换为视图对象
 func (c *Connector) ToVO() *developer_api.ConnectorInfo {
 	return &developer_api.ConnectorInfo{
 		ID:              conv.Int64ToStr(c.ID),

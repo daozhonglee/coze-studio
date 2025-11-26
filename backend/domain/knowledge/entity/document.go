@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// document.go 知识库文档实体定义
+//
+// 本文件定义了知识库文档相关的实体结构：
+//   - Document: 文档实体
+//   - TableInfo: 表格信息
+//   - TableColumn: 表格列定义
+
 package entity
 
 import (
@@ -22,6 +29,8 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/document/parser"
 )
 
+// Document 知识库文档实体
+// 包含文档的元信息、内容、分片策略等
 type Document struct {
 	model.Info
 
@@ -48,12 +57,15 @@ type Document struct {
 	// PreviewURI string//preview uri
 }
 
+// TableInfo 表格信息结构
 type TableInfo struct {
 	VirtualTableName  string         `json:"virtual_table_name"`
 	PhysicalTableName string         `json:"physical_table_name"`
 	TableDesc         string         `json:"table_desc"`
 	Columns           []*TableColumn `json:"columns"`
 }
+
+// TableSheet 表格工作表信息
 type TableSheet struct {
 	SheetId       int64  // sheet id
 	HeaderLineIdx int64  // header row
@@ -61,6 +73,8 @@ type TableSheet struct {
 	SheetName     string // Name of sheet
 	TotalRows     int64  // total number of rows
 }
+
+// TableColumn 表格列定义
 type TableColumn struct {
 	ID          int64
 	Name        string
@@ -70,6 +84,7 @@ type TableColumn struct {
 	Sequence    int64 // The original serial number in the table
 }
 
+// WhereDocumentOpt 文档查询条件选项
 type WhereDocumentOpt struct {
 	IDs          []int64
 	KnowledgeIDs []int64

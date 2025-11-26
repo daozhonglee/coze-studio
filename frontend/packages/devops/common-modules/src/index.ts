@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file common-modules 模块导出
+ * @description 提供 common-modules 相关功能
+ */
+
+
 export {
   TraceFlamethread,
   TraceTree,

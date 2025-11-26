@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file enum 模块导出
+ */
 export { Enum } from './enum';
 export type { EnumOptions } from './enum';

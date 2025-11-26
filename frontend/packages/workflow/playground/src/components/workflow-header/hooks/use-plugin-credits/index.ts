@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file use plugin credits 模块导出
+ */
 import { useEffect, useState } from 'react';
 
 import { debounce } from 'lodash-es';

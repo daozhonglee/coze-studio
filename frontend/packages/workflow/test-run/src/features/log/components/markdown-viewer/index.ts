@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file markdown viewer 模块导出
+ */
 export { useMarkdownModal } from './use-markdown-modal';

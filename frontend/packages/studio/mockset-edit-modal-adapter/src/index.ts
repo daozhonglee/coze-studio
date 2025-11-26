@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file mockset-edit-modal-adapter 模块导出
+ * @description 提供 mockset-edit-modal-adapter 相关功能
+ */
+
+
 export {
   builtinSuccessCallback,
   MockSetEditModal,

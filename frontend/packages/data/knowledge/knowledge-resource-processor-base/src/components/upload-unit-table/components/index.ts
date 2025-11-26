@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file upload-unit-table 组件导出
+ */
 export { UploadStatusComp } from './upload-status';
 export { UnitName } from './unit-name';
 export { Action } from './action-render';

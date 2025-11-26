@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file debug tool list 模块导出
+ */
 export { DebugToolList } from './debug-tool-list';
 export {
   ToolPane,

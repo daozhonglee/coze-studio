@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// stream.go 流式数据源解析
+//
+// 本文件负责计算节点的完整输入源信息，特别是处理流式数据的传递。
+// 主要功能：
+//   - 解析节点的真实输入源（可能与 Schema 中定义的不同）
+//   - 处理复合节点中的跨层引用
+//   - 确定输入字段是否为流式类型
+
 package compose
 
 import (
@@ -26,7 +34,22 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/internal/schema"
 )
 
-// GetFullSources calculates REAL input sources for a node.
+// GetFullSources 计算节点的完整输入源
+//
+// 节点的真实输入源可能与 NodeSchema 中定义的不同，原因包括：
+//  1. 复合节点内部的节点可能引用父工作流中的字段，这会被路由到内部 Start 节点
+//  2. 复合节点需要将输入源委托给内部工作流
+//  3. 某些节点有未在 InputSources 中定义的隐式输入源
+//
+// 参数：
+//   - s: 目标节点 Schema
+//   - sc: 所属工作流 Schema
+//   - dep: 预计算的依赖信息
+//
+// 返回值：
+//   - map[string]*schema.SourceInfo: 完整的输入源映射
+//   - error: 解析错误
+//
 // It may be different from a NodeSchema's InputSources because of the following reasons:
 //  1. a inner node under composite node may refer to a field from a node in its parent workflow,
 //     this is instead routed to and sourced from the inner workflow's start node.

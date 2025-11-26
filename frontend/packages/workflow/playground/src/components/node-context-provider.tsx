@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 节点上下文提供者组件
+ * @description 为工作流节点提供统一的上下文环境，包括节点数据、错误状态和渲染场景
+ */
+
 import {
   startTransition,
   type PropsWithChildren,
@@ -34,11 +39,22 @@ import {
   type NodeRenderScene,
 } from '@/contexts/node-render-context';
 
+/**
+ * 节点上下文提供者属性
+ */
 interface NodeContextProviderProps {
   node: FlowNodeEntity;
   scene?: NodeRenderScene;
 }
 
+/**
+ * 节点上下文提供者组件
+ *
+ * 为工作流节点提供多层上下文：
+ * - NodeRenderSceneContext: 渲染场景（编辑器/预览/测试等）
+ * - WorkflowNodeContext: 工作流节点业务数据
+ * - PlaygroundEntityContext: 画布节点实体
+ */
 export function NodeContextProvider({
   node,
   scene,
@@ -81,6 +97,11 @@ export function NodeContextProvider({
   );
 }
 
+/**
+ * 监听节点数据变化并创建 WorkflowNode 实例
+ *
+ * 当底层节点数据变化时，自动更新业务层节点实例
+ */
 function useWorkflowNode(node: FlowNodeEntity) {
   const [workflowNode, setWorkflowNode] = useState<WorkflowNode>(
     new WorkflowNode(node),

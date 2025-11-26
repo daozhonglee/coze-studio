@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 辅助函数导出
+ */
 export { clearLocalMessageHistory } from './clear-local-message-history';
 export { getLocalMessageHistory } from './get-local-message-history';
 export { getLocalMessageHistoryKey } from './get-local-message-history-key';

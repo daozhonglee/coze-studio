@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file text area 模块导出
+ */
 export { TextArea } from './text-area';

@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工作流容器组件
+ * @description 工作流编辑器的主容器，整合画布、工具栏、侧边栏等核心组件
+ */
+
 import { Helmet } from 'react-helmet';
 import { useDrop } from 'react-dnd';
 import {

@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-// TagList.tsx
+/**
+ * @file 标签列表组件
+ * @description 显示可展开/折叠的标签列表，支持点击复制
+ */
+
 import React, { useState } from 'react';
 
 import copy from 'copy-to-clipboard';
@@ -25,12 +29,23 @@ import { IconChevronDown } from '@coze-arch/bot-icons';
 
 import styles from './index.module.less';
 
+/**
+ * 标签列表组件属性
+ */
 interface TagListProps {
   className?: string;
   tags: string[];
   max: number;
 }
 
+/**
+ * 标签列表组件
+ *
+ * 显示标签列表，支持：
+ * - 最大显示数量限制
+ * - 展开/折叠更多标签
+ * - 点击复制标签内容
+ */
 export const TagList: React.FC<TagListProps> = ({
   className = '',
   tags,

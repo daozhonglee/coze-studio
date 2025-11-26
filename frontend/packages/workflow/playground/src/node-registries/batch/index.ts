@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 批处理节点注册导出
+ * @description 批处理节点 - 对数组数据进行批量处理，支持并发控制
+ */
+
+/** 批处理节点注册配置 */
 export { BATCH_NODE_REGISTRY } from './node-registry';
+/** 批处理节点内容组件 */
 export { BatchContent } from './node-content';

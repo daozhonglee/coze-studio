@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/text-grab 模块导出
+ * @description 提供 chat-area/text-grab 相关功能
+ */
+
+
 export { useGrab } from './hooks/use-grab';
 export { SelectionData } from './types/selection';
 export { type GrabPosition } from './types/selection';

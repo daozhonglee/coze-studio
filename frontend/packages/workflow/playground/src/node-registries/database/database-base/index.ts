@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file database base 模块导出
+ */
 export { DATABASE_NODE_REGISTRY } from './node-registry';

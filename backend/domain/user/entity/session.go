@@ -14,19 +14,30 @@
  * limitations under the License.
  */
 
+// Package entity 定义了用户(User)领域的核心实体（会话相关）
+
 package entity
 
 import (
 	"time"
 )
 
+// SessionKey 会话密钥的存储键名
 const SessionKey = "session_key"
 
+// Session 用户会话实体
+//
+// 表示一个经过验证的用户会话，包含用户身份和会话有效期信息
 type Session struct {
-	UserID    int64
-	Locale    string
+	// UserID 用户ID
+	UserID int64
+	// Locale 用户语言/地区设置
+	Locale string
+	// UserEmail 用户邮箱
 	UserEmail string
 
+	// CreatedAt 会话创建时间
 	CreatedAt time.Time
+	// ExpiresAt 会话过期时间
 	ExpiresAt time.Time
 }

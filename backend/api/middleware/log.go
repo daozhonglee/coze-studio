@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Package middleware 提供 HTTP 中间件（日志）
 package middleware
 
 import (
@@ -33,6 +34,9 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/consts"
 )
 
+// AccessLogMW 访问日志中间件
+//
+// 记录请求的基本信息（路径、耗时、状态码等）
 func AccessLogMW() app.HandlerFunc {
 	return func(c context.Context, ctx *app.RequestContext) {
 		start := time.Now()
@@ -82,6 +86,9 @@ func AccessLogMW() app.HandlerFunc {
 	}
 }
 
+// SetLogIDMW 日志 ID 中间件
+//
+// 为每个请求生成唯一的日志 ID，方便追踪
 func SetLogIDMW() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
 		logID := uuid.New().String()
@@ -92,6 +99,7 @@ func SetLogIDMW() app.HandlerFunc {
 	}
 }
 
+// bytesToString 字节切片转字符串（零拷贝）
 func bytesToString(b []byte) string {
 	return *(*string)(unsafe.Pointer(&b)) // nolint
 }

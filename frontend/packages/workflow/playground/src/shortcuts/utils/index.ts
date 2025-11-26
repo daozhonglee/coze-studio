@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file shortcuts 工具函数导出
+ */
 export { bindShortcuts } from './register';
 export { safeFn } from './safe-fn';

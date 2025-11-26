@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file outputs 模块导出
+ */
 export { OutputsField } from './outputs';
 export { provideNodeOutputVariablesEffect } from '@/nodes-v2/materials/provide-node-output-variables';
 export { outputTreeMetaValidator } from './output-tree-meta-validator';

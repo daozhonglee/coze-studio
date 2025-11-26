@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
+/**
+ * @file 提示词模块导出
+ * @description 提供 Agent 提示词编辑和提示词库功能
+ */
+
+/** 提示词视图组件 */
 export { type PromptViewProps, PromptView } from './components/prompt-view';
+/** 提示词库操作组件 */
 export {
   PromptLibrary,
   ImportToLibrary,
 } from './components/prompt-view/components/actions';
+/** 获取提示词库数据 Hook */
 export { useGetLibrarysData } from './hooks/use-prompt/use-get-library-data';
+/** 添加到提示词库 Hook */
 export { useAddLibrary } from './hooks/use-prompt/use-add-library';

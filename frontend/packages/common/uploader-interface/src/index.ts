@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file uploader-interface 模块导出
+ * @description 提供 uploader-interface 相关功能
+ */
+
+
 export interface STSToken {
   AccessKeyId: string;
   SecretAccessKey: string;

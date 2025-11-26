@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file 编辑器容器组件导出
+ * @description 提供编辑器的容器组件和主题配置
+ */
+
+/** 展开式编辑器容器 - 支持全屏展开的编辑器 */
 export { ExpandEditorContainer } from './expand-editor';
+/** 内嵌编辑器容器 - 在节点内嵌的编辑器 */
 export { InnerEditorContainer } from './inner-editor';
+/** 编辑器主题提供者 - 配置编辑器主题 */
 export { EditorThemeProvider } from './theme-provider';

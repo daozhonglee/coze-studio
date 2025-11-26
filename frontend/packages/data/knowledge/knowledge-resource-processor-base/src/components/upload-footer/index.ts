@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file upload footer 模块导出
+ */
 export { UploadFooter } from './upload-footer';

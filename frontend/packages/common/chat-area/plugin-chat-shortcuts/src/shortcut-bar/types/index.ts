@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file shortcut-bar 类型定义导出
+ */
 import { type ShortCutCommand } from '@coze-agent-ide/tool-config';
 import {
   type SendMessageOptions,

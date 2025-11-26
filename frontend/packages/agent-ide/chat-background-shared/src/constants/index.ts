@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 常量定义导出
+ */
 export const MAX_IMG_SIZE = 10 * 1024;
 
 export const FIRST_GUIDE_KEY_PREFIX = '__first_drag_guide__';

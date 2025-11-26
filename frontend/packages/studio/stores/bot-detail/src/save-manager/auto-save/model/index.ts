@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file auto-save 模型导出
+ */
 import { type ModelInfo } from '@coze-arch/bot-api/developer_api';
 import { AutosaveManager } from '@coze-studio/autosave';
 

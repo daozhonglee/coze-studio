@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 偏好设置导出
+ */
 export {
   PreferenceContribution,
   type PreferenceSchema,

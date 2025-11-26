@@ -14,6 +14,22 @@
  * limitations under the License.
  */
 
+// Package selector 实现条件选择器节点
+//
+// 选择器节点用于根据条件判断结果选择执行分支，类似于编程语言中的 if-else-if 语句。
+// 支持单条件判断和多条件组合判断（AND/OR 逻辑）。
+//
+// 执行逻辑：
+// 1. 按顺序评估各个条件分支
+// 2. 第一个满足条件的分支被选中
+// 3. 如果所有条件都不满足，则走默认分支（else）
+//
+// 支持的比较操作符包括：
+// - 相等/不等
+// - 大于/小于/大于等于/小于等于
+// - 包含/不包含
+// - 为空/不为空
+// - 以...开头/结尾
 package selector
 
 import (
@@ -28,13 +44,21 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/internal/schema"
 )
 
+// Selector 条件选择器节点执行器
+// 根据配置的条件判断逻辑选择输出分支
 type Selector struct {
+	// clauses 条件子句列表，按顺序评估
 	clauses []*OneClauseSchema
-	ns      *schema.NodeSchema
-	ws      *schema.WorkflowSchema
+	// ns 节点 schema 信息
+	ns *schema.NodeSchema
+	// ws 工作流 schema 信息
+	ws *schema.WorkflowSchema
 }
 
+// Config 选择器节点配置
 type Config struct {
+	// Clauses 条件子句配置列表
+	// 每个子句可以是单条件或多条件组合
 	Clauses []*OneClauseSchema `json:"clauses"`
 }
 

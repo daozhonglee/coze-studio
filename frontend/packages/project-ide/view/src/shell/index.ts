@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src Shell 导出
+ */
 export { ApplicationShell } from './application-shell';
 export {
   LayoutRestorer,

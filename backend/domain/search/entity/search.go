@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// Package entity 定义了搜索(Search)领域的核心实体
+//
+// 本包包含搜索相关的领域实体和请求/响应结构，
+// 支持项目和资源的全文搜索。
 package entity
 
 import (
@@ -21,15 +25,21 @@ import (
 	model "github.com/coze-dev/coze-studio/backend/crossdomain/search/model"
 )
 
+// 资源索引字段常量
 const (
-	// resource index fields
-	FieldOfResType       = "res_type"
+	// FieldOfResType 资源类型字段
+	FieldOfResType = "res_type"
+	// FieldOfPublishStatus 发布状态字段
 	FieldOfPublishStatus = "publish_status"
-	FieldOfResSubType    = "res_sub_type"
-	FieldOfBizStatus     = "biz_status"
-	FieldOfScores        = "scores"
+	// FieldOfResSubType 资源子类型字段
+	FieldOfResSubType = "res_sub_type"
+	// FieldOfBizStatus 业务状态字段
+	FieldOfBizStatus = "biz_status"
+	// FieldOfScores 评分字段
+	FieldOfScores = "scores"
 )
 
+// SearchProjectsRequest 搜索项目请求
 type SearchProjectsRequest struct {
 	SpaceID   int64
 	ProjectID int64

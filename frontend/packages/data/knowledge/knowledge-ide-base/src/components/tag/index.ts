@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file tag 模块导出
+ */
 export { FailedTag } from './tag';

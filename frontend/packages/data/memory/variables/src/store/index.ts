@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 状态存储导出
+ */
 export {
   useVariableGroupsStore,
   type VariableGroup,

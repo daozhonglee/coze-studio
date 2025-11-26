@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file base editor 模块导出
+ */
 export { BaseJsonEditor } from './json-editor';
 export { BaseRawTextEditor } from './raw-text-editor';
 export { BaseBashEditor } from './bash-editor';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 export * from './check-encapsulate-gray';
 export * from './get-sub-workflow-info';
 export * from './get-node-point';

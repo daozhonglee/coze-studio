@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge card list 模块导出
+ */
 export {
   KnowledgeCardListVertical,
   type DatasetCardListVerticalOperations,

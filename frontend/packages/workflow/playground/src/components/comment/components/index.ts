@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file comment 组件导出
+ */
 export { CommentRender } from './render';

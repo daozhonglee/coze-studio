@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file schema form 模块导出
+ */
 export { SchemaForm } from './schema-form';

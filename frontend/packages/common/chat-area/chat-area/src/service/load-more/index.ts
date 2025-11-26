@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file load more 模块导出
+ */
 import type ChatCore from '@coze-common/chat-core';
 import {
   compareInt64,

@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/common/services 模块导出
+ * @description 提供 knowledge/common/services 相关功能
+ */
+
+
 export { getKnowledgeIDEQuery, getKnowledgeIsFullModeByBiz } from './use-case';

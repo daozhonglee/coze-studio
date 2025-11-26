@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Package workflow 定义了工作流(Workflow)应用层服务（事件总线）
+
 package workflow
 
 import (
@@ -25,12 +27,17 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/search/service"
 )
 
+// eventBus 资源事件总线
 var eventBus service.ResourceEventBus
 
+// setEventBus 设置事件总线
 func setEventBus(bus service.ResourceEventBus) {
 	eventBus = bus
 }
 
+// PublishWorkflowResource 发布工作流资源事件
+//
+// 当工作流创建、更新、删除时，通过事件总线通知搜索服务更新索引
 func PublishWorkflowResource(ctx context.Context, workflowID int64, mode *int32, op search.OpType, r *search.ResourceDocument) error {
 	if r == nil {
 		r = &search.ResourceDocument{}

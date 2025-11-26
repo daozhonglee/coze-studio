@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file set-variable 字段定义导出
+ */
 export { SetVariableField } from './set-variable';

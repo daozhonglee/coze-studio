@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file break 模块导出
+ */
 export { BREAK_NODE_REGISTRY } from './node-registry';
 export { BreakContent } from './node-content';

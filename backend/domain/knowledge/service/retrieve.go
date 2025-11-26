@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// retrieve.go 知识库检索服务
+//
+// 本文件实现了知识库的检索功能：
+//   - 向量检索
+//   - 关键词检索
+//   - 混合检索
+//   - 结果重排序
+
 package service
 
 import (
@@ -51,6 +59,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// Retrieve 执行知识库检索
 func (k *knowledgeSVC) Retrieve(ctx context.Context, request *RetrieveRequest) (response *RetrieveResponse, err error) {
 	if request == nil {
 		return nil, errorx.New(errno.ErrKnowledgeInvalidParamCode, errorx.KV("msg", "request is nil"))

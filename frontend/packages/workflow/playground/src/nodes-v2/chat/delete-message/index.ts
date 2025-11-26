@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file delete message 模块导出
+ */
 /** Delete message node */
 
 export { DELETE_MESSAGE_NODE_REGISTRY } from './node-registry';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file validator 模块导出
+ */
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable no-cond-assign */
 import { Node } from 'slate';

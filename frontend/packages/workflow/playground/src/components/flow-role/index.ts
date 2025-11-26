@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file flow role 模块导出
+ */
 export { RoleButton } from './role-button';
 export { RoleConfigPanel } from './role-config-panel';

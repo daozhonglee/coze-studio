@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
+// Package repository 定义了变量记忆领域的仓储接口
+//
+// 本包提供变量元数据和实例的持久化操作接口：
+// - 变量元数据的 CRUD
+// - 变量实例的读写
+//
+// 设计说明：
+// 变量元数据存储在 variables_meta 表中，记录变量的定义信息。
+// 变量实例存储在 variable_instance 表中，记录用户的运行时值。
+// 实例数据按 bizType+bizID+connectorUID+connectorID 隔离存储。
 package repository
 
 import (
@@ -27,21 +37,48 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/idgen"
 )
 
+// NewVariableRepo 创建变量仓储实例
 func NewVariableRepo(db *gorm.DB, generator idgen.IDGenerator) VariableRepository {
 	return dal.NewDAO(db, generator)
 }
 
+// VariableRepository 变量仓储接口
+//
+// 提供变量元数据和实例的持久化操作。
 type VariableRepository interface {
+	// DeleteAllVariableData 删除业务对象下的所有变量数据
 	DeleteAllVariableData(ctx context.Context, bizType project_memory.VariableConnector, bizID string) (err error)
+
+	// DeleteVariableInstance 删除指定关键字的变量实例
 	DeleteVariableInstance(ctx context.Context, do *entity.UserVariableMeta, keywords []string) error
+
+	// GetVariableInstances 获取变量实例列表
 	GetVariableInstances(ctx context.Context, do *entity.UserVariableMeta, keywords []string) ([]*entity.VariableInstance, error)
+
+	// UpdateVariableInstance 更新变量实例
 	UpdateVariableInstance(ctx context.Context, KVs []*entity.VariableInstance) error
+
+	// InsertVariableInstance 插入变量实例
 	InsertVariableInstance(ctx context.Context, KVs []*entity.VariableInstance) error
+
+	// GetProjectVariable 获取 Project 的变量元数据
 	GetProjectVariable(ctx context.Context, projectID, version string) (*entity.VariablesMeta, error)
+
+	// GetAgentVariable 获取 Agent 的变量元数据
 	GetAgentVariable(ctx context.Context, projectID, version string) (*entity.VariablesMeta, error)
+
+	// CreateProjectVariable 创建 Project 变量元数据
 	CreateProjectVariable(ctx context.Context, do *entity.VariablesMeta) (int64, error)
+
+	// CreateVariableMeta 创建变量元数据
 	CreateVariableMeta(ctx context.Context, do *entity.VariablesMeta, bizType project_memory.VariableConnector) (int64, error)
+
+	// UpdateProjectVariable 更新变量元数据
 	UpdateProjectVariable(ctx context.Context, do *entity.VariablesMeta, bizType project_memory.VariableConnector) error
+
+	// GetVariableMeta 获取变量元数据
 	GetVariableMeta(ctx context.Context, bizID string, bizType project_memory.VariableConnector, version string) (*entity.VariablesMeta, error)
+
+	// GetVariableMetaByID 根据 ID 获取变量元数据
 	GetVariableMetaByID(ctx context.Context, id int64) (*entity.VariablesMeta, error)
 }

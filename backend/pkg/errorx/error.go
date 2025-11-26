@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+// Package errorx 提供统一的错误处理工具
+//
+// 本包提供带状态码的错误处理能力：
+// - 带状态码的错误类型（StatusError）
+// - 错误包装和堆栈追踪
+// - 错误码注册和消息模板
 package errorx
 
 import (
@@ -23,7 +29,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/errorx/internal"
 )
 
-// StatusError is an interface for error with status code, you can
+// StatusError 带状态码的错误接口
 // create an error through New or WrapByCode and convert it back to
 // StatusError through FromStatusError to obtain information such as
 // error status code.
@@ -35,18 +41,21 @@ type StatusError interface {
 	Extra() map[string]string
 }
 
-// Option is used to configure an StatusError.
+// Option 错误配置选项
 type Option = internal.Option
 
+// KV 创建键值对选项
 func KV(k, v string) Option {
 	return internal.Param(k, v)
 }
 
+// KVf 创建格式化键值对选项
 func KVf(k, v string, a ...any) Option {
 	formatValue := fmt.Sprintf(v, a...)
 	return internal.Param(k, formatValue)
 }
 
+// Extra 创建额外信息选项
 func Extra(k, v string) Option {
 	return internal.Extra(k, v)
 }
@@ -77,6 +86,7 @@ func Wrapf(err error, format string, args ...interface{}) error {
 	return internal.Wrapf(err, format, args...)
 }
 
+// ErrorWithoutStack 获取不带堆栈信息的错误消息
 func ErrorWithoutStack(err error) string {
 	if err == nil {
 		return ""

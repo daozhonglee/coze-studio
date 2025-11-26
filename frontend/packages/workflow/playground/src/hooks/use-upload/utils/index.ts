@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file use-upload 工具函数导出
+ */
 export { formatBytes } from './format-bytes';
 export { getImageSize } from './get-image-size';
 export { getBase64 } from './get-base-64';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file action bar 模块导出
+ */
 export { ActionBar } from './ui-component';
 export { ActionBarContext } from './context';
 export { useActionBarPreference } from './hooks/use-action-bar-perference';

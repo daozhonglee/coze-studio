@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot-plugin/plugin-risk-warning 模块导出
+ * @description 提供 bot-plugin/plugin-risk-warning 相关功能
+ */
+
+
 import { I18n } from '@coze-arch/i18n';
 import { Modal } from '@coze-arch/bot-semi';
 import {

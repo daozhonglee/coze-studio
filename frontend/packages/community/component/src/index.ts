@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file component 模块导出
+ * @description 提供 component 相关功能
+ */
+
+
 export { OfficialLabel } from './official-label';
 
 export { InfiniteList } from './infinite-list';

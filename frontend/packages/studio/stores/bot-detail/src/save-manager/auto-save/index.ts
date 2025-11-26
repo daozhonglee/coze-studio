@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file save-manager 自动保存导出
+ */
 import { personaSaveManager } from './persona';
 import { modelSaveManager } from './model';
 import { botSkillSaveManager } from './bot-skill';

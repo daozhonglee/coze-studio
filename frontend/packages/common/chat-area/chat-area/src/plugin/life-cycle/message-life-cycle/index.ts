@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file message life cycle 模块导出
+ */
 import { createPluginBenchmark } from '../create-plugin-benchmark';
 import { isWriteablePlugin } from '../../utils/is-writeable-plugin';
 import {

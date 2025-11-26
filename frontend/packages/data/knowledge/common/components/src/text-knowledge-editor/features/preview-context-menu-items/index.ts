@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file preview context menu items 模块导出
+ */
 export { EditAction } from './edit-action';
 export { DeleteAction } from './delete-action';
 export { AddBeforeAction } from './add-before-action';

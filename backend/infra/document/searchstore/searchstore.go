@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
+// Package searchstore 提供向量搜索存储接口
+//
+// 本包定义向量搜索存储的接口，用于知识库文档的索引和检索：
+// - 文档索引（向量化存储）
+// - 向量检索（相似度搜索）
+// - 文档删除
+//
+// 实现层在 impl/ 目录下，支持多种后端：
+// - Elasticsearch（全文检索）
+// - Milvus（向量检索）
+// - OceanBase（向量+全文检索）
+// - VikingDB（向量检索）
 package searchstore
 
 import (
@@ -23,6 +35,9 @@ import (
 	"github.com/cloudwego/eino/components/retriever"
 )
 
+// SearchStore 搜索存储接口
+//
+// 聚合 Eino 框架的 Indexer 和 Retriever 接口
 type SearchStore interface {
 	indexer.Indexer
 

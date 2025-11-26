@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file test run plugin 模块导出
+ */
 export { TestRunService } from './test-run-service';
 export {
   TestRunReporterService,

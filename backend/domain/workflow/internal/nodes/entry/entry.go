@@ -14,6 +14,23 @@
  * limitations under the License.
  */
 
+// Package entry 实现工作流入口节点
+//
+// 入口节点是每个工作流的起点，负责接收和处理工作流的输入参数。
+// 核心功能：
+//
+// 1. 输入接收
+//   - 接收外部传入的参数
+//   - 定义参数类型和默认值
+//
+// 2. 默认值处理
+//   - 当输入为空或未提供时，使用预设的默认值
+//   - 支持字符串、数组、对象类型的空值检测
+//
+// 3. 特殊标识
+//   - 入口节点 ID 固定为 "entry"
+//   - 每个工作流只能有一个入口节点
+//   - 入口节点不能有父节点（不能嵌套在其他节点内部）
 package entry
 
 import (
@@ -27,7 +44,9 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/internal/schema"
 )
 
+// Config 入口节点配置
 type Config struct {
+	// DefaultValues 默认值映射，key 为参数名，value 为默认值
 	DefaultValues map[string]any
 }
 

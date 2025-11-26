@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// node_runner.go 节点运行器
+//
+// 本文件提供节点执行的核心运行时逻辑，将各种类型的节点封装为统一的 Lambda。
+// 主要功能：
+//   - 节点执行包装：超时、重试、错误处理
+//   - 前后置处理器：类型转换、字段填充
+//   - 回调管理：输入输出转换、执行状态上报
+//   - 流式处理支持：流式节点的特殊处理
+
 package compose
 
 import (
@@ -43,6 +52,14 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// nodeRunConfig 节点运行配置
+//
+// 封装节点执行所需的所有配置信息，包括：
+//   - 基本信息：nodeKey、nodeName、nodeType
+//   - 异常处理：超时时间、重试次数、错误处理类型
+//   - 处理器链：前置/后置处理器
+//   - 回调转换器：用于结构化日志和监控
+//   - 执行函数：invoke/stream/collect/transform
 type nodeRunConfig[O any] struct {
 	nodeKey             vo.NodeKey
 	nodeName            string

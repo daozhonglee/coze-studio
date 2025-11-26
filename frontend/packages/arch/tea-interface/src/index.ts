@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file Tea 埋点接口模块导出
+ * @description 提供 Tea 埋点的类型定义
+ */
+
+/** Tea 初始化参数 */
 export interface IInitParam {
   app_id: number;
   channel?: 'cn' | 'va' | 'sg';

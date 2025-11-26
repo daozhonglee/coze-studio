@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file src Hooks 导出
+ */
 export { useFabricPreview } from './use-fabric-preview';
 export { useFabricEditor } from './use-fabric-editor';

@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// req_encode.go HTTP 请求编码器
+//
+// 本文件提供 HTTP 请求参数的编码功能：
+//   - 请求体编码（JSON、Form、YAML）
+//   - OpenAPI 参数序列化
+//   - 类型转换和校正
+
 package encoder
 
 import (
@@ -30,6 +37,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/crossdomain/plugin/consts"
 )
 
+// EncodeBodyWithContentType 根据 Content-Type 编码请求体
 func EncodeBodyWithContentType(contentType string, body map[string]any) ([]byte, error) {
 	switch contentType {
 	case consts.MediaTypeJson, consts.MediaTypeProblemJson:
@@ -43,6 +51,7 @@ func EncodeBodyWithContentType(contentType string, body map[string]any) ([]byte,
 	}
 }
 
+// jsonBodyEncoder JSON 格式编码器
 func jsonBodyEncoder(body map[string]any) ([]byte, error) {
 	b, err := sonic.Marshal(body)
 	if err != nil {
@@ -52,6 +61,7 @@ func jsonBodyEncoder(body map[string]any) ([]byte, error) {
 	return b, nil
 }
 
+// yamlBodyEncoder YAML 格式编码器
 func yamlBodyEncoder(body map[string]any) ([]byte, error) {
 	b, err := yaml.Marshal(body)
 	if err != nil {
@@ -107,6 +117,7 @@ func urlencodedBodyEncoder(body map[string]any) ([]byte, error) {
 	return []byte(res.Encode()), nil
 }
 
+// EncodeParameter 根据 OpenAPI 参数规范编码参数值
 func EncodeParameter(param *openapi3.Parameter, value any) (string, error) {
 	sm, err := param.SerializationMethod()
 	if err != nil {
@@ -123,6 +134,7 @@ func EncodeParameter(param *openapi3.Parameter, value any) (string, error) {
 	}
 }
 
+// encodePrimitiveParam 编码基础类型参数
 func encodePrimitiveParam(sm *openapi3.SerializationMethod, paramName string, val any) (string, error) {
 	var prefix string
 	switch sm.Style {
@@ -144,6 +156,7 @@ func encodePrimitiveParam(sm *openapi3.SerializationMethod, paramName string, va
 	return prefix + raw, nil
 }
 
+// encodeArrayParam 编码数组类型参数
 func encodeArrayParam(sm *openapi3.SerializationMethod, paramName string, arrVal []any) (string, error) {
 	var prefix, delim string
 	switch {
@@ -189,6 +202,7 @@ func encodeArrayParam(sm *openapi3.SerializationMethod, paramName string, arrVal
 	return res, nil
 }
 
+// encodeObjectParam 编码对象类型参数
 func encodeObjectParam(sm *openapi3.SerializationMethod, paramName string, mapVal map[string]any) (string, error) {
 	var prefix, propsDelim, valueDelim string
 
@@ -249,6 +263,7 @@ func encodeObjectParam(sm *openapi3.SerializationMethod, paramName string, mapVa
 	return res, nil
 }
 
+// MustString 将任意值转换为字符串
 func MustString(value any) string {
 	if value == nil {
 		return ""
@@ -263,6 +278,7 @@ func MustString(value any) string {
 	}
 }
 
+// TryCorrectValueType 根据 Schema 类型校正值类型
 func TryCorrectValueType(paramName string, schemaRef *openapi3.SchemaRef, value any) (any, error) {
 	if value == nil {
 		return "", fmt.Errorf("value of '%s' is nil", paramName)

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Package middleware 提供 HTTP 中间件（国际化）
 package middleware
 
 import (
@@ -28,6 +29,9 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/consts"
 )
 
+// I18nMW 国际化中间件
+//
+// 从 Session 或 Accept-Language 请求头获取语言设置
 func I18nMW() app.HandlerFunc {
 	return func(c context.Context, ctx *app.RequestContext) {
 		session, ok := ctxcache.Get[*entity.Session](c, consts.SessionDataKeyInCtx)

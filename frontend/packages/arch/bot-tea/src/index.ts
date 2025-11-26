@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file Bot Tea 埋点模块导出
+ * @description 提供 Bot 相关的埋点事件上报功能
+ */
+
 import TeaNew, {
   type EVENT_NAMES,
   type UserGrowthEventParams,
@@ -21,6 +26,7 @@ import TeaNew, {
 } from '@coze-arch/tea';
 import { logger } from '@coze-arch/logger';
 
+/** 埋点事件类型 */
 export {
   EVENT_NAMES,
   AddWorkflowToStoreEntry,

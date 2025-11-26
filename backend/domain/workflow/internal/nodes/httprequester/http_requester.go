@@ -14,6 +14,31 @@
  * limitations under the License.
  */
 
+// Package httprequester 实现 HTTP 请求节点
+//
+// HTTP 请求节点用于在工作流中发起 HTTP 请求，与外部 API 或服务进行交互。
+// 核心功能：
+//
+// 1. 请求配置
+//   - 支持 GET、POST、PUT、DELETE 等 HTTP 方法
+//   - 支持自定义 URL、Headers、Query Parameters
+//   - 支持 URL 模板变量替换
+//
+// 2. 请求体类型
+//   - JSON：application/json 格式
+//   - FormData：multipart/form-data 格式，支持文件上传
+//   - FormURLEncoded：application/x-www-form-urlencoded 格式
+//   - RawText：text/plain 纯文本格式
+//   - Binary：application/octet-stream 二进制格式
+//
+// 3. 认证方式
+//   - Bearer Token：OAuth 2.0 Bearer 认证
+//   - Custom：自定义 Header 或 Query Parameter 认证
+//
+// 4. 其他特性
+//   - 支持请求超时配置
+//   - 支持失败重试
+//   - 自动解析响应体、状态码、响应头
 package httprequester
 
 import (

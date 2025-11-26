@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// Package shortcutcmd 定义了快捷命令(ShortcutCmd)应用层服务
+//
+// 本包提供快捷命令相关的应用层业务逻辑，包括：
+// - 快捷命令的创建、更新、删除
+// - Agent 快捷命令配置
+//
+// 快捷命令是用户与 Agent 交互的快捷入口
 package shortcutcmd
 
 import (
@@ -24,8 +31,10 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/idgen"
 )
 
+// ShortcutCmdSVC 快捷命令应用服务单例
 var ShortcutCmdSVC *ShortcutCmdApplicationService
 
+// InitService 初始化快捷命令应用服务
 func InitService(db *gorm.DB, idGenSVC idgen.IDGenerator) *ShortcutCmdApplicationService {
 
 	components := &service.Components{

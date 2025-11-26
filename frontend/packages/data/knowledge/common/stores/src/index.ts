@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/common/stores 模块导出
+ * @description 提供 knowledge/common/stores 相关功能
+ */
+
+
 export {
   useDataCallbacks,
   useDataNavigate,

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file use app init 模块导出
+ */
 export { useAlertOnLogout } from './use-alert-on-logout';

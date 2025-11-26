@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file segment-menu 类型定义导出
+ */
 import { type ILevelSegment } from '@coze-data/knowledge-stores';
 
 export type LevelDocumentTree = Omit<

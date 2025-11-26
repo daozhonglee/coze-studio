@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file HTTP 请求模块导出
+ * @description 提供 HTTP 请求封装、错误事件处理和拦截器管理
+ */
+
+/** API 错误事件处理 */
 export {
   APIErrorEvent,
   handleAPIErrorEvent,

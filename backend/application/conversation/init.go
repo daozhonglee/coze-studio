@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// Package conversation 定义了对话(Conversation)应用层服务
+//
+// 本包提供对话相关的应用层业务逻辑，包括：
+// - 对话会话管理
+// - 消息管理（发送、接收、历史记录）
+// - Agent 运行记录管理
+// - OpenAPI 对话接口
+//
+// 对话是用户与 AI Agent 交互的核心功能。
 package conversation
 
 import (
@@ -34,15 +43,24 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/storage"
 )
 
+// ServiceComponents 对话应用服务依赖组件
 type ServiceComponents struct {
-	IDGen     idgen.IDGenerator
-	DB        *gorm.DB
+	// IDGen ID 生成器
+	IDGen idgen.IDGenerator
+	// DB 数据库连接
+	DB *gorm.DB
+	// TosClient 对象存储客户端
 	TosClient storage.Storage
-	ImageX    imagex.ImageX
+	// ImageX 图像处理服务
+	ImageX imagex.ImageX
 
+	// SingleAgentDomainSVC 单 Agent 领域服务
 	SingleAgentDomainSVC singleagent.SingleAgent
 }
 
+// InitService 初始化对话应用服务
+//
+// 创建消息、对话、Agent 运行记录等领域服务
 func InitService(s *ServiceComponents) *ConversationApplicationService {
 	mDomainComponents := &message.Components{
 		MessageRepo: msgRepo.NewMessageRepo(s.DB, s.IDGen),

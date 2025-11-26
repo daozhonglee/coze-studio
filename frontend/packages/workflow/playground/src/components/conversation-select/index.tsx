@@ -14,23 +14,37 @@
  * limitations under the License.
  */
 
+/**
+ * @file 会话选择组件
+ * @description 用于选择工作流中的会话
+ */
+
 import React from 'react';
 
 import { withField } from '@coze-arch/bot-semi';
 
 import { Conversations } from './conversations';
 
+/**
+ * 会话选择组件属性
+ */
 interface ConversationSelectProps {
   value?: string;
   onChange?: (value: string) => void;
 }
 
+/**
+ * 会话选择组件
+ *
+ * 提供会话列表选择功能
+ */
 export const ConversationSelect: React.FC<ConversationSelectProps> = ({
   value,
   onChange,
   ...props
 }) => <Conversations value={value} onChange={onChange} {...props} />;
 
+/** 带表单字段包装的会话选择组件 */
 export const ConversationSelectWithField = withField(ConversationSelect, {
   valueKey: 'value',
   onKeyChangeFnName: 'onChange',

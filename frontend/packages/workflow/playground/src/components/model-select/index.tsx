@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 模型选择组件
+ * @description 用于 LLM 节点选择 AI 模型和配置模型参数
+ */
+
 import { type FC, useCallback, useMemo } from 'react';
 
 import classNames from 'classnames';
@@ -38,8 +43,12 @@ import { cacheData, generateDefaultValueByMeta } from './utils';
 import { ModelSelector } from './components/selector';
 import { ModelSetting } from './components/model-setting';
 
+/** 默认生成多样性设置 */
 const defaultGenerationDiversity = GenerationDiversity.Balance;
 
+/**
+ * 模型选择组件属性
+ */
 interface ModelSelectProps extends ComponentProps<IModelValue | undefined> {
   readonly?: boolean;
   popoverPosition?: PopoverProps['position'];
@@ -49,6 +58,14 @@ interface ModelSelectProps extends ComponentProps<IModelValue | undefined> {
   className?: string;
 }
 
+/**
+ * 模型选择组件
+ *
+ * 提供 AI 模型选择和参数配置功能：
+ * - 模型下拉选择
+ * - 模型参数设置（温度、top_p 等）
+ * - 生成多样性配置
+ */
 export const ModelSelect: FC<ModelSelectProps> = ({
   value: _value,
   onChange,

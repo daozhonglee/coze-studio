@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file space-store-adapter 模块导出
+ * @description 提供 space-store-adapter 相关功能
+ */
+
+
 export { useSpaceStore } from './space';

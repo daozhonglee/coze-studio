@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * @file 功能开关模块导出
+ * @description 提供功能开关 (Feature Flags) 的获取和使用
+ */
+
+/** 功能开关类型定义 */
 export { type FEATURE_FLAGS, type FetchFeatureGatingFunction } from './types';
 
+/** 获取功能开关 */
 export { getFlags } from './get-flags';
+/** 功能开关 Hook */
 export { useFlags } from './use-flags';
+/** 拉取功能开关配置 */
 export { pullFeatureFlags } from './pull-feature-flags';

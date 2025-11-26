@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file memory-tool-pane-adapter 模块导出
+ * @description 提供 memory-tool-pane-adapter 相关功能
+ */
+
+
 export { MemoryToolPane } from './components/memory-tool-pane';

@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+// tool_repository.go 工具仓储接口定义
+//
+// 本文件定义了工具数据访问的仓储接口 ToolRepository。
+// 提供工具的增删改查、绑定代理等数据操作能力。
+
 package repository
 
 import (
@@ -24,6 +29,13 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/plugin/entity"
 )
 
+// ToolRepository 工具仓储接口
+//
+// 提供工具数据的持久化操作：
+//   - 草稿工具的增删改查
+//   - 在线工具的查询
+//   - 代理工具的绑定和管理
+//   - 版本工具的查询
 type ToolRepository interface {
 	CreateDraftTool(ctx context.Context, tool *entity.ToolInfo) (toolID int64, err error)
 	UpsertDraftTools(ctx context.Context, pluginID int64, tools []*entity.ToolInfo) (err error)

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file editor 模块导出
+ */
 export { Editor } from './editor';

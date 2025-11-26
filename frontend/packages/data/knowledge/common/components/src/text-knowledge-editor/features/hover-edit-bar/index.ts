@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file hover edit bar 模块导出
+ */
 import { HoverEditBar, type HoverEditBarProps } from './hover-edit-bar';
 
 export { HoverEditBar, type HoverEditBarProps };

@@ -14,6 +14,23 @@
  * limitations under the License.
  */
 
+// canvas_validate.go 画布验证器
+//
+// 本文件提供画布数据的完整性和正确性验证功能。
+// 主要验证项：
+//   - 循环检测（工作流不应有循环依赖）
+//   - 孤立节点检测（所有节点应可达）
+//   - 输入参数验证（必填参数、类型匹配）
+//   - 子工作流验证（终止计划类型检查）
+//   - 变量引用验证
+//
+// 验证流程：
+//   1. 分析画布可达性
+//   2. 检测循环
+//   3. 检测孤立节点
+//   4. 验证输入参数
+//   5. 验证子工作流引用
+
 package validate
 
 import (
@@ -35,6 +52,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// Issue 验证问题
 type Issue struct {
 	NodeErr *NodeErr
 	PathErr *PathErr

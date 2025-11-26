@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 常量定义导出
+ */
 export const FORMAT_SPACE_SETTING = 4;
 export const MAX_SUBMIT_LENGTH = 102400;
 export const RANDOM_BOOL_THRESHOLD = 0.5;

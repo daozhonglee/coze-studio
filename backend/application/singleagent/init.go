@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// Package singleagent 定义了单 Agent 应用层服务
+//
+// 本包提供单 Agent 相关的应用层业务逻辑，包括：
+// - Agent 的创建、更新、删除
+// - Agent 草稿管理
+// - Agent 发布和版本管理
+// - Agent 配置（插件、工作流、知识库等）
+//
+// 单 Agent 是最基础的 AI Agent 类型，由单个智能体完成任务。
 package singleagent
 
 import (
@@ -39,32 +48,54 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/kvstore"
 )
 
+// SingleAgent 类型别名
 type (
 	SingleAgent = singleagent.SingleAgent
 )
 
+// SingleAgentSVC 单 Agent 应用服务单例
 var SingleAgentSVC *SingleAgentApplicationService
 
+// ServiceComponents 单 Agent 应用服务依赖组件
 type ServiceComponents struct {
-	IDGen       idgen.IDGenerator
-	DB          *gorm.DB
-	Cache       cache.Cmdable
-	TosClient   storage.Storage
-	ImageX      imagex.ImageX
-	EventBus    search.ProjectEventBus
+	// IDGen ID 生成器
+	IDGen idgen.IDGenerator
+	// DB 数据库连接
+	DB *gorm.DB
+	// Cache 缓存客户端
+	Cache cache.Cmdable
+	// TosClient 对象存储客户端
+	TosClient storage.Storage
+	// ImageX 图像处理服务
+	ImageX imagex.ImageX
+	// EventBus 项目事件总线
+	EventBus search.ProjectEventBus
+	// CounterRepo 计数器仓储
 	CounterRepo repository.CounterRepository
 
-	KnowledgeDomainSVC   knowledge.Knowledge
-	PluginDomainSVC      service.PluginService
-	WorkflowDomainSVC    workflow.Service
-	UserDomainSVC        user.User
-	VariablesDomainSVC   variables.Variables
-	ConnectorDomainSVC   connector.Connector
-	DatabaseDomainSVC    database.Database
+	// KnowledgeDomainSVC 知识库领域服务
+	KnowledgeDomainSVC knowledge.Knowledge
+	// PluginDomainSVC 插件领域服务
+	PluginDomainSVC service.PluginService
+	// WorkflowDomainSVC 工作流领域服务
+	WorkflowDomainSVC workflow.Service
+	// UserDomainSVC 用户领域服务
+	UserDomainSVC user.User
+	// VariablesDomainSVC 变量领域服务
+	VariablesDomainSVC variables.Variables
+	// ConnectorDomainSVC 连接器领域服务
+	ConnectorDomainSVC connector.Connector
+	// DatabaseDomainSVC 数据库领域服务
+	DatabaseDomainSVC database.Database
+	// ShortcutCMDDomainSVC 快捷命令领域服务
 	ShortcutCMDDomainSVC shortcutCmd.ShortcutCmd
-	CPStore              compose.CheckPointStore
+	// CPStore 检查点存储
+	CPStore compose.CheckPointStore
 }
 
+// InitService 初始化单 Agent 应用服务
+//
+// 创建仓储实例和领域服务
 func InitService(c *ServiceComponents) (*SingleAgentApplicationService, error) {
 	domainComponents := &singleagent.Components{
 		AgentDraftRepo:   repository.NewSingleAgentRepo(c.DB, c.IDGen, c.Cache),

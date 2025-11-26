@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 import { isEqual } from 'lodash-es';
 import { safeJSONParse } from '@coze-arch/bot-utils';
 import {

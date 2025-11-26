@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file modes 模块导出
+ */
 export { SingleMode, type SingleModeProps } from './single-mode';
 export { WorkflowMode, type WorkflowModeProps } from './workflow-mode';

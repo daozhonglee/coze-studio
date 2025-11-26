@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file prompt-adapter 模块导出
+ * @description 提供 prompt-adapter 相关功能
+ */
+
+
 import { useBotDetailIsReadonly } from '@coze-studio/bot-detail-store';
 import { I18n } from '@coze-arch/i18n';
 import { InsertInputSlotAction } from '@coze-common/editor-plugins/actions';

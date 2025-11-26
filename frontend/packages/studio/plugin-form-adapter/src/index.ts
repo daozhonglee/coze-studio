@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin-form-adapter 模块导出
+ * @description 提供 plugin-form-adapter 相关功能
+ */
+
+
 export { PluginForm } from './components/plugin-form-content';
 export {
   usePluginFormState,

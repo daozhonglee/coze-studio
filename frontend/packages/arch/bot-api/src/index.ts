@@ -14,19 +14,34 @@
  * limitations under the License.
  */
 
+/**
+ * @file Bot API 模块导出
+ * @description 提供与后端交互的 API 服务封装
+ */
+
+/** IDL 生成的 API 服务 */
 export { default as DeveloperApiService } from './idl/developer_api';
 export { default as PlaygroundApiService } from './idl/playground_api';
 export { default as KnowledgeService } from './idl/knowledge';
 export { default as PluginImplApi } from './idl/plugin_impl_api';
+/** 开发者 API */
 export { DeveloperApi } from './developer-api';
+/** Playground API */
 export { PlaygroundApi } from './playground-api';
+/** 产品 API */
 export { ProductApi } from './product-api';
+/** 通知 API */
 export { NotifyApi } from './notify-api';
+/** 记忆 API */
 export { MemoryApi, SubLinkDiscoveryTaskStatus } from './memory-api';
+/** 评估相关 API */
 export { devopsEvaluationApi } from './devops-evaluation-api';
 export { evaluationLiteApi } from './evaluation-lite-api';
+/** 工作流 API */
 export { workflowApi } from './workflow-api';
+/** 文件盒 API */
 export { fileboxApi, ObjType } from './filebox-api';
+/** 插件开发 API */
 export { PluginDevelopApi } from './plugin-develop';
 
 export { cardApi } from './card-api';

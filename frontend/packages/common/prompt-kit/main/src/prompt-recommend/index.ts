@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file prompt recommend 模块导出
+ */
 export { RecommendCard } from './recommend-card/index';
 export { RecommendPannel } from './recommend-pannel/index';

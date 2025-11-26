@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file output log parser 模块导出
+ */
 export { OutputLogParser } from './output-log-parser';

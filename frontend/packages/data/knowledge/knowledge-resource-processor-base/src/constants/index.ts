@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 常量定义导出
+ */
 export {
   SUCCESSFUL_UPLOAD_PROGRESS,
   POLLING_TIME,

@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 数据库选择器导出
+ * @description 提供数据库/数据表选择功能
+ */
+
+/** 数据库选择组件 */
 export { DatabaseSelect } from './database-select';
+/** 数据库选择值类型 */
 export { type DatabaseSelectValue } from './types';

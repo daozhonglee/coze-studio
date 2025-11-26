@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file components 通用功能导出
+ */
 export * from './content-box';
 export * from './tooltips';
 export * from './message-box';

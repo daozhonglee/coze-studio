@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file product 模块导出
+ */
 import { type ProductShowFrontParams } from '@coze-arch/bot-tea';
 import {
   ProductEntityType,

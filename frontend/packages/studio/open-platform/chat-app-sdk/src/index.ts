@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file open-platform/chat-app-sdk 模块导出
+ * @description 提供 open-platform/chat-app-sdk 相关功能
+ */
+
+
 import { WebChatClient } from '@/client';
 
 window.CozeWebSDK = window.CozeWebSDK || {};

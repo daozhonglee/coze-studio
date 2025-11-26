@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file 发布到飞书多维表格模块导出
+ * @description 提供将 Agent 发布到飞书多维表格的功能组件
+ */
+
+/** 飞书多维表格弹窗 */
 export { FeishuBaseModal } from './feishu-base-modal';
+/** 异常显示组件 */
 export {
   ExceptionDisplay,
   LoadFailedDisplay,

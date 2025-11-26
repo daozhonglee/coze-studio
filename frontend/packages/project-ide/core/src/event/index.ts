@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 事件导出
+ */
 export { createEventPlugin } from './create-event-plugin';
 export { EventContribution, EventService } from './event-contribution';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file init service 模块导出
+ */
 /* eslint-disable max-lines */
 import { type MutableRefObject } from 'react';
 

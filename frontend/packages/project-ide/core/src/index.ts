@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file core 模块导出
+ * @description 提供 core 相关功能
+ */
+
+
 /** public function */
 
 export {

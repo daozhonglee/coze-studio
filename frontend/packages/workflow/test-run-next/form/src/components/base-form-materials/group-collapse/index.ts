@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file group collapse 模块导出
+ */
 export { GroupCollapse } from './collapse';

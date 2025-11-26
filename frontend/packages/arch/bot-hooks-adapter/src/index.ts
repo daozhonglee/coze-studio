@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file Hooks 适配器模块导出
+ * @description 提供响应式相关的 Hooks 适配
+ */
+
+/** 设置响应式 Body 样式 Hook */
 export { useSetResponsiveBodyStyle } from './use-responsive-body-style';
+/** 响应式判断 Hook */
 export { useIsResponsive } from './use-responsive';

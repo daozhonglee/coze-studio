@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file expression 模块导出
+ */
 export { Popover as Completion } from './popover';
 export { Validation } from './validation';
 export { HighlightExpressionOnActive } from './highlight';

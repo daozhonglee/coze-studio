@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// designate_option.go 执行选项配置
+//
+// 本文件负责配置工作流执行的回调选项，为每个节点设置适当的回调处理器。
+// 主要功能：
+//   - 配置根工作流回调处理器
+//   - 为每个节点配置节点级回调
+//   - 处理子工作流的嵌套回调配置
+//   - 配置 LLM 节点的工具回调
+
 package compose
 
 import (
@@ -37,6 +46,13 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/lang/ptr"
 )
 
+// designateOptions 配置工作流执行选项
+//
+// 为工作流及其所有节点配置回调处理器，包括：
+//   - 根工作流的生命周期回调
+//   - 每个节点的执行回调
+//   - 子工作流的嵌套回调
+//   - LLM 节点的工具调用回调
 func (r *WorkflowRunner) designateOptions(ctx context.Context) ([]einoCompose.Option, error) {
 	var (
 		wb           = r.basic

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file log images 模块导出
+ */
 export { LogImages } from './log-images';

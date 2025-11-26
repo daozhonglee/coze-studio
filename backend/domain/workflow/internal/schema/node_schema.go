@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// node_schema.go 节点 Schema 定义
+//
+// 本文件定义了工作流节点的通用描述和配置结构 NodeSchema。
+// NodeSchema 是节点实例化所需的完整配置，包含：
+//   - 节点标识和类型
+//   - 输入输出类型定义
+//   - 异常处理和流式配置
+//   - 子工作流信息（如适用）
+
 package schema
 
 import (
@@ -23,6 +32,17 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/entity/vo"
 )
 
+// NodeSchema 工作流节点的通用描述和配置
+//
+// 这是节点定义的核心结构，包含节点实例化所需的所有信息。
+// 在工作流执行过程中，每个节点都对应一个 NodeSchema 实例。
+//
+// 主要用途：
+//   - 定义节点的身份标识（Key、Name、Type）
+//   - 描述节点的输入输出类型和映射关系
+//   - 配置节点的异常处理和流式行为
+//   - 存储子工作流的嵌套信息
+//
 // NodeSchema is the universal description and configuration for a workflow Node.
 // It should contain EVERYTHING a node needs to instantiate.
 type NodeSchema struct {

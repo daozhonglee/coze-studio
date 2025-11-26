@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file 插件节点注册导出
+ * @description 插件节点 - 调用外部插件（API 工具）执行特定功能
+ */
+
+/** 插件节点注册配置 */
 export { PLUGIN_NODE_REGISTRY } from './node-registry';
+/** 插件节点内容组件 */
 export { PluginContent } from './node-content';
+/** 获取插件详情的 Hook */
 export { usePluginDetail } from './hooks';

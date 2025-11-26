@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin_modal 组件导出
+ */
 export { CascaderItem } from './cascader-item';
 export { FileUploadItem } from './file-upload-item';

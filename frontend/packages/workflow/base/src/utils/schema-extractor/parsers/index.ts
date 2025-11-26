@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file parsers 模块导出
+ */
 import { type SchemaExtractorParser } from '../type';
 import { SchemaExtractorParserName } from '../constant';
 import { variableMergeGroupsParser } from './variable-merge-groups-parser';

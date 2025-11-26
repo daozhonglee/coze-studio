@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file entry 模块导出
+ * @description 提供 entry 相关功能
+ */
+
+
 export { useInitToast } from './hooks/use-init-toast';
 export {
   SingleMode,

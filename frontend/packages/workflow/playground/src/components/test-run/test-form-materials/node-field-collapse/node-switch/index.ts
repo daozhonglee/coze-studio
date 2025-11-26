@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file node switch 模块导出
+ */
 export { ModeSwitch } from './mode-switch';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 贡献点导出
+ */
 export { bindActivityBarView } from './activity-bar-contribution';
 export { ViewCommonContribution } from './view-common-contribution';
 export { ViewContribution } from './view-contribution';

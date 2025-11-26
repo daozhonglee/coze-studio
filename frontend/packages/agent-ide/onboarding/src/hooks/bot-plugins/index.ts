@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot plugins 模块导出
+ */
 import { useBotEditor } from '@coze-agent-ide/bot-editor-context-store';
 
 export const useDraftBotPluginById = (pluginId?: string) => {

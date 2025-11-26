@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file auth-adapter 模块导出
+ * @description 提供 auth-adapter 相关功能
+ */
+
+
 export { useInitSpaceRole } from './space/use-init-space-role';
 
 export { useInitProjectRole } from './project/use-init-project-role';

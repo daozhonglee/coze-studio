@@ -14,12 +14,24 @@
  * limitations under the License.
  */
 
+// Package upload 定义了上传(Upload)应用层服务
+//
+// 本包提供文件上传相关的应用层业务逻辑，包括：
+// - 文件大小限制
+// - 默认图标资源路径
 package upload
 
+// maxFileSize 文件上传最大限制（200MB）
 const maxFileSize = 200 * 1024 * 1024
+
+// 默认图标资源路径常量
 const (
-	TextKnowledgeDefaultIcon  = "default_icon/text_kn_default_icon.png"
+	// TextKnowledgeDefaultIcon 文本知识库默认图标
+	TextKnowledgeDefaultIcon = "default_icon/text_kn_default_icon.png"
+	// TableKnowledgeDefaultIcon 表格知识库默认图标
 	TableKnowledgeDefaultIcon = "default_icon/table_kn_default_icon.png"
+	// ImageKnowledgeDefaultIcon 图片知识库默认图标
 	ImageKnowledgeDefaultIcon = "default_icon/image_kn_default_icon.png"
-	DatabaseDefaultIcon       = "default_icon/default_database_icon.png"
+	// DatabaseDefaultIcon 数据库默认图标
+	DatabaseDefaultIcon = "default_icon/default_database_icon.png"
 )

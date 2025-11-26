@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file use drag and paste upload 模块导出
+ */
 import { type RefObject, useEffect, useRef, useState } from 'react';
 
 import { Toast } from '@coze-arch/bot-semi';

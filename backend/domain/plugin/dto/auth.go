@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// auth.go 认证相关数据传输对象
+//
+// 本文件定义了插件认证相关的 DTO 结构：
+//   - OAuth 状态查询和响应
+//   - 访问令牌请求
+//   - 授权码信息
+
 package dto
 
 import (
@@ -23,6 +30,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/lang/ptr"
 )
 
+// GetOAuthStatusResponse OAuth 状态响应
 type GetOAuthStatusResponse struct {
 	IsOauth  bool
 	Status   common.OAuthStatus

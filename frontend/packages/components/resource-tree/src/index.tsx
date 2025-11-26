@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file resource-tree 模块导出
+ * @description 提供 resource-tree 相关功能
+ */
+
+
 import { EditorRenderer } from '@flowgram-adapter/fixed-layout-editor';
 import { type DependencyTree } from '@coze-arch/bot-api/workflow_api';
 

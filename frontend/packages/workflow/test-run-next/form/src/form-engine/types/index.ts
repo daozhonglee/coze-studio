@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file form-engine 类型定义导出
+ */
 export type {
   IFormSchema,
   IFormSchemaValidate,

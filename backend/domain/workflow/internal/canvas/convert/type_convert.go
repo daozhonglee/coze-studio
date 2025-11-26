@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// type_convert.go 类型转换工具
+//
+// 本文件提供画布数据类型到内部类型的转换功能。
+// 主要功能：
+//   - Variable 到 TypeInfo 的转换
+//   - BlockInput 到 FieldInfo 的转换
+//   - 字段引用的解析和转换
+//   - 辅助类型到文件类型的映射
+
 package convert
 
 import (
@@ -31,6 +40,13 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// CanvasVariableToTypeInfo 将画布变量定义转换为类型信息
+//
+// 支持的变量类型：
+//   - String（含时间和文件子类型）
+//   - Integer、Float、Boolean
+//   - Object（递归处理子属性）
+//   - List（处理元素类型）
 func CanvasVariableToTypeInfo(v *vo.Variable) (*vo.TypeInfo, error) {
 	tInfo := &vo.TypeInfo{
 		Required: v.Required,

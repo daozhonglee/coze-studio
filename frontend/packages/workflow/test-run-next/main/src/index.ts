@@ -15,14 +15,15 @@
  */
 
 /**
- * TestRun Main
+ * @file 测试运行主模块导出
+ * @description 聚合导出测试运行的所有子模块
  */
 
 /*******************************************************************************
- * TestRun Form
+ * 测试运行表单
  */
 export {
-  /** components */
+  /** 组件 */
   TestRunForm,
   FormBaseFieldItem,
   FormBaseInputJson,

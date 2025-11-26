@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file skills-pane-adapter 模块导出
+ * @description 提供 skills-pane-adapter 相关功能
+ */
+
+
 export { SkillsPane } from './components/skills-pane';

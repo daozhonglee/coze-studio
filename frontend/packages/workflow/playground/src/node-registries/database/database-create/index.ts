@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file database create 模块导出
+ */
 export { DATABASE_CREATE_NODE_REGISTRY } from './database-create-node-registry';

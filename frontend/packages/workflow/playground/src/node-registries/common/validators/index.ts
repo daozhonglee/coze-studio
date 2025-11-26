@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file common 验证器导出
+ */
 export { createValueExpressionInputValidate } from '@/nodes-v2/materials/create-value-expression-input-validate';
 export { createOutputsValidator } from './create-outputs-validator';
 export {

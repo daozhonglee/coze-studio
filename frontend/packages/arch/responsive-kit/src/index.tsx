@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
+/**
+ * @file 响应式工具模块导出
+ * @description 提供响应式布局相关的组件和 Hooks
+ */
+
+/** 屏幕断点常量 */
 export { SCREENS_TOKENS, ScreenRange } from './constant';
 
+/** 媒体查询 Hooks */
 export { useMediaQuery, useCustomMediaQuery } from './hooks/media-query';
 
+/** 响应式布局组件 */
 export { ResponsiveList } from './components/layout/ResponsiveList';
 export {
   ResponsiveBox,

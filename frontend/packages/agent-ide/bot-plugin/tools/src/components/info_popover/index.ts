@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file info_popover 模块导出
+ */
 export { InfoPopover } from './info-popover';

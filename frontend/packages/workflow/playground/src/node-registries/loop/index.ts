@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 循环节点注册导出
+ * @description 循环节点 - 对数组进行迭代处理，内部包含子流程
+ */
+
+/** 循环节点注册配置 */
 export { LOOP_NODE_REGISTRY } from './node-registry';
+/** 循环节点内容组件 */
 export { LoopContent } from './node-content';

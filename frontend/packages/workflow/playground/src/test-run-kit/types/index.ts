@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file test-run-kit 类型定义导出
+ */
 import { type WorkflowNodeEntity } from '@flowgram-adapter/free-layout-editor';
 import { type IFormSchema } from '@coze-workflow/test-run-next';
 /**

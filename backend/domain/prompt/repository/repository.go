@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// Package repository 定义了提示词(Prompt)领域的仓储接口
+//
+// 本包提供提示词数据的持久化操作抽象
 package repository
 
 import (
@@ -26,13 +29,21 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/idgen"
 )
 
+// NewPromptRepo 创建提示词仓储实例
 func NewPromptRepo(db *gorm.DB, generator idgen.IDGenerator) PromptRepository {
 	return dal.NewPromptDAO(db, generator)
 }
 
+// PromptRepository 提示词仓储接口
+//
+// 定义提示词资源的数据访问方法
 type PromptRepository interface {
+	// CreatePromptResource 创建提示词资源
 	CreatePromptResource(ctx context.Context, do *entity.PromptResource) (int64, error)
+	// GetPromptResource 获取提示词资源
 	GetPromptResource(ctx context.Context, promptID int64) (*entity.PromptResource, error)
+	// UpdatePromptResource 更新提示词资源
 	UpdatePromptResource(ctx context.Context, promptID int64, name, description, promptText *string) error
+	// DeletePromptResource 删除提示词资源
 	DeletePromptResource(ctx context.Context, ID int64) error
 }

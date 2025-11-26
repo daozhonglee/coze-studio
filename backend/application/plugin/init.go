@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// Package plugin 定义了插件(Plugin)应用层服务
+//
+// 本包提供插件相关的应用层业务逻辑，包括：
+// - 插件的创建、更新、删除、发布
+// - 插件市场和商店功能
+// - 工具(Tool)的管理
+// - OAuth 认证配置
+//
+// 插件是扩展 AI Agent 能力的核心机制，支持自定义 API、工具函数等。
 package plugin
 
 import (
@@ -36,15 +45,24 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// ServiceComponents 插件应用服务依赖组件
 type ServiceComponents struct {
 	IDGen    idgen.IDGenerator
 	DB       *gorm.DB
 	OSS      storage.Storage
 	CacheCli cache.Cmdable
 	EventBus search.ResourceEventBus
-	UserSVC  user.User
+	// UserSVC 用户领域服务
+	UserSVC user.User
 }
 
+// InitService 初始化插件应用服务
+//
+// 完成以下初始化工作：
+// - 加载插件配置
+// - 创建仓储实例
+// - 创建领域服务
+// - 检查预置插件 ID 冲突
 func InitService(ctx context.Context, components *ServiceComponents) (*PluginApplicationService, error) {
 	err := conf.InitConfig(ctx)
 	if err != nil {
@@ -91,6 +109,9 @@ func InitService(ctx context.Context, components *ServiceComponents) (*PluginApp
 	return PluginApplicationSVC, nil
 }
 
+// checkIDExist 检查预置插件和工具 ID 是否与数据库冲突
+//
+// 如果配置文件中的插件/工具 ID 已存在于数据库，则返回错误
 func checkIDExist(ctx context.Context, pluginService service.PluginService) error {
 	pluginProducts := conf.GetAllPluginProducts()
 

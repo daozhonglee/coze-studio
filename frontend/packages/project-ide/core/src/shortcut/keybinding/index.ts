@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file shortcut 键绑定导出
+ */
 export { Keybinding } from './keybinding';
 export {
   KeybindingContribution,

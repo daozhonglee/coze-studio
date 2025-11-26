@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot debug button 模块导出
+ */
 export { BotDebugButton } from './bot-debug-button';

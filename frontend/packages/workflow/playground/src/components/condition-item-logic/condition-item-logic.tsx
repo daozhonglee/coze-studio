@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 条件逻辑选择组件
+ * @description 提供 AND/OR 逻辑选择功能，用于条件节点
+ */
+
 import { type FC } from 'react';
 
 import { ConditionLogic } from '@coze-workflow/base';
@@ -24,21 +29,27 @@ import { logicTextMap } from './constants';
 
 import styles from './condition-item-logic.module.less';
 
+/**
+ * 条件逻辑选择组件属性
+ */
 export interface ConditionItemLogicProps {
-  /**
-   * And Logic Or
-   */
+  /** 逻辑类型（AND 或 OR） */
   logic?: ConditionLogic;
-  /**
-   * And Or change the logic
-   */
+  /** 逻辑变更回调 */
   onChange: (logic: ConditionLogic) => void;
+  /** 是否显示连接线 */
   showStroke?: boolean;
   className?: string;
+  /** 是否只读 */
   readonly?: boolean;
   testId?: string;
 }
 
+/**
+ * 条件逻辑选择组件
+ *
+ * 用于在条件节点中选择多个条件之间的逻辑关系（AND/OR）
+ */
 export const ConditionItemLogic: FC<ConditionItemLogicProps> = props => {
   const {
     logic,

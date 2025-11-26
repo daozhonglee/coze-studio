@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// Package knowledge 定义了知识库(Knowledge)应用层服务
+//
+// 本包提供知识库相关的应用层业务逻辑，包括：
+// - 知识库的创建、更新、删除、查询
+// - 文档管理（上传、分片、重新分片）
+// - 表格数据处理
+// - 图片知识库管理
+//
+// 知识库是 AI Agent 获取外部知识的重要来源，支持多种数据格式。
 package knowledge
 
 import (
@@ -27,8 +36,12 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/consts"
 )
 
+// ServiceComponents 知识库应用服务依赖组件（复用领域层配置）
 type ServiceComponents = knowledgeImpl.KnowledgeSVCConfig
 
+// InitService 初始化知识库应用服务
+//
+// 创建领域服务并注册消息队列消费者
 func InitService(ctx context.Context, c *ServiceComponents, bus search.ResourceEventBus) (*KnowledgeApplicationService, error) {
 	knowledgeDomainSVC, knowledgeEventHandler := knowledgeImpl.NewKnowledgeSVC(c)
 

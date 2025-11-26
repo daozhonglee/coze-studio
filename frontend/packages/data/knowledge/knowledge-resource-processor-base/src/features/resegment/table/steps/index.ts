@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file steps 模块导出
+ */
 export { TableConfiguration } from './configuration';
 export { TablePreview } from './preview';
 export { TableProcessing } from './processing';

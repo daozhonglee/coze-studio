@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Package entity 定义了应用(APP)领域的核心实体（连接器相关）
+
 package entity
 
 import (
@@ -21,6 +23,11 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/consts"
 )
 
+// ConnectorIDWhiteList 允许的连接器ID白名单
+//
+// 当前支持的连接器：
+// - WebSDKConnectorID: Web SDK 连接器，用于网页嵌入
+// - APIConnectorID: API 连接器，用于 API 调用
 var ConnectorIDWhiteList = []int64{
 	consts.WebSDKConnectorID,
 	consts.APIConnectorID,

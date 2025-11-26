@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin Hooks 导出
+ */
 export { usePluginDetail } from './use-plugin-detail';
 export {
   usePluginNodeService,

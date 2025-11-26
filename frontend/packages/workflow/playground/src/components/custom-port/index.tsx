@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
+/**
+ * @file 自定义端口组件
+ * @description 支持展开/折叠的节点端口组件
+ */
+
 import { createPortal } from 'react-dom';
 import { type CSSProperties } from 'react';
 
 import { useNodeRenderData } from '../../hooks';
 
 /**
- * Custom port components, support expand/retract;
- * When a node is stowed, the port dom is proxied to the node-render layer to avoid being affected by display: none.
+ * 自定义端口组件
+ *
+ * 支持展开/折叠功能，当节点折叠时，端口 DOM 会被代理到 node-render 层
+ * 避免被 display: none 影响
  */
 export const CustomPort = ({
   portId,

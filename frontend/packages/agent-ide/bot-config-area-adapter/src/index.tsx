@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot-config-area-adapter 模块导出
+ * @description 提供 bot-config-area-adapter 相关功能
+ */
+
+
 export { BotConfigArea } from './bot-config-area';
 
 export { SingleAgentModelView } from './model-config-view/single-agent-model-view';

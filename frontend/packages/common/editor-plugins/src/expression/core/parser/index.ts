@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file parser 模块导出
+ */
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import type {

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file studio-open-chat 插件导出
+ */
 import { type PluginRegistryEntry } from '@coze-common/chat-area';
 
 import { type PluginBizContext } from './types/biz-context';

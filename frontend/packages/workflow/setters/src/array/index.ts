@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file array 模块导出
+ */
 export { Array } from './array';
 export type { ArrayOptions } from './array';

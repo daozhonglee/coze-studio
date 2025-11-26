@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// global_handler.go 全局回调处理器
+//
+// 本文件提供工作流执行的全局回调处理器访问接口。
+
 package service
 
 import (
@@ -22,6 +26,8 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/internal/execute"
 )
 
+// GetTokenCallbackHandler 获取 Token 统计回调处理器
+// 用于收集和统计工作流执行过程中的 Token 使用量
 func GetTokenCallbackHandler() callbacks.Handler {
 	return execute.GetTokenCallbackHandler()
 }

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/knowledge-resource-processor-base 模块导出
+ * @description 提供 knowledge/knowledge-resource-processor-base 相关功能
+ */
+
+
 // ! Notice prohibits the direct export of getUploadConfig, various third-party dependencies such as pdf.js will be loaded on the first screen of most pages
 // export { getUploadConfig } from './config';
 export {

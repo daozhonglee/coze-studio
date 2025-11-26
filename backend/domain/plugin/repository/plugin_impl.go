@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+// plugin_impl.go 插件仓储实现
+//
+// 本文件实现了 PluginRepository 接口，提供插件数据的持久化操作。
+// 通过 DAO 层访问数据库，处理草稿、在线和版本插件的数据。
+
 package repository
 
 import (
@@ -42,6 +47,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// pluginRepoImpl 插件仓储实现
 type pluginRepoImpl struct {
 	query *query.Query
 
@@ -54,11 +60,13 @@ type pluginRepoImpl struct {
 	toolVersionDAO *dal.ToolVersionDAO
 }
 
+// PluginRepoComponents 插件仓储依赖组件
 type PluginRepoComponents struct {
 	IDGen idgen.IDGenerator
 	DB    *gorm.DB
 }
 
+// NewPluginRepo 创建插件仓储实例
 func NewPluginRepo(components *PluginRepoComponents) PluginRepository {
 	return &pluginRepoImpl{
 		query:            query.Use(components.DB),

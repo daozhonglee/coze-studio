@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file search-filter 组件导出
+ */
 export { PluginFilter } from './plugin-filter';
 export { TemplateFilter } from './template-filter';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file clear conversation history 模块导出
+ */
 /** Clear session history node */
 
 export { CLEAR_CONTEXT_NODE_REGISTRY } from './node-registry';

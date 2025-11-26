@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-components-adapter 模块导出
+ * @description 提供 chat-components-adapter 相关功能
+ */
+
+
 export { ReceiveMessageBox } from './components/receive-message-box';

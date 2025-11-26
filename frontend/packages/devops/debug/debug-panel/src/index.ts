@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file debug/debug-panel 模块导出
+ * @description 提供 debug/debug-panel 相关功能
+ */
+
+
 import './main.css';
 
 import { DebugPanel } from './components/debug-panel';

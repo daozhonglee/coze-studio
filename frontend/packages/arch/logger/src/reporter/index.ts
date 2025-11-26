@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file reporter 模块导出
+ */
 import { type CommonLogOptions, LogAction, LogLevel } from '../types';
 import { SlardarReportClient, type SlardarInstance } from '../slardar';
 import { Logger } from '../logger';

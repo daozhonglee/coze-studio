@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src Hooks 导出
+ */
 export { useResourceList } from './use-resource-list';
 export { useOpenResource } from './use-open-resource';
 export { useResourceCopyDispatch } from './use-resource-copy-dispatch';

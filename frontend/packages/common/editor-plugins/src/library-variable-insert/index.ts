@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file library variable insert 模块导出
+ */
 export { ContentSearchPopover } from './content-search-popover';
 
 export type { ContentSearchPopoverProps } from './types';

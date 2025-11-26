@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file common 组件导出
+ */
 export { SelectFieldsButton } from './select-fields-button';

@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
+/**
+ * @file 环境变量适配器模块导出
+ * @description 提供环境变量的适配和配置管理
+ */
+
 import { features } from './features';
 import { configs } from './configs';
 import { base } from './base';
 
+/** 合并所有环境变量配置 */
 const envs = {
   ...base,
   ...configs,

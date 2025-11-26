@@ -14,5 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file global 模块导出
+ * @description 提供 global 相关功能
+ */
+
+
 export { removeGlobalLoading } from './utils/global-loading';
 export { useCreateBotAction } from './hooks/use-create-bot-action';

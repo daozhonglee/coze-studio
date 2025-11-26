@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file flowgram-adapter/common 模块导出
+ * @description 提供 flowgram-adapter/common 相关功能
+ */
+
+
 import 'reflect-metadata';
 export { useObserve, ReactiveState } from '@flowgram.ai/reactive';
 export {

@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 验证器导出
+ */
 export * from './encapsulate-validators-container-module';
 export { EncapsulateBaseValidator } from './encapsulate-base-validator';

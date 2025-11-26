@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file fixed-layout-editor-provider 预设配置导出
+ */
 export {
   type FixedLayoutPluginContext,
   type FixedLayoutProps,

@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
+// Package cache 定义了缓存基础设施层接口
+//
+// 本包提供缓存操作的抽象接口，包括：
+// - 字符串操作（Set/Get/Incr）
+// - 哈希操作（HSet/HGetAll）
+// - 通用操作（Del/Exists/Expire）
+// - 列表操作（LPush/LPop/LRange）
+// - 管道操作（Pipeline）
+//
+// 实现层在 impl/redis/ 目录下，使用 Redis 作为缓存后端
 package cache
 
 import (
@@ -21,12 +31,15 @@ import (
 	"time"
 )
 
+// Nil 缓存空值错误，用于判断键不存在的情况
 var Nil error
 
+// SetDefaultNilError 设置默认的空值错误
 func SetDefaultNilError(err error) {
 	Nil = err
 }
 
+// Cmdable 缓存命令接口，聚合所有缓存操作能力
 type Cmdable interface {
 	Pipeline() Pipeliner
 	StringCmdable
@@ -35,6 +48,7 @@ type Cmdable interface {
 	ListCmdable
 }
 
+// StringCmdable 字符串操作接口
 type StringCmdable interface {
 	Set(ctx context.Context, key string, value interface{}, expiration time.Duration) StatusCmd
 	Get(ctx context.Context, key string) StringCmd
@@ -42,26 +56,31 @@ type StringCmdable interface {
 	Incr(ctx context.Context, key string) IntCmd
 }
 
+// HashCmdable 哈希操作接口
 type HashCmdable interface {
 	HSet(ctx context.Context, key string, values ...interface{}) IntCmd
 	HGetAll(ctx context.Context, key string) MapStringStringCmd
 }
 
+// GenericCmdable 通用操作接口
 type GenericCmdable interface {
 	Del(ctx context.Context, keys ...string) IntCmd
 	Exists(ctx context.Context, keys ...string) IntCmd
 	Expire(ctx context.Context, key string, expiration time.Duration) BoolCmd
 }
 
+// Pipeliner 管道接口，支持批量执行命令
 type Pipeliner interface {
 	StatefulCmdable
 	Exec(ctx context.Context) ([]Cmder, error)
 }
 
+// StatefulCmdable 有状态命令接口
 type StatefulCmdable interface {
 	Cmdable
 }
 
+// ListCmdable 列表操作接口
 type ListCmdable interface {
 	LIndex(ctx context.Context, key string, index int64) StringCmd
 	LPush(ctx context.Context, key string, values ...interface{}) IntCmd

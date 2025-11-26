@@ -14,6 +14,20 @@
  * limitations under the License.
  */
 
+// convert_protocol.go 协议转换工具
+//
+// 本文件提供多种 API 协议格式到 OpenAPI 3.0 的转换功能：
+//   - cURL 命令转换
+//   - Postman Collection 转换
+//   - OpenAPI 2.0 (Swagger) 转换
+//   - 原始 JSON/YAML 解析
+//
+// 支持的输入格式：
+//   - cURL 命令行
+//   - Postman Collection v2.x
+//   - OpenAPI/Swagger 2.0
+//   - OpenAPI 3.0 JSON/YAML
+
 package openapi
 
 import (
@@ -42,6 +56,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// CurlToOpenapi3Doc 将 cURL 命令转换为 OpenAPI 3.0 文档
 func CurlToOpenapi3Doc(ctx context.Context, rawCURL string) (doc *model.Openapi3T, mf *model.PluginManifest, err error) {
 	curlReq, err := parseCURL(ctx, rawCURL)
 	if err != nil {

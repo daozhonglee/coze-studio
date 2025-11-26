@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// Package connector 定义了连接器(Connector)应用层服务
+//
+// 本包提供连接器相关的应用层业务逻辑，包括：
+// - 连接器列表查询
+// - 连接器配置管理
+//
+// 连接器是 Agent 发布的目标渠道（如 API、WebSDK 等）
 package connector
 
 import (
@@ -21,6 +28,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/storage"
 )
 
+// InitService 初始化连接器应用服务
 func InitService(tos storage.Storage) *ConnectorApplicationService {
 	connectorDomainSVC := connector.NewService(tos)
 	ConnectorApplicationSVC = New(connectorDomainSVC, tos)

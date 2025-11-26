@@ -14,21 +14,36 @@
  * limitations under the License.
  */
 
+/**
+ * @file 聊天历史轮数选择组件
+ * @description 用于配置 LLM 节点的历史对话轮数
+ */
+
 import React from 'react';
 
 import { I18n } from '@coze-arch/i18n';
 import { IconCozInfoCircle } from '@coze-arch/coze-design/icons';
 import { Tooltip, CozInputNumber } from '@coze-arch/coze-design';
 
+/**
+ * 聊天历史轮数组件属性
+ */
 export interface ChatHistoryRoundProps {
   value?: number;
   onChange?: (value: number) => void;
   readonly?: boolean;
 }
 
+/** 最小轮数 */
 const MIN_ROUND = 1;
+/** 最大轮数 */
 const MAX_ROUND = 30;
 
+/**
+ * 聊天历史轮数选择组件
+ *
+ * 用于配置 LLM 节点引用的历史对话轮数，范围 1-30 轮
+ */
 export const ChatHistoryRound = ({
   value,
   onChange,

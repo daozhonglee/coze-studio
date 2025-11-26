@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file types 状态存储导出
+ */
 import { type createPluginStore } from '@/store/plugin';
 
 export type BotPluginStore = ReturnType<typeof createPluginStore>;

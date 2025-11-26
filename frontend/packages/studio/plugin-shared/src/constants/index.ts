@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 常量定义导出
+ */
 import { I18n } from '@coze-arch/i18n';
 import { type TagColor } from '@coze-arch/bot-semi/Tag';
 import {

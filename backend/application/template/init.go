@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// Package template 定义了模板(Template)应用层服务
+//
+// 本包提供模板相关的应用层业务逻辑，包括：
+// - 模板的创建、更新、删除
+// - 官方推荐模板
+// - 模板分类管理
+//
+// 模板为用户提供预配置的 Agent 和工作流模板
 package template
 
 import (
@@ -26,12 +34,17 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/storage"
 )
 
+// ServiceComponents 模板应用服务依赖组件
 type ServiceComponents struct {
-	DB      *gorm.DB
-	IDGen   idgen.IDGenerator
+	// DB 数据库连接
+	DB *gorm.DB
+	// IDGen ID 生成器
+	IDGen idgen.IDGenerator
+	// Storage 对象存储服务
 	Storage storage.Storage
 }
 
+// InitService 初始化模板应用服务
 func InitService(ctx context.Context, components *ServiceComponents) *ApplicationService {
 
 	tRepo := repository.NewTemplateDAO(components.DB, components.IDGen)

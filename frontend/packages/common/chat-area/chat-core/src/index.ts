@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/chat-core 模块导出
+ * @description 提供 chat-area/chat-core 相关功能
+ */
+
+
 import ChatCore from './chat-sdk';
 export { TokenManager } from './credential';
 export {

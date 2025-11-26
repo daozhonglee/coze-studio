@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file batch 验证器导出
+ */
 export { BatchInputNameValidator } from './batch-input-name';
 export { BatchOutputNameValidator } from './batch-output-name';
 export { BatchInputValueValidator } from './batch-input-value';

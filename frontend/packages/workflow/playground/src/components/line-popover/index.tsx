@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 连线弹出框组件导出
+ * @description 提供连线相关的弹出提示功能
+ */
+
+/** 连线错误提示组件 */
 export { LineErrorTip } from './line-error-tip';
+/** 连线弹出框组件 */
 export { LinePopover } from './line-popover';

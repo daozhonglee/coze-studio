@@ -21,12 +21,19 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/consts"
 )
 
+// PublishConnectorIDWhiteList 发布渠道白名单
+//
+// 只有在白名单中的渠道才允许发布 Agent。
 var PublishConnectorIDWhiteList = map[int64]bool{
 	consts.WebSDKConnectorID: true,
 	consts.APIConnectorID:    true,
 }
 
+// PublishConnectorData 发布渠道数据
+//
+// 包含 Agent 可发布的渠道信息。
 type PublishConnectorData struct {
+	// PublishConnectorList 可发布的渠道列表
 	PublishConnectorList []*developer_api.PublishConnectorInfo
 	// SubmitBotMarketOption *developer_api.SubmitBotMarketOption
 	// LastSubmitConfig      *developer_api.SubmitBotMarketConfig
@@ -34,8 +41,14 @@ type PublishConnectorData struct {
 	// PublishTips           *developer_api.PublishTips
 }
 
+// PublishInfo Agent 发布信息
+//
+// 记录 Agent 的发布状态和时间。
 type PublishInfo struct {
-	AgentID                 int64
-	LastPublishTimeMS       int64
+	// AgentID Agent ID
+	AgentID int64
+	// LastPublishTimeMS 最后发布时间（毫秒）
+	LastPublishTimeMS int64
+	// ConnectorID2PublishTime 各渠道的发布时间映射
 	ConnectorID2PublishTime map[int64]int64
 }

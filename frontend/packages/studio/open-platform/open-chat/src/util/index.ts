@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file util 模块导出
+ */
 export { isPromiseLike } from './is-promise-like';
 export { catchStringify, catchParse, STRINGIFY_ERROR } from './json-handle';
 export {

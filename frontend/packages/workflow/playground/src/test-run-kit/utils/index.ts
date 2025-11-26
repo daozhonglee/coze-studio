@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file test-run-kit 工具函数导出
+ */
 export { generateParametersToProperties } from './generate-parameters-to-properties';
 export { generateFormNodeField } from './generate-form-node-field';
 export { generateFormSchema } from './generate-form-schema';

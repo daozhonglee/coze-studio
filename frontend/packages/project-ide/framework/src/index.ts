@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file framework 模块导出
+ * @description 提供 framework 相关功能
+ */
+
+
 /** pass-through sdk */
 export {
   IDEClient,

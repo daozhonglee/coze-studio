@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 复制按钮组件
+ * @description 提供一键复制功能，点击后显示成功状态
+ */
+
 import React, { useState } from 'react';
 
 import { I18n } from '@coze-arch/i18n';
@@ -21,11 +26,17 @@ import { IconCozCopy, IconCozCheckMark } from '@coze-arch/coze-design/icons';
 import { Tooltip } from '@coze-arch/coze-design';
 import { UIIconButton } from '@coze-arch/bot-semi';
 
+/** 成功状态默认显示时长（毫秒） */
 const DELAY = 4000;
 
 /**
- * Copy button, click and switch to success state
- * Default delay of 4 seconds
+ * 复制按钮组件
+ *
+ * 点击后将内容复制到剪贴板，并切换为成功状态
+ * 默认 4 秒后恢复初始状态
+ *
+ * @param value - 要复制的内容
+ * @param delayTime - 成功状态显示时长（可选）
  */
 export const CopyButton = ({
   value = '',

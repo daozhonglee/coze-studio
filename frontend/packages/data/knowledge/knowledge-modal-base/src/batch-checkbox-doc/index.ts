@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file batch checkbox doc 模块导出
+ */
 export { useBatchCheckboxDoc, type IBatchCheckboxDocProps } from './hooks';

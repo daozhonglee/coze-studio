@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file pages 模块导出
+ */
 export { PluginDetailPage } from './plugin-id';
 export { MockSetDetail } from './mock-set-detail';
 export { MockSetList } from './mock-set';

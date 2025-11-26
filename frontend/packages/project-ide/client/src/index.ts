@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file client 模块导出
+ * @description 提供 client 相关功能
+ */
+
+
 export * from '@coze-project-ide/core';
 
 export {

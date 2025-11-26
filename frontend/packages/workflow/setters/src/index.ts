@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工作流设置器模块导出
+ * @description 提供工作流节点表单的各种设置器组件
+ */
+
+/** 字符串设置器 */
 export { String } from './string';
 export type { StringOptions } from './string';
+/** 数字设置器 */
 export { Number } from './number';
 export type { NumberOptions } from './number';
+/** 文本设置器 */
 export { Text } from './text';
 export type { TextOptions } from './text';
+/** 布尔设置器 */
 export { Boolean } from './boolean';
+/** 枚举设置器 */
 export { Enum } from './enum';
 export type { EnumOptions } from './enum';
 export { Array } from './array';

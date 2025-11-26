@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 主题导出
+ */
 export { ThemeExtension } from './theme-extension';

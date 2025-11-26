@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+
+/**
+ * @file bot-config-area 模块导出
+ * @description 提供 bot-config-area 相关功能
+ */
 export { DialogueConfigView } from './model-config-view/dialogue-config-view';
 export { SingleAgentModelView } from './model-config-view/single-agent-model-view';
 export { MonetizeConfigButton } from './monetize-config/button';

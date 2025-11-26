@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file ai generate 模块导出
+ */
 export { AIGenerateButton } from './generate-button';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin 生命周期导出
+ */
 import { type LifeCycleContext } from '../types';
 import { SystemRenderLifeCycleService } from './render-life-cycle';
 import { SystemMessageLifeCycleService } from './message-life-cycle';

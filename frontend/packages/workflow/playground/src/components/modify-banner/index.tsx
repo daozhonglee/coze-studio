@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 修改提示横幅组件
+ * @description 当子工作流被其他工作流引用时显示修改提示
+ */
+
 import { isEmpty } from 'lodash-es';
 import classNames from 'classnames';
 import { I18n } from '@coze-arch/i18n';
@@ -24,6 +29,13 @@ import { useWorkflowReferences } from '../../hooks/use-workflow-references';
 import { useGlobalState } from '../../hooks';
 
 import styles from './index.module.less';
+
+/**
+ * 修改提示横幅组件
+ *
+ * 当当前工作流被其他工作流引用时，显示提示横幅
+ * 提醒用户修改可能影响其他工作流
+ */
 export const ModifyBanner = () => {
   const { readonly } = useGlobalState();
 

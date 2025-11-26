@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file protocol 模块导出
+ */
 export type {
   UploadBaseState,
   UploadBaseAction,

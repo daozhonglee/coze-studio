@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file dragdrop 模块导出
+ */
 import { DisposableDelegate, type IDisposable } from '../disposable';
 import { type MimeData } from '../coreutils';
 

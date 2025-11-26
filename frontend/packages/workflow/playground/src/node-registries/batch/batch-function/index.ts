@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file batch function 模块导出
+ */
 export { createBatchFunctionJSON } from './create-batch-function-json';
 export { createBatchFunctionLines } from './create-batch-function-lines';
 export { createBatchFunctionTemplateData } from './create-batch-function-template-data';

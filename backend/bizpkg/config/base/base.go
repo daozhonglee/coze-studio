@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// Package base 提供基础配置管理
+//
+// 本包管理系统级别的基础配置，包括：
+// - 管理员权限配置
+// - 用户注册配置
+// - 代码运行器配置
+// - 插件配置
 package base
 
 import (
@@ -32,20 +39,24 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/consts"
 )
 
+// baseConfigKey 基础配置的 KV 存储键
 const (
 	baseConfigKey = "basic_config"
 )
 
+// BaseConfig 基础配置管理器
 type BaseConfig struct {
 	base *kvstore.KVStore[config.BasicConfiguration]
 }
 
+// NewBaseConfig 创建基础配置管理器
 func NewBaseConfig(db *gorm.DB) *BaseConfig {
 	return &BaseConfig{
 		base: kvstore.New[config.BasicConfiguration](db),
 	}
 }
 
+// GetBaseConfig 获取基础配置
 func (c *BaseConfig) GetBaseConfig(ctx context.Context) (*config.BasicConfiguration, error) {
 	conf, err := c.base.Get(ctx, consts.BaseConfigNameSpace, baseConfigKey)
 	if err != nil {
@@ -59,10 +70,12 @@ func (c *BaseConfig) GetBaseConfig(ctx context.Context) (*config.BasicConfigurat
 	return conf, nil
 }
 
+// SaveBaseConfig 保存基础配置
 func (c *BaseConfig) SaveBaseConfig(ctx context.Context, v *config.BasicConfiguration) error {
 	return c.base.Save(ctx, consts.BaseConfigNameSpace, baseConfigKey, v)
 }
 
+// getBasicConfigurationFromOldConfig 从环境变量获取基础配置（旧版兼容）
 func getBasicConfigurationFromOldConfig() *config.BasicConfiguration {
 	disableUserRegistration := ternary.IFElse(os.Getenv(consts.DisableUserRegistration) == "true", true, false)
 	runnerTypeStr := os.Getenv(consts.CodeRunnerType)
@@ -98,6 +111,7 @@ func getBasicConfigurationFromOldConfig() *config.BasicConfiguration {
 	}
 }
 
+// GetServerHost 获取服务器主机地址
 func (c *BaseConfig) GetServerHost(ctx context.Context) (string, error) {
 	cfg, err := c.GetBaseConfig(ctx)
 	if err != nil {

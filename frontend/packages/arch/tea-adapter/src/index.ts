@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file Tea 埋点适配器模块导出
+ * @description 提供 Tea 埋点 SDK 的适配器实现
+ */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   type EVENT_NAMES,

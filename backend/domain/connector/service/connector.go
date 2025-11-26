@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// Package connector 定义了连接器(Connector)领域的服务层
+//
+// 本包提供连接器服务，用于管理应用的发布渠道
 package connector
 
 import (
@@ -22,8 +25,14 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/connector/entity"
 )
 
+// Connector 连接器服务接口
+//
+// 定义连接器的查询操作
 type Connector interface {
+	// List 列出所有可用连接器
 	List(ctx context.Context) ([]*entity.Connector, error)
+	// GetByIDs 批量获取连接器
 	GetByIDs(ctx context.Context, ids []int64) (map[int64]*entity.Connector, error)
+	// GetByID 获取单个连接器
 	GetByID(ctx context.Context, id int64) (*entity.Connector, error)
 }

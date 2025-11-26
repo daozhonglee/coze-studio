@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file image-preview 工具函数导出
+ */
 export { isInputAsOutput } from './is-input-as-output';
 
 export { isOutputsContainsImage } from './is-output-contains-image';

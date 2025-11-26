@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file evaluation panel 模块导出
+ */
 export { useEvaluationPanelStore } from './store';

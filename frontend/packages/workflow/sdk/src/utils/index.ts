@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 export { schemaExtractor } from './schema-extractor';
 export { nodeResultExtractor } from './node-result-extractor';

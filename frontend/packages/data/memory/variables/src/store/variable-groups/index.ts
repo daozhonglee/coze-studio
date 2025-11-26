@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file variable groups 模块导出
+ */
 export {
   useVariableGroupsStore,
   type VariableGroup,

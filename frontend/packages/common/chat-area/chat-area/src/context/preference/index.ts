@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file context 偏好设置导出
+ */
 import { useContext } from 'react';
 
 import { PreferenceContext } from './preference-context';

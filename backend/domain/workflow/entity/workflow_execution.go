@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// workflow_execution.go 工作流执行实体
+//
+// 本文件定义了工作流执行相关的实体：
+//   - WorkflowExecution: 工作流执行记录
+//   - NodeExecution: 节点执行记录
+//   - TokenUsage: Token 使用量统计
+//
+// 执行状态：Running -> Success/Failed/Cancel/Interrupted
+
 package entity
 
 import (
@@ -23,9 +32,14 @@ import (
 	workflowModel "github.com/coze-dev/coze-studio/backend/crossdomain/workflow/model"
 )
 
+// WorkflowExecuteStatus 工作流执行状态类型
 type WorkflowExecuteStatus workflow.WorkflowExeStatus
+
+// NodeExecuteStatus 节点执行状态类型
 type NodeExecuteStatus workflow.NodeExeStatus
 
+// WorkflowExecution 工作流执行记录
+// 记录一次工作流执行的完整信息，包含输入输出、状态、耗时等
 type WorkflowExecution struct {
 	ID         int64
 	WorkflowID int64
@@ -69,11 +83,14 @@ const (
 	NodeFailed  = NodeExecuteStatus(workflow.NodeExeStatus_Fail)
 )
 
+// TokenUsage Token 使用量
 type TokenUsage struct {
 	InputTokens  int64
 	OutputTokens int64
 }
 
+// NodeExecution 节点执行记录
+// 记录单个节点的执行信息，包含输入输出、状态、耗时等
 type NodeExecution struct {
 	ID        int64
 	ExecuteID int64
@@ -102,6 +119,7 @@ type NodeExecution struct {
 	Extra *NodeExtra
 }
 
+// NodeExtra 节点执行额外信息
 type NodeExtra struct {
 	CurrentSubExecuteID int64          `json:"current_sub_execute_id,omitempty"`
 	ResponseExtra       map[string]any `json:"response_extra,omitempty"`

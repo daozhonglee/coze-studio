@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// strategy.go 文档处理策略定义
+//
+// 本文件定义了知识库文档的解析和分片策略：
+//   - ParsingStrategy: 解析策略
+//   - ChunkingStrategy: 分片策略
+//   - RetrievalStrategy: 检索策略
+
 package entity
 
 import (
@@ -21,9 +28,11 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/document/parser"
 )
 
+// RetrievalStrategy 检索策略类型别名
 type RetrievalStrategy = model.RetrievalStrategy
 
-// ParsingStrategy for document parse before indexing
+// ParsingStrategy 文档解析策略
+// 定义文档在索引前的解析方式
 type ParsingStrategy struct {
 	ParsingType ParsingType `json:"parsing_type"` // parse type
 	// Doc
@@ -41,14 +50,18 @@ type ParsingStrategy struct {
 	// Image
 	CaptionType *parser.ImageAnnotationType `json:"caption_type"`
 }
+
+// ParsingType 解析类型
 type ParsingType int64
 
+// 解析类型常量
 const (
-	ParsingType_FastParsing     ParsingType = 0
-	ParsingType_AccurateParsing ParsingType = 1
+	ParsingType_FastParsing     ParsingType = 0 // 快速解析
+	ParsingType_AccurateParsing ParsingType = 1 // 精确解析
 )
 
-// ChunkingStrategy for document chunk before indexing
+// ChunkingStrategy 文档分片策略
+// 定义文档在索引前的分片方式
 type ChunkingStrategy struct {
 	ChunkType parser.ChunkType `json:"chunk_type"`
 	// custom chunk config

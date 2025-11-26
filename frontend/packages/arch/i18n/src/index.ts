@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 国际化模块导出
+ * @description 提供多语言支持，封装 i18next 实现类型安全的翻译函数
+ */
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-params */
 /* eslint-disable @typescript-eslint/no-explicit-any */

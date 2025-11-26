@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file expression-editor 模型导出
+ */
 import type { CompositionEventHandler, KeyboardEventHandler } from 'react';
 
 import { type ReactEditor, withReact } from 'slate-react';

@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// Package middleware 提供 HTTP 中间件
+//
+// 本包实现请求处理链中的中间件，包括：
+// - Session 认证
+// - 管理员权限校验
+// - OpenAPI 认证
+// - 请求日志
+// - 国际化
 package middleware
 
 import (
@@ -34,11 +42,15 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// noNeedSessionCheckPath 无需 Session 校验的路径白名单
 var noNeedSessionCheckPath = map[string]bool{
 	"/api/passport/web/email/login/":       true,
 	"/api/passport/web/email/register/v2/": true,
 }
 
+// SessionAuthMW Session 认证中间件
+//
+// 校验请求中的 Session Cookie，验证用户登录状态
 func SessionAuthMW() app.HandlerFunc {
 	return func(c context.Context, ctx *app.RequestContext) {
 		requestAuthType := ctx.GetInt32(RequestAuthTypeStr)
@@ -75,6 +87,9 @@ func SessionAuthMW() app.HandlerFunc {
 	}
 }
 
+// AdminAuthMW 管理员权限校验中间件
+//
+// 校验当前用户是否为管理员（通过邮箱白名单）
 func AdminAuthMW() app.HandlerFunc {
 	return func(c context.Context, ctx *app.RequestContext) {
 		session, ok := ctxcache.Get[*entity.Session](c, consts.SessionDataKeyInCtx)

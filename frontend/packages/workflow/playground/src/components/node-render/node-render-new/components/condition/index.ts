@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file condition 模块导出
+ */
 export { ConditionTag } from './condition-tag';
 export { LogicDisplay } from './logic-display';
 export { VariableDisplay } from './variable-display';

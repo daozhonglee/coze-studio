@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file focus button 模块导出
+ */
 export { FocusButton } from './focus-button';

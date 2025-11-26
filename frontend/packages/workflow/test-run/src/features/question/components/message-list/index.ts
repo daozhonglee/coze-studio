@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file message list 模块导出
+ */
 export { MessageList } from './message-list';

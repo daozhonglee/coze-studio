@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file auto-save 人设导出
+ */
 import { AutosaveManager } from '@coze-studio/autosave';
 
 import {

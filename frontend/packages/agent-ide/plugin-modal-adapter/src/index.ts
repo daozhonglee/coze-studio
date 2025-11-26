@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin-modal-adapter 模块导出
+ * @description 提供 plugin-modal-adapter 相关功能
+ */
+
+
 export {
   type PluginFilterProps,
   PluginFilter,

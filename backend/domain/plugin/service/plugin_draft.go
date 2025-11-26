@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// plugin_draft.go 草稿插件服务
+//
+// 本文件提供草稿插件的业务逻辑实现：
+//   - 草稿插件的创建、更新、删除
+//   - OpenAPI 文档处理
+//   - 插件信息验证
+//   - 搜索索引更新
+
 package service
 
 import (
@@ -46,6 +54,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// CreateDraftPlugin 创建草稿插件
 func (p *pluginServiceImpl) CreateDraftPlugin(ctx context.Context, req *dto.CreateDraftPluginRequest) (pluginID int64, err error) {
 	mf := model.NewDefaultPluginManifest()
 	mf.CommonParams = map[consts.HTTPParamLocation][]*common.CommonParamSchema{}

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file loop array name 模块导出
+ */
 /* eslint-disable  @typescript-eslint/naming-convention*/
 import { type Validate } from '@flowgram-adapter/free-layout-editor';
 import { get } from 'lodash-es';

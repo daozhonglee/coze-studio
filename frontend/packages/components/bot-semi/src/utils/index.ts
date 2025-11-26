@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 export { isMobile } from './env';

@@ -14,5 +14,10 @@
  * limitations under the License.
  */
 
+
+/**
+ * @file bot-audit-base 模块导出
+ * @description 提供 bot-audit-base 相关功能
+ */
 export { AuditErrorMessage } from './components/audit-error-message';
 export { UseBotInfoAuditorHook, BotInfoAuditFunc } from './interfaces';

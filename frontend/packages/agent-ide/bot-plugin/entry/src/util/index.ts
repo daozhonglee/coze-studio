@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file util 模块导出
+ */
 import { type PluginApi } from '@coze-arch/bot-api/developer_api';
 import { type PluginInfoProps } from '@coze-studio/plugin-shared';
 

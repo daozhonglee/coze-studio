@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file biz-workflow 模块导出
+ * @description 提供 biz-workflow 相关功能
+ */
+
+
 export {
   ResourceRefTooltip,
   usePluginDetail,

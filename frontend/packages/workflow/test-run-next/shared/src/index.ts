@@ -15,9 +15,14 @@
  */
 
 /**
- * TestRun Shared
+ * @file 测试运行共享模块导出
+ * @description 提供测试运行的共享组件和工具函数
  */
+
+/** JSON 编辑器组件 */
 export { JsonEditor } from './components/json-editor';
 
+/** 工具函数 */
 export { safeFormatJsonString, safeJsonParse, gotoDebugFlow } from './utils';
+/** 底部面板组件 */
 export { BottomPanel } from './components/bottom-panel';

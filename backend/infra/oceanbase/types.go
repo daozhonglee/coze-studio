@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
+// Package oceanbase 提供 OceanBase 向量数据库的客户端封装（类型定义）
 package oceanbase
 
+// VectorIndexConfig 向量索引配置
+//
+// 定义向量索引的参数，支持多种索引类型（HNSW、IVF）和距离度量方式
 type VectorIndexConfig struct {
 	Distance string
 	//Index types: hnsw, hnsw_sq, hnsw_bq, ivf_flat, ivf_sq8, ivf_pq
@@ -32,6 +36,9 @@ type VectorIndexConfig struct {
 	IVFM  *int
 }
 
+// VectorData 向量数据结构体
+//
+// 存储文档的向量化数据，包括原始内容、元数据和嵌入向量
 type VectorData struct {
 	ID             int64                  `json:"id"`
 	CollectionName string                 `json:"collection_name"`
@@ -41,6 +48,7 @@ type VectorData struct {
 	Embedding      []float64              `json:"embedding"`
 }
 
+// VectorSearchResult 向量搜索结果
 type VectorSearchResult struct {
 	ID       int64   `json:"id"`
 	Content  string  `json:"content"`
@@ -48,12 +56,14 @@ type VectorSearchResult struct {
 	Distance float64 `json:"distance"`
 }
 
+// VectorMemoryEstimate 向量内存估算
 type VectorMemoryEstimate struct {
 	MinMemoryMB         int `json:"min_memory_mb"`
 	RecommendedMemoryMB int `json:"recommended_memory_mb"`
 	EstimatedMemoryMB   int `json:"estimated_memory_mb"`
 }
 
+// 向量索引类型常量
 const (
 	VectorIndexTypeHNSW   = "hnsw"
 	VectorIndexTypeHNSWSQ = "hnsw_sq"
@@ -63,17 +73,22 @@ const (
 	VectorIndexTypeIVFPQ  = "ivf_pq"
 )
 
+// 向量距离度量类型常量
 const (
 	VectorDistanceTypeL2           = "l2"
 	VectorDistanceTypeCosine       = "cosine"
 	VectorDistanceTypeInnerProduct = "inner_product"
 )
 
+// 向量索引库类型常量
 const (
 	VectorLibTypeVSAG = "vsag"
 	VectorLibTypeOB   = "ob"
 )
 
+// DefaultVectorIndexConfig 获取默认向量索引配置
+//
+// 默认使用 HNSW 索引，余弦距离，适用于大多数场景
 func DefaultVectorIndexConfig() *VectorIndexConfig {
 	m := 16
 	efConstruction := 200
@@ -89,6 +104,9 @@ func DefaultVectorIndexConfig() *VectorIndexConfig {
 	}
 }
 
+// HNSWVectorIndexConfig 创建 HNSW 向量索引配置
+//
+// HNSW（Hierarchical Navigable Small World）是一种高效的近似最近邻搜索算法
 func HNSWVectorIndexConfig(distance string, m, efConstruction, efSearch int) *VectorIndexConfig {
 	return &VectorIndexConfig{
 		Distance:       distance,
@@ -100,6 +118,9 @@ func HNSWVectorIndexConfig(distance string, m, efConstruction, efSearch int) *Ve
 	}
 }
 
+// IVFVectorIndexConfig 创建 IVF 向量索引配置
+//
+// IVF（Inverted File）是一种基于聚类的向量索引算法
 func IVFVectorIndexConfig(distance string, nlist, nbits, m int) *VectorIndexConfig {
 	return &VectorIndexConfig{
 		Distance: distance,

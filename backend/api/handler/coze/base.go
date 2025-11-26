@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Package coze 提供 Coze API 的 HTTP 处理器（基础工具）
 package coze
 
 import (
@@ -24,10 +25,12 @@ import (
 	"github.com/coze-dev/coze-studio/backend/api/internal/httputil"
 )
 
+// invalidParamRequestResponse 返回参数无效的错误响应
 func invalidParamRequestResponse(c *app.RequestContext, errMsg string) {
 	httputil.BadRequest(c, errMsg)
 }
 
+// internalServerErrorResponse 返回服务器内部错误响应
 func internalServerErrorResponse(ctx context.Context, c *app.RequestContext, err error) {
 	httputil.InternalError(ctx, c, err)
 }

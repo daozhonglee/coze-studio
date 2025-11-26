@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 import { I18n } from '@coze-arch/i18n';
 import { type PluginApi } from '@coze-arch/bot-api/developer_api';
 import IconAllActive from '@coze-common/assets/svg/icon_all_active.svg';

@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 组件导出
+ */
 export { WorkflowTooltip } from './workflow-tooltip';
 export { WorkflowWidgetIcon } from './workflow-widget-icon';

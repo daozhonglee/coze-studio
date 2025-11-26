@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file styles 样式工具导出
+ */
 export { StylingService } from './styling-service';
 export {
   StylingContribution,

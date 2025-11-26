@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugins 事件回调导出
+ */
 import { type PluginRegistryEntry } from '@coze-common/chat-area';
 
 import { type PluginBizContext } from './types/biz-context';

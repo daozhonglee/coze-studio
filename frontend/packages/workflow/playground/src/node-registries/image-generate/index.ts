@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file image generate 模块导出
+ */
 export { IMAGE_GENERATE_NODE_REGISTRY } from './node-registry';

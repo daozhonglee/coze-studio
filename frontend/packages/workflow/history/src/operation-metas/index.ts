@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file operation metas 模块导出
+ */
 import { type OperationMeta } from '@flowgram-adapter/free-layout-editor';
 
 import { addNodeOperationMeta } from './add-node';

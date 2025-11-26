@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file 变量赋值节点注册导出
+ * @description 变量赋值节点 - 用于修改工作流中的可变变量
+ */
+
+/** 变量赋值节点注册配置 */
 export { VARIABLE_ASSIGN_NODE_REGISTRY } from './node-registry';

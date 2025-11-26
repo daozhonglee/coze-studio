@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot-icons 模块导出
+ * @description 提供 bot-icons 相关功能
+ */
+
+
 /* eslint-disable max-lines */
 import { IconFactory } from './factory';
 import { ReactComponent as SvtPlaygroundIcon } from './assets/playground-icon.svg';

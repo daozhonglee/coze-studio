@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file ignore message 模块导出
+ */
 import { VerboseMsgType } from '@coze-common/chat-core';
 
 import {

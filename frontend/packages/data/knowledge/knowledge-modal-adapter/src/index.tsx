@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/knowledge-modal-adapter 模块导出
+ * @description 提供 knowledge/knowledge-modal-adapter 相关功能
+ */
+
+
 export { useEditKnowledgeModal } from './edit-knowledge-modal';
 export { useKnowledgeListModal } from './knowledge-list-modal/scenes/base';
 export { useCreateKnowledgeModalV2 } from './create-knowledge-modal-v2/scenes/base';

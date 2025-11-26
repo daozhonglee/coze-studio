@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file PDF.js Shadow 模块导出
+ * @description 提供 PDF.js 的封装和类型导出
+ */
+
+/** PDF 文档操作 */
 export {
   getDocument,
   type PDFDocumentProxy,
@@ -21,6 +27,7 @@ export {
   type PageViewport,
 } from 'pdfjs-dist';
 
+/** PDF 文本内容类型 */
 export { type TextContent } from 'pdfjs-dist/types/src/display/text_layer';
 export { type TextItem } from 'pdfjs-dist/types/src/display/api';
 export { generatePdfAssetsUrl } from './generate-assets';

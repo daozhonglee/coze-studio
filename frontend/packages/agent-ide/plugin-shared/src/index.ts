@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin-shared 模块导出
+ * @description 提供 plugin-shared 相关功能
+ */
+
+
 export {
   MineActiveEnum,
   DEFAULT_PAGE,

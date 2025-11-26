@@ -14,15 +14,28 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工作流基础模块导出
+ * @description 提供工作流的基础类型、工具函数、API 和状态管理
+ */
+
 /* eslint-disable @coze-arch/no-batch-import-or-export */
+/** 工作流类型定义 */
 export * from './types';
 
+/** 工具函数 */
 export * from './utils';
 
+/** API 相关 */
 export * from './api';
+/** 状态管理 */
 export * from './store';
+/** 常量定义 */
 export * from './constants';
 
+/** React Hooks */
 export * from './hooks';
+/** 工作流节点实体 */
 export { WorkflowNode } from './entities';
+/** 工作流节点上下文 */
 export { WorkflowNodeContext } from './contexts';

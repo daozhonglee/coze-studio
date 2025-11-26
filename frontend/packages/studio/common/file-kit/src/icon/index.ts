@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file icon 模块导出
+ */
 export { default as ZipIcon } from '../assets/file/zip-success.svg';
 export { default as XlsxIcon } from '../assets/file/xlsx-success.svg';
 export { default as VideoIcon } from '../assets/file/video-success.svg';

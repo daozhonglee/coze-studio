@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file shared 类型定义导出
+ */
 export { type PromptContextInfo } from './prompt';

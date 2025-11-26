@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
+// workflow_config.go 工作流配置
+//
+// 本文件定义了工作流的配置结构，包括：
+//   - WorkflowConfig: 工作流整体配置
+//   - NodeOfCodeConfig: 代码节点配置
+
 package config
 
+// WorkflowConfig 工作流配置
 type WorkflowConfig struct {
 	NodeOfCodeConfig *NodeOfCodeConfig `yaml:"NodeOfCodeConfig"`
 }
@@ -24,6 +31,7 @@ func (w *WorkflowConfig) GetNodeOfCodeConfig() *NodeOfCodeConfig {
 	return w.NodeOfCodeConfig
 }
 
+// NodeOfCodeConfig 代码节点配置
 type NodeOfCodeConfig struct {
 	SupportThirdPartModules []string `yaml:"SupportThirdPartModules"`
 }

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file paste 验证器导出
+ */
 export { ApiNodeValidator } from './api-node-validator';
 export {
   NodeValidationContext,

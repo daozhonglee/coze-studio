@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file slardar 模块导出
+ */
 import { isNumber, isString, mapValues, omitBy, isNil } from 'lodash-es';
 import type { SlardarInstance } from '@coze-studio/slardar-interface';
 

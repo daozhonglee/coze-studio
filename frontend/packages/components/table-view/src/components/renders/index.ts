@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file components 渲染器导出
+ */
 export { TextRender } from './text-render';
 export { EditHeaderRender } from './edit-header-render';
 export { TagRender } from './tag-render';

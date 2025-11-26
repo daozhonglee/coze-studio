@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file start 工具函数导出
+ */
 export {
   getRoleInformationFromOutputs,
   getSceneFlowDefaultOutput,

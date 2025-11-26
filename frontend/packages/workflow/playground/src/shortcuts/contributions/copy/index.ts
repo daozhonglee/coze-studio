@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file copy 模块导出
+ */
 import { inject, injectable } from 'inversify';
 import { TransformData } from '@flowgram-adapter/free-layout-editor';
 import {

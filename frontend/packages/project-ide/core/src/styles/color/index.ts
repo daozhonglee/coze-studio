@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file styles 颜色导出
+ */
 export { ColorService } from './color-service';
 export { ColorContribution } from './color-contribution';
 export { colors } from './colors';

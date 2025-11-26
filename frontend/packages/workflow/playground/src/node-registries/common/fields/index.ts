@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file common 字段定义导出
+ */
 export { InputsParametersField } from './inputs-parameters-field';
 export { createInputsValidator } from './inputs-parameters-field/create-inputs-validator';
 export { InputsField } from './inputs-parameters-field/inputs-field';

@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file variable support 模块导出
+ */
 export { VariableExtension } from './variable-extension';
 export { getIconSvgString } from './utils';

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file autosave 模块导出
+ * @description 提供 autosave 相关功能
+ */
+
+
 export { AutosaveManager } from './core/manager';
 export {
   DebounceTime,

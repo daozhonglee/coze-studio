@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file validate 模块导出
+ */
 import { isNumber } from 'lodash-es';
 import { I18n } from '@coze-arch/i18n';
 import { InputComponentType } from '@coze-arch/bot-api/connector_api';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot_edit 模块导出
+ */
 export { CreateFormPluginModal } from './bot-form-edit';
 export { CreateCodePluginModal } from './bot-code-edit';
 

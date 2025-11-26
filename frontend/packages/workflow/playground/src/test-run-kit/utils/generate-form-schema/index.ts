@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file generate form schema 模块导出
+ */
 export { getTestsetField } from './testset-field';

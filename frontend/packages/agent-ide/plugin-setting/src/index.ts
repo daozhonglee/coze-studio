@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin-setting 模块导出
+ * @description 提供 plugin-setting 相关功能
+ */
+
+
 export {
   PluginSettingEnter,
   type IAgentSkillPluginSettingModalProps,

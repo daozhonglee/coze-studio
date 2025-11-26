@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// Package taskgroup 提供并发任务组工具
+//
+// 本包提供并发任务执行能力：
+// - 可中断任务组（一个失败则全部停止）
+// - 不可中断任务组（一个失败继续执行其他）
+// - 并发数量限制
+// - panic 恢复
 package taskgroup
 
 import (
@@ -25,18 +32,22 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/logs"
 )
 
+// TaskGroup 任务组接口
 type TaskGroup interface {
 	Go(f func() error)
 	Wait() error
 }
 
+// taskGroup 任务组实现
 type taskGroup struct {
 	errGroup    *errgroup.Group
 	ctx         context.Context
 	execAllTask atomic.Bool
 }
 
-// NewTaskGroup if one task return error, the rest task will stop
+// NewTaskGroup 创建可中断任务组
+//
+// 一个任务失败则其他任务停止执行
 func NewTaskGroup(ctx context.Context, concurrentCount int) TaskGroup {
 	t := &taskGroup{}
 	t.errGroup, t.ctx = errgroup.WithContext(ctx)
@@ -46,7 +57,9 @@ func NewTaskGroup(ctx context.Context, concurrentCount int) TaskGroup {
 	return t
 }
 
-// NewUninterruptibleTaskGroup if one task return error, the rest task will continue
+// NewUninterruptibleTaskGroup 创建不可中断任务组
+//
+// 一个任务失败其他任务继续执行
 func NewUninterruptibleTaskGroup(ctx context.Context, concurrentCount int) TaskGroup {
 	t := &taskGroup{}
 	t.errGroup, t.ctx = errgroup.WithContext(ctx)
@@ -56,6 +69,7 @@ func NewUninterruptibleTaskGroup(ctx context.Context, concurrentCount int) TaskG
 	return t
 }
 
+// Go 添加任务到任务组
 func (t *taskGroup) Go(f func() error) {
 	t.errGroup.Go(func() error {
 		defer func() {
@@ -76,6 +90,7 @@ func (t *taskGroup) Go(f func() error) {
 	})
 }
 
+// Wait 等待所有任务完成
 func (t *taskGroup) Wait() error {
 	return t.errGroup.Wait()
 }

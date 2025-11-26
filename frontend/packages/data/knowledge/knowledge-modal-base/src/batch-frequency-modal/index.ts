@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file batch frequency modal 模块导出
+ */
 export {
   useBatchFrequencyModal,
   type TBatchFrequencyModalProps,

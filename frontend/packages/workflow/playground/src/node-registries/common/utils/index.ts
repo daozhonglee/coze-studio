@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file common 工具函数导出
+ */
 export { getInputTypeBase, getInputType } from './get-input-type';
 export { getCustomVal, getCustomSetterProps } from './custom-setter-helpers';

@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 代码编辑器适配器模块导出
+ * @description 提供工作流中的代码编辑器组件
+ */
+
 import { themes } from '@coze-editor/editor/preset-code';
 
 import { convertSchema } from './utils';
@@ -22,6 +27,7 @@ import { createDarkTheme } from './components/theme';
 import { Previewer } from './components/previewer';
 import { BizEditor as Editor } from './components/editor';
 
+/** 注册代码编辑器深色主题 */
 themes.register('code-editor-dark', createDarkTheme());
 
 export {

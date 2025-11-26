@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file input string 模块导出
+ */
 export { InputString, type InputStringProps } from './input';

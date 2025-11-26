@@ -18,6 +18,12 @@ package entity
 
 import model "github.com/coze-dev/coze-studio/backend/crossdomain/agent/model"
 
+// AgentEvent Agent 事件，复用 crossdomain 中的定义
+//
+// 用于流式输出时通知客户端 Agent 的处理状态和结果。
 type AgentEvent = model.AgentEvent
 
+// InterruptEventType 中断事件类型，复用 crossdomain 中的定义
+//
+// 表示 Agent 执行过程中需要暂停的事件类型。
 type InterruptEventType = model.InterruptEventType

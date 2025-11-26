@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+// workflow_reference.go 工作流引用关系实体
+//
+// 本文件定义了工作流之间的引用关系实体。
+// 用于追踪子工作流、工作流工具等引用关系。
+
 package entity
 
 import (
@@ -22,6 +27,8 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/entity/vo"
 )
 
+// WorkflowReference 工作流引用关系
+// 记录工作流之间的引用/被引用关系
 type WorkflowReference struct {
 	ID int64
 	WorkflowReferenceKey
@@ -29,6 +36,7 @@ type WorkflowReference struct {
 	Enabled   bool
 }
 
+// WorkflowReferenceKey 工作流引用关系键
 type WorkflowReferenceKey struct {
 	ReferredID  int64
 	ReferringID int64

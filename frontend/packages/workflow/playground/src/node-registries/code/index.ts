@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 代码节点注册导出
+ * @description 代码节点 - 执行自定义 Python/JavaScript 代码
+ */
+
+/** 代码节点注册配置 */
 export { CODE_NODE_REGISTRY } from './node-registry';
+/** 代码节点内容组件 */
 export { CodeContent } from './node-content';

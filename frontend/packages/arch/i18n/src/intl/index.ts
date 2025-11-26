@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file intl 模块导出
+ */
 export { type IIntlInitOptions, IntlModuleType, IntlModule } from './types';
 import Intl, { IntlInstance } from './i18n-impl';
 

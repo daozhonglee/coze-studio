@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 快捷键导出
+ */
 export { QueryShortcut } from './query-shortcut';
 export { TemplateShortcut } from './template-shortcut';
 export { LoadMore } from './load-more';

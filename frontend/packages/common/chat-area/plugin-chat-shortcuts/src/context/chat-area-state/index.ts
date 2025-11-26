@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat area state 模块导出
+ */
 import { useContext } from 'react';
 
 import { ChatAreaStateContext } from './context';

@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file Playground 适配器模块导出
+ * @description 提供工作流 Playground 页面组件
+ */
+
+/** 工作流页面组件 */
 export { WorkflowPage } from './page';

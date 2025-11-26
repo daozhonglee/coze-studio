@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file report events 模块导出
+ */
 export enum ReportEventNames {
   /** Original name: chat_area_tts_voice_ws */
   TtsVoiceWs = 'chat_answer_action_start_TTS',

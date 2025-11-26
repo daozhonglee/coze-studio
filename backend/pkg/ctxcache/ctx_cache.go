@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// Package ctxcache 提供上下文缓存工具
+//
+// 本包提供基于 context 的缓存能力，用于在请求生命周期内缓存数据
 package ctxcache
 
 import (
@@ -21,12 +24,15 @@ import (
 	"sync"
 )
 
+// ctxCacheKey 上下文缓存键
 type ctxCacheKey struct{}
 
+// Init 初始化上下文缓存
 func Init(ctx context.Context) context.Context {
 	return context.WithValue(ctx, ctxCacheKey{}, new(sync.Map))
 }
 
+// Get 从上下文缓存获取值
 func Get[T any](ctx context.Context, key any) (value T, ok bool) {
 	var zero T
 
@@ -47,12 +53,14 @@ func Get[T any](ctx context.Context, key any) (value T, ok bool) {
 	return zero, false
 }
 
+// Store 向上下文缓存存储值
 func Store(ctx context.Context, key any, obj any) {
 	if cacheMap, ok := ctx.Value(ctxCacheKey{}).(*sync.Map); ok {
 		cacheMap.Store(key, obj)
 	}
 }
 
+// HasKey 检查上下文缓存中是否存在键
 func HasKey(ctx context.Context, key any) bool {
 	if cacheMap, ok := ctx.Value(ctxCacheKey{}).(*sync.Map); ok {
 		_, ok := cacheMap.Load(key)

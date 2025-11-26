@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file library insert 模块导出
+ */
 export { LibraryBlockWidget } from './library-block-widget';
 export { LibrarySearchPopover } from './library-search-popover';
 export {

@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file text-knowledge-workspace Hooks 导出
+ */
+/**
  * Export all hooks by function
  */
 

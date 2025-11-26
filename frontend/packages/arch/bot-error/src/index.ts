@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
+/**
+ * @file 错误处理模块导出
+ * @description 提供自定义错误类型、错误捕获 Hooks 和路由错误处理
+ */
+
+/** 自定义错误类和判断函数 */
 export { CustomError, isCustomError } from './custom-error';
 
+/** 错误捕获 Hook */
 export { useErrorCatch } from './use-error-catch';
 
+/** Chunk 加载错误判断 */
 export { isChunkError } from './source-error';
 
+/** 路由错误捕获 Hook */
 export { useRouteErrorCatch } from './use-route-error-catch';

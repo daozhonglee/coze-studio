@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file account-ui-adapter 模块导出
+ * @description 提供 account-ui-adapter 相关功能
+ */
+
+
 export {
   useLogout,
   RequireAuthContainer,

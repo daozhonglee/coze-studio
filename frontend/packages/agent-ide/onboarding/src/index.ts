@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
+/**
+ * @file 引导功能模块导出
+ * @description 提供 Agent 开场白和建议问题的配置功能
+ */
+
+/** 引导 Markdown 弹窗组件 */
 export {
   OnboardingMarkdownModal,
   type OnboardingMarkdownModalProps,
 } from './components/onboarding-markdown-modal';
 
+/** 引导建议工具函数 */
 export {
   getImmerUpdateOnboardingSuggestion,
   getOnboardingSuggestionAfterDeleteById,

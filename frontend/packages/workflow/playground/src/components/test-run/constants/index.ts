@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 测试运行常量导出
+ * @description 定义测试运行相关的常量和枚举
+ */
+
 export {
   TestFormType,
   FieldName,
@@ -33,16 +38,19 @@ export {
   INPUT_JSON_FIELD_TEMPLATE,
 } from './test-form';
 
-/** Test set connector ID is a fixed string */
+/** 测试集连接器 ID（固定字符串） */
 export const TESTSET_CONNECTOR_ID = '10000';
 
-/** This string has no meaning, it is only a marker and cannot be used to determine the start node */
+/** 起始节点 ID 标记（仅作标识，不用于判断起始节点） */
 export const START_NODE_ID = '100001';
 
 /*******************************************************************************
- * Log related constants
+ * 日志相关常量
  */
 
+/**
+ * 结束节点输出方案
+ */
 export enum EndTerminalPlan {
   Variable = 1,
   Text = 2,

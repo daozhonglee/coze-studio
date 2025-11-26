@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file premium/premium-components-adapter 模块导出
+ * @description 提供 premium/premium-components-adapter 相关功能
+ */
+
+
 export {
   useInitOpenPremiumManage,
   usePremiumManageModal,

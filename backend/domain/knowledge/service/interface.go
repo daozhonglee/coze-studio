@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+// interface.go 知识库服务接口定义
+//
+// 本文件定义了知识库领域服务的核心接口 Knowledge。
+// 提供知识库、文档、分片的完整生命周期管理和检索功能。
+
 package service
 
 import (
@@ -29,6 +34,13 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/lang/sets"
 )
 
+// Knowledge 知识库服务接口
+//
+// 提供知识库的核心业务功能：
+//   - 知识库的增删改查和复制
+//   - 文档的创建、更新、删除和重切分
+//   - 分片的管理和检索
+//   - 文档审核功能
 type Knowledge interface {
 	CreateKnowledge(ctx context.Context, request *CreateKnowledgeRequest) (response *CreateKnowledgeResponse, err error)
 	UpdateKnowledge(ctx context.Context, request *UpdateKnowledgeRequest) error

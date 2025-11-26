@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 export { generateField } from './generate-field';
 export { generateFieldValidator } from './generate-field-validator';
 export { isFormSchemaPropertyEmpty } from './is-property-empty';

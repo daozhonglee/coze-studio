@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file components 工具函数导出
+ */
 export { feedbackStatus2ValidateStatus } from './semi-ui';

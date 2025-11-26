@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file workflow-header 组件导出
+ */
 export { SubmitButton } from './submit-button';
 export { HistoryButton } from './history-button';
 export { DuplicateButton } from './duplicate-button';

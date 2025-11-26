@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 文件图标组件
+ * @description 根据文件类型显示对应的图标或预览图
+ */
+
 import { type CSSProperties } from 'react';
 
 import { IconCozFileImage } from '@coze-arch/coze-design/illustrations';
@@ -29,6 +34,9 @@ import { getIconByExtension } from './get-icon-by-extension';
 
 import styles from './index.module.less';
 
+/**
+ * 文件图标组件属性
+ */
 interface FileIconProps {
   file: {
     name: string;
@@ -41,6 +49,14 @@ interface FileIconProps {
   hideLoadingIcon?: boolean;
 }
 
+/**
+ * 文件图标组件
+ *
+ * 根据文件类型显示对应的图标：
+ * - 上传中：显示加载动画
+ * - 图片类型：显示预览图
+ * - 其他类型：显示对应文件类型图标
+ */
 export const FileIcon = (props: FileIconProps) => {
   const { size = 20, file, iconStyle, loadingStyle, hideLoadingIcon } = props;
 

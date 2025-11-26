@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file light 模块导出
+ */
 export {
   CalypsoLite as MdBoxLight,
   CalypsoLiteProps as MdBoxLightProps,

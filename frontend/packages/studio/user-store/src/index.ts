@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file user-store 模块导出
+ * @description 提供 user-store 相关功能
+ */
+
+
 import {
   type UserAuthInfo,
   type UserLabel,

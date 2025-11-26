@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file render 模块导出
+ */
 export * from './types';
 export * from './encapsulate-render-container-module';
 export { EncapsulatePanel } from './encapsulate-panel';

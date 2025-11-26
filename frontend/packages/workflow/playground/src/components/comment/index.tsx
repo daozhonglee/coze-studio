@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 评论组件导出
+ * @description 提供工作流节点评论功能的组件和解析器
+ */
+
+/** 评论渲染组件 */
 export { CommentRender } from './components';
+/** 评论编辑器解析器 */
 export { CommentEditorParser } from './parsers';

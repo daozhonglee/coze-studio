@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file 文件上传 Hook 导出
+ * @description 提供文件上传功能和相关工具函数
+ */
+
+/** 文件上传 Hook 和配置类型 */
 export { useUpload, UploadConfig } from './use-upload';
+/** 文件处理工具函数 */
 export {
   getAccept,
   getFileExtension,
@@ -22,6 +29,8 @@ export {
   getImageSize,
   formatBytes,
 } from './utils';
+/** 可预览的图片类型常量 */
 export { PREVIEW_IMAGE_TYPE } from './constant';
 
+/** 文件项类型和状态枚举 */
 export { FileItem, FileItemStatus } from './types';

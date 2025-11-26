@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file layer 模块导出
+ */
 export * from './lines-layer';
 export * from './background-layer';
 export * from './hover-layer';

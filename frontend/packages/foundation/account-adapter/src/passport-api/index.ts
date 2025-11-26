@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src Passport API 导出
+ */
 import { type UserUpdateProfileRequest } from '@coze-studio/api-schema/passport';
 import { passport } from '@coze-studio/api-schema';
 import { resetUserStore, type UserInfo } from '@coze-foundation/account-base';

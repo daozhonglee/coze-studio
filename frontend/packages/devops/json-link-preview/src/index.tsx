@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file json-link-preview 模块导出
+ * @description 提供 json-link-preview 相关功能
+ */
+
+
 import { Component, type ReactNode } from 'react';
 
 import { isEmpty, last } from 'lodash-es';

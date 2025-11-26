@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file prompt-kit/main 模块导出
+ * @description 提供 prompt-kit/main 相关功能
+ */
+
+
 import '@coze-arch/bot-typings';
 import '@coze-arch/bot-env/typings';
 export { usePromptLibraryModal } from './prompt-library';

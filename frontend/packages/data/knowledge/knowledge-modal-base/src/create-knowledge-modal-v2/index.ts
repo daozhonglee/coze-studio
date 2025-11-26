@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file create knowledge modal v2 模块导出
+ */
 export {
   CozeKnowledgeAddTypeContent,
   type CozeKnowledgeAddTypeContentFormData,

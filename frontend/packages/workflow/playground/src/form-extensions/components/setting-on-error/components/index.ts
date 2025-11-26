@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file setting-on-error 组件导出
+ */
 export { ErrorForm } from './error-form';

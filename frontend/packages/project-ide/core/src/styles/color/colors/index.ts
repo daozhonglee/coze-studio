@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file color 颜色定义导出
+ */
 import { viewColors } from './view-colors';
 import * as baseColors from './base-colors';
 

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Package middleware 提供 HTTP 中间件（请求检查）
 package middleware
 
 import (
@@ -23,16 +24,22 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
+// RequestAuthTypeStr 请求认证类型的上下文键
 const RequestAuthTypeStr = "RequestAuthTypeStr"
 
+// RequestAuthType 请求认证类型
 type RequestAuthType = int32
 
+// 请求认证类型常量
 const (
-	RequestAuthTypeWebAPI     RequestAuthType = 0
-	RequestAuthTypeOpenAPI    RequestAuthType = 1
-	RequestAuthTypeStaticFile RequestAuthType = 2
+	RequestAuthTypeWebAPI     RequestAuthType = 0 // Web API（Session 认证）
+	RequestAuthTypeOpenAPI    RequestAuthType = 1 // OpenAPI（Token 认证）
+	RequestAuthTypeStaticFile RequestAuthType = 2 // 静态文件（无需认证）
 )
 
+// RequestInspectorMW 请求检查中间件
+//
+// 分析请求路径，确定认证类型（Web API / OpenAPI / 静态文件）
 func RequestInspectorMW() app.HandlerFunc {
 	return func(c context.Context, ctx *app.RequestContext) {
 		authType := RequestAuthTypeWebAPI // default is web api, session auth

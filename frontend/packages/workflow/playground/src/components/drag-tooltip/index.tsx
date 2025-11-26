@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 拖拽提示组件
+ * @description 节点拖拽时显示的提示信息，指示是否可以放置
+ */
+
 import { useDragLayer } from 'react-dnd';
 import { useMemo, useRef } from 'react';
 
@@ -29,6 +34,13 @@ import { DND_ACCEPT_KEY } from '../../constants';
 
 import styles from './index.module.less';
 
+/**
+ * 拖拽提示组件
+ *
+ * 在节点拖拽过程中显示提示信息：
+ * - 绿色勾号：允许放置
+ * - 橙色感叹号：不允许放置，并显示原因
+ */
 export const DragTooltip = () => {
   const dragService = useService<WorkflowCustomDragService>(
     WorkflowCustomDragService,

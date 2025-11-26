@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file account-adapter 模块导出
+ * @description 提供 account-adapter 相关功能
+ */
+
+
 export {
   getUserInfo,
   getLoginStatus,

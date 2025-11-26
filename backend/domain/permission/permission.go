@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+// Package permission 定义了权限(Permission)领域的服务层
+//
+// 本包提供权限验证服务，支持：
+// - 资源操作权限检查
+// - Agent 操作权限检查
+// - 工作空间访问权限检查
 package permission
 
 import (
@@ -26,6 +32,7 @@ type ResourceIdentifier struct {
 	Action Action
 }
 
+// ActionAndResource 操作和资源组合
 type ActionAndResource struct {
 	Action             Action
 	ResourceIdentifier ResourceIdentifier
@@ -40,6 +47,9 @@ type CheckAuthzResult struct {
 	Decision Decision
 }
 
+// Permission 权限服务接口
+//
+// 定义各类权限检查操作
 type Permission interface {
 	CheckAuthz(ctx context.Context, req *CheckAuthzData) (*CheckAuthzResult, error)
 }

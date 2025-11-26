@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file assets 模块导出
+ */
 export { default as pluginIcon } from './plugin.svg';
 export { default as workflowIcon } from './workflow.svg';
 export { default as imageflowIcon } from './imageflow.svg';

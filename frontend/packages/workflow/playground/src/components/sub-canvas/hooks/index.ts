@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 子画布 Hooks 导出
+ * @description 提供子画布相关的 React Hooks
+ */
+
+/** 获取父节点的 Hook */
 export { useParentNode } from './use-parent-node';
+/** 获取子画布渲染属性的 Hook */
 export { useSubCanvasRenderProps } from './use-render-props';

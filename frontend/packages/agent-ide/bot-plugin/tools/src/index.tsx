@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot-plugin/tools 模块导出
+ * @description 提供 bot-plugin/tools 相关功能
+ */
+
+
 // export { useViewExample } './hooks/example/use-view-example.tsx';
 // @ts-expect-error -- linter-disable-autofix
 export { useEditExample } from './hooks/example/use-edit-example.tsx';

@@ -14,5 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file global-store 模块导出
+ * @description 提供 global-store 相关功能
+ */
+
+
 // stores
 export { useCommonConfigStore } from './stores/common-config-store';

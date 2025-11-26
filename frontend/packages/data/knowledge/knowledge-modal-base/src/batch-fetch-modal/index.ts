@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file batch fetch modal 模块导出
+ */
 export { useBatchFetchModal, type TBatchFetchModalProps } from './hooks';

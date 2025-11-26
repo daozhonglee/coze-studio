@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 常量定义导出
+ */
 // The length of the diff table indent
 // Diff table sub-node indented length
 export const DIFF_TABLE_INDENT_LENGTH = 20;

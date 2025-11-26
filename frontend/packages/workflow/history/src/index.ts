@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工作流历史记录模块导出
+ * @description 提供工作流编辑历史记录和撤销/重做功能
+ */
+
+/** 历史记录容器模块 */
 export { WorkflowHistoryContainerModule } from './workflow-history-container-module';
+/** 清除历史记录 Hook */
 export { useClearHistory } from './hooks/use-clear-history';
+/** 历史记录配置 */
 export { WorkflowHistoryConfig } from './workflow-history-config';
+/** 操作上报插件 */
 export { createOperationReportPlugin } from './create-operation-report-plugin';
 
+/** 历史服务和插件 */
 export {
   HistoryService,
   createFreeHistoryPlugin,

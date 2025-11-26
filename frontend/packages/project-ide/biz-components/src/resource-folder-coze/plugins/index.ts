@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file resource-folder-coze 插件导出
+ */
 export { createResourceFolderPlugin } from './create-resource-folder-plugin';
 export { CustomResourceFolderShortcutService } from './shortcut-service';

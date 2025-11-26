@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+// from_node.go 从单节点创建 WorkflowSchema
+//
+// 本文件提供从画布中指定节点创建 WorkflowSchema 的功能。
+// 主要用于节点调试场景，允许单独执行某个节点而无需完整工作流。
+
 package adaptor
 
 import (
@@ -29,6 +34,19 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/internal/schema"
 )
 
+// WorkflowSchemaFromNode 从画布中指定节点创建 WorkflowSchema
+//
+// 用于节点调试场景，创建一个仅包含指定节点的最小 Schema。
+// 支持处理批量模式节点和复合节点。
+//
+// 参数：
+//   - ctx: 上下文
+//   - c: 画布数据
+//   - nodeID: 目标节点 ID
+//
+// 返回值：
+//   - *schema.WorkflowSchema: 构建的工作流 Schema
+//   - error: 构建错误
 func WorkflowSchemaFromNode(ctx context.Context, c *vo.Canvas, nodeID string) (
 	*schema.WorkflowSchema, error) {
 	var (

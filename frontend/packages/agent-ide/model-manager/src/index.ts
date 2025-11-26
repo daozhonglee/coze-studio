@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
+/**
+ * @file 模型管理模块导出
+ * @description 提供 AI 模型选择、配置和表单管理功能
+ */
+
+/** 模型配置表单组件 */
 export { ModelForm, ModelFormProps } from './components/model-form';
 
+/** 模型数据转换工具 */
 export { convertFormValueToModelInfo } from './utils/model/convert-form-value-to-model-info';
 export { convertModelInfoToFlatObject } from './utils/model/convert-model-info-to-flat-object';
 

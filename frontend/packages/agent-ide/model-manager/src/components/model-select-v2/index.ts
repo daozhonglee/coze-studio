@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file model select v2 模块导出
+ */
 export { ModelOption, ModelOptionProps } from './model-option';
 export { ModelOptionGroup, ModelOptionGroupProps } from './model-option-group';
 export { ModelOptionThumb } from './model-option-thumb';

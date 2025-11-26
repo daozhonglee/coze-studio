@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file runtime 模块导出
+ */
 class Env {
   get isPPE() {
     return IS_PROD;

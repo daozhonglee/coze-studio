@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Package middleware 提供 HTTP 中间件（OpenAPI 认证）
 package middleware
 
 import (
@@ -35,8 +36,10 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// HeaderAuthorizationKey Authorization 请求头名称
 const HeaderAuthorizationKey = "Authorization"
 
+// needAuthPath 需要 OpenAPI 认证的路径
 var needAuthPath = map[string]bool{
 	"/v3/chat":                            true,
 	"/v1/conversations":                   true,

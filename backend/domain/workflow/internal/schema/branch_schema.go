@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
+// branch_schema.go 分支 Schema 定义
+//
+// 本文件定义了工作流分支逻辑的数据结构和构建方法。
+// 分支用于实现条件分支、异常处理分支等执行路径的选择。
+//
+// 主要功能：
+//   - 定义分支 Schema 数据结构
+//   - 从连接关系构建分支映射
+//   - 提供异常分支和条件分支的执行逻辑
+
 package schema
 
 import (
@@ -25,14 +35,19 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/entity/vo"
 )
 
-// Port type constants
+// 端口类型常量
 const (
-	PortDefault      = "default"
-	PortBranchError  = "branch_error"
-	PortBranchFormat = "branch_%d"
+	PortDefault      = "default"      // 默认端口
+	PortBranchError  = "branch_error" // 异常分支端口
+	PortBranchFormat = "branch_%d"    // 条件分支端口格式
 )
 
-// BranchSchema defines the schema for workflow branches.
+// BranchSchema 分支 Schema 定义
+//
+// 描述节点的分支逻辑，包括：
+//   - 默认分支映射
+//   - 异常分支映射
+//   - 条件分支映射（按索引）
 type BranchSchema struct {
 	From             vo.NodeKey                `json:"from_node"`
 	DefaultMapping   map[string]bool           `json:"default_mapping,omitempty"`
@@ -40,7 +55,14 @@ type BranchSchema struct {
 	Mappings         map[int64]map[string]bool `json:"mappings,omitempty"`
 }
 
-// BuildBranches builds branch schemas from connections.
+// BuildBranches 从连接关系构建分支 Schema
+//
+// 解析连接中的端口信息，将其分类为：
+//   - 默认分支（PortDefault）
+//   - 异常分支（PortBranchError）
+//   - 条件分支（branch_N 格式）
+//
+// 返回以源节点为 key 的分支映射
 func BuildBranches(connections []*Connection) (map[vo.NodeKey]*BranchSchema, error) {
 	var branchMap map[vo.NodeKey]*BranchSchema
 
@@ -96,10 +118,17 @@ func BuildBranches(connections []*Connection) (map[vo.NodeKey]*BranchSchema, err
 	return branchMap, nil
 }
 
+// OnlyException 判断是否仅包含异常分支
+// 当没有条件分支，但有异常和默认分支时返回 true
 func (bs *BranchSchema) OnlyException() bool {
 	return len(bs.Mappings) == 0 && len(bs.ExceptionMapping) > 0 && len(bs.DefaultMapping) > 0
 }
 
+// GetExceptionBranch 获取仅包含异常处理的分支
+//
+// 根据输入中的 isSuccess 字段决定执行路径：
+//   - isSuccess=false: 执行异常分支
+//   - 否则: 执行默认分支
 func (bs *BranchSchema) GetExceptionBranch() *compose.GraphBranch {
 	condition := func(ctx context.Context, in map[string]any) (map[string]bool, error) {
 		isSuccess, ok := in["isSuccess"]
@@ -122,6 +151,15 @@ func (bs *BranchSchema) GetExceptionBranch() *compose.GraphBranch {
 	return compose.NewGraphMultiBranch(condition, endNodes)
 }
 
+// GetFullBranch 获取完整分支逻辑（包含条件分支和异常分支）
+//
+// 使用 BranchBuilder 提取分支条件，结合异常处理逻辑，
+// 构建完整的分支选择器。
+//
+// 执行优先级：
+//  1. 检查异常（isSuccess=false）
+//  2. 执行条件提取器获取分支索引
+//  3. 根据索引或默认选择目标节点
 func (bs *BranchSchema) GetFullBranch(ctx context.Context, bb BranchBuilder) (*compose.GraphBranch, error) {
 	extractor, hasBranch := bb.BuildBranch(ctx)
 	if !hasBranch {

@@ -14,16 +14,27 @@
  * limitations under the License.
  */
 
+// Package entity 定义了模板(Template)领域的核心实体
+//
+// 本包包含模板相关的领域实体，用于模板的查询和过滤。
 package entity
 
-// TemplateFilter defines filters for listing templates
+// TemplateFilter 模板过滤条件
+//
+// 用于指定模板列表查询的过滤条件
 type TemplateFilter struct {
-	AgentID           *int64
-	SpaceID           *int64
+	// AgentID 关联的 Agent ID
+	AgentID *int64
+	// SpaceID 所属工作空间ID
+	SpaceID *int64
+	// ProductEntityType 产品实体类型
 	ProductEntityType *int64
 }
 
+// Pagination 分页参数
 type Pagination struct {
-	Limit  int
+	// Limit 每页数量
+	Limit int
+	// Offset 偏移量
 	Offset int
 }

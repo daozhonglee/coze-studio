@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 连线添加按钮组件
+ * @description 在工作流连线上显示添加节点按钮，点击后可在连线中间插入新节点
+ */
+
 import { type StandardNodeType } from '@coze-workflow/base';
 import { Toast } from '@coze-arch/coze-design';
 import { WorkflowNodePanelService } from '@flowgram-adapter/free-layout-editor';
@@ -33,6 +38,15 @@ import { WorkflowCustomDragService } from '@/services';
 
 import { IconPlusCircle } from './button';
 
+/**
+ * 判断添加按钮是否可见
+ *
+ * 以下情况不显示按钮：
+ * - 连线已销毁
+ * - 画布为只读模式
+ * - 连线未选中且未悬停
+ * - 循环/批处理节点的内部连线
+ */
 const useVisible = (params: {
   line: WorkflowLineEntity;
   selected?: boolean;
@@ -65,6 +79,12 @@ const useVisible = (params: {
   return true;
 };
 
+/**
+ * 连线添加按钮组件
+ *
+ * 在工作流连线的中点显示一个加号按钮，
+ * 点击后弹出节点选择面板，可在连线中间插入新节点
+ */
 export const LineAddButton = (props: LineRenderProps) => {
   const { line, selected, color, lineType } = props;
   const visible = useVisible({ line, selected, color });

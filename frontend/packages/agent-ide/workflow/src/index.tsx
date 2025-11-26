@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file workflow 模块导出
+ * @description 提供 workflow 相关功能
+ */
+
+
 export { WorkflowConfigArea } from './components/workflow-as-agent/workflow-config-area';

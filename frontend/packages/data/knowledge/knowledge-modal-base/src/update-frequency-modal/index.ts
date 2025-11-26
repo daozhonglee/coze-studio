@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file update frequency modal 模块导出
+ */
 export {
   useUpdateFrequencyModal,
   type UseUpdateFrequencyModalProps,

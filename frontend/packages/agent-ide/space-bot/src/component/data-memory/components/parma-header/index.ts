@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file parma header 模块导出
+ */
 export {
   SysParamHeader,
   getSysItemConfig,

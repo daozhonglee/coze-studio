@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file create app plugin 模块导出
+ */
+/**
  * Plugin to host the business logic of the project ide app
  */
 import { type NavigateFunction } from 'react-router-dom';

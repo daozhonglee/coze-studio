@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 import { type UserAuthInfo } from '@coze-arch/idl/developer_api';
 import { I18n } from '@coze-arch/i18n';
 

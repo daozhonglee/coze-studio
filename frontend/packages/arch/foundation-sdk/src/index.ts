@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file Foundation SDK 模块导出
+ * @description 提供基础 SDK 功能，包括用户认证、空间管理、路由等
+ */
+
 import { type ReactNode, type FC } from 'react';
 
 import {
@@ -23,6 +28,7 @@ import {
 } from '@coze-arch/idl/developer_api';
 import { type DropDownMenuItemItem } from '@coze-arch/coze-design';
 
+/** 认证和用户相关类型 */
 export {
   type OAuth2RedirectConfig,
   type OAuth2StateType,

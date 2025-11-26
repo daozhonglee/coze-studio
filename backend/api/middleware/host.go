@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Package middleware 提供 HTTP 中间件（主机信息）
 package middleware
 
 import (
@@ -25,6 +26,9 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/consts"
 )
 
+// SetHostMW 主机信息中间件
+//
+// 将请求的主机名和协议存入上下文缓存
 func SetHostMW() app.HandlerFunc {
 	return func(c context.Context, ctx *app.RequestContext) {
 		ctxcache.Store(c, consts.HostKeyInCtx, string(ctx.Host()))

@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 对话式测试运行暂停侧边栏
+ * @description 当工作流测试运行中遇到需要用户输入的节点时显示的侧边栏
+ */
+
 import { useState, useEffect } from 'react';
 
 // import { useMutation } from '@tanstack/react-query';
@@ -33,6 +38,12 @@ import { type MessageFormValue } from './types';
 import { Title } from './title';
 import { MessageForm } from './message-form';
 
+/**
+ * 对话式测试运行暂停侧边栏组件
+ *
+ * 当工作流测试运行遇到 SceneChat 等需要用户交互的节点时，
+ * 显示此侧边栏供用户输入消息并继续执行
+ */
 export const ChatTestRunPauseSideSheet = () => {
   const [visible, setVisible] = useState(false);
 

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 资源导出
+ */
 export {
   type ResourcePluginOptions,
   createResourcePlugin,

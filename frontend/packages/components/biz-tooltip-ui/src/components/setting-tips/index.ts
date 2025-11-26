@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file setting tips 模块导出
+ */
 import { RewriteTips } from './rewrite-tips';
 import { RerankTips } from './rerank-tips';
 export { RewriteTips, RerankTips };

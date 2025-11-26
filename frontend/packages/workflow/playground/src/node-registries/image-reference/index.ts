@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file image reference 模块导出
+ */
 export { IMAGE_REFERENCE_NODE_REGISTRY } from './node-registry';

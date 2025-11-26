@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 状态存储导出
+ */
 /**store */
 export { useBotListFilterStore } from './bot-list-filter';
 export { useRiskWarningStore } from './risk-warning/store';

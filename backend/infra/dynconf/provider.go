@@ -14,24 +14,35 @@
  * limitations under the License.
  */
 
+// Package dynconf 提供动态配置接口
+//
+// 本包定义动态配置服务的接口，用于：
+// - 配置的动态读取和监听
+// - 支持多种配置中心（ZooKeeper、etcd、Nacos）
+//
+// 实现层在 impl/ 目录下
 package dynconf
 
 import "context"
 
-//  zookeeper, etcd, nacos
-
+// Provider 动态配置提供者接口
+//
+// 支持 ZooKeeper、etcd、Nacos 等配置中心
 type Provider interface {
 	Initialize(ctx context.Context, namespace, group string, opts ...Option) (DynamicClient, error)
 }
 
+// DynamicClient 动态配置客户端接口
 type DynamicClient interface {
 	AddListener(key string, callback func(value string, err error)) error
 	RemoveListener(key string) error
 	Get(ctx context.Context, key string) (string, error)
 }
 
+// options 配置选项
 type options struct{}
 
+// Option 配置选项函数
 type Option struct {
 	apply func(opts *options)
 

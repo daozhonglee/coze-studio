@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
+// Package idgen 提供 ID 生成器接口
+//
+// 本包定义分布式 ID 生成器的接口，用于生成全局唯一 ID：
+// - 支持单个 ID 生成
+// - 支持批量 ID 生成
+//
+// 实现层在 impl/idgen/ 目录下，使用雪花算法
 package idgen
 
 import (
 	"context"
 )
 
+// IDGenerator ID 生成器接口
+//
 //go:generate mockgen -destination ../../internal/mock/infra/idgen/idgen_mock.go --package mock -source idgen.go
 type IDGenerator interface {
 	GenID(ctx context.Context) (int64, error)

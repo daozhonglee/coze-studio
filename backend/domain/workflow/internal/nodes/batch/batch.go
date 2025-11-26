@@ -14,6 +14,23 @@
  * limitations under the License.
  */
 
+// Package batch 实现批处理节点
+//
+// 批处理节点用于对数组数据进行并行处理，类似于编程中的 map/forEach 操作。
+// 核心功能：
+//
+// 1. 数组遍历：将输入数组拆分为单个元素，依次传入内部工作流执行
+// 2. 并发控制：支持配置最大并发数，控制同时执行的任务数量
+// 3. 批量限制：支持配置最大批量大小，限制处理的元素数量
+// 4. 结果聚合：将各元素的处理结果收集为输出数组
+// 5. 中断恢复：支持工作流中断后恢复执行，跳过已完成的元素
+//
+// 执行流程：
+// 1. 解析输入数组，确定遍历次数（取各数组最小长度）
+// 2. 按并发数创建 goroutine 池
+// 3. 每个元素创建独立上下文，调用内部工作流
+// 4. 收集结果到输出数组对应位置
+// 5. 处理中断和错误情况
 package batch
 
 import (
@@ -38,13 +55,21 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/safego"
 )
 
+// Batch 批处理节点执行器
+// 对输入数组中的每个元素调用内部工作流进行处理
 type Batch struct {
-	outputs       map[string]*vo.FieldSource
+	// outputs 输出字段映射，记录每个输出字段来自内部工作流的哪个节点
+	outputs map[string]*vo.FieldSource
+	// innerWorkflow 内部工作流，处理单个元素的逻辑
 	innerWorkflow compose.Runnable[map[string]any, map[string]any]
-	key           vo.NodeKey
-	inputArrays   []string
+	// key 节点唯一标识
+	key vo.NodeKey
+	// inputArrays 输入数组字段名列表
+	inputArrays []string
 }
 
+// Config 批处理节点配置
+// 注：实际配置通过前端传入的 batchSize 和 concurrentSize 字段
 type Config struct{}
 
 func (c *Config) Adapt(_ context.Context, n *vo.Node, _ ...nodes.AdaptOption) (*schema.NodeSchema, error) {

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file ui modal 模块导出
+ */
 /* eslint-disable @coze-arch/no-batch-import-or-export */
 export * from './ui-modal';
 export * from './ui-composition-modal';

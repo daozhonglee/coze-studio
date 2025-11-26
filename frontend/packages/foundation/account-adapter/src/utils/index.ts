@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 /* eslint-disable @coze-arch/use-error-in-catch */
 import {
   refreshUserInfoBase,

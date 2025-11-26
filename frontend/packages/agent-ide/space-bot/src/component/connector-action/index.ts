@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file connector action 模块导出
+ */
 export { KvBindButton } from './kv-bind-button';
 export { DiffViewButton } from './diff-view-button';

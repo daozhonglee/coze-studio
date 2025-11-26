@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file playground 模块导出
+ */
 export interface PlaygroundSettingParams {
   user_id: string;
   action: 'page_view' | 'run';

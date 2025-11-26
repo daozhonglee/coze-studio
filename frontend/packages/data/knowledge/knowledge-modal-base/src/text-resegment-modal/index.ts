@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file text resegment modal 模块导出
+ */
 export { useTextResegmentModal } from './hooks';

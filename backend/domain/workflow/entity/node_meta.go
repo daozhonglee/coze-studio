@@ -1,5 +1,4 @@
 /*
-
  * Copyright 2025 coze-dev Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +14,16 @@
  * limitations under the License.
  */
 
+// node_meta.go 节点类型元数据定义
+//
+// 本文件定义了工作流中所有可用节点类型的元数据：
+//   - NodeType: 节点类型标识
+//   - NodeTypeMeta: 节点类型元数据（名称、图标、分类等）
+//   - ExecutableMeta: 节点执行特性配置
+//   - Category: 节点分类定义
+//
+// 节点分类包括：逻辑、输入输出、数据库、知识库、组件、会话管理等
+
 package entity
 
 import (
@@ -22,6 +31,7 @@ import (
 	"strconv"
 )
 
+// NodeType 节点类型标识
 type NodeType string
 
 func (nt NodeType) IDStr() string {
@@ -45,6 +55,8 @@ func IDStrToNodeType(s string) NodeType {
 	return ""
 }
 
+// NodeTypeMeta 节点类型元数据
+// 包含节点的显示信息和执行特性
 type NodeTypeMeta struct {
 	ID              int64
 	Key             NodeType
@@ -70,6 +82,7 @@ func (ntm *NodeTypeMeta) GetDisplayKey() string {
 	return string(ntm.Key)
 }
 
+// Category 节点分类
 type Category struct {
 	Key      string `json:"key"`
 	Name     string `json:"name"`
@@ -126,6 +139,7 @@ type ExecutableMeta struct {
 	UsePlugin bool `json:"use_plugin,omitempty"`
 }
 
+// PluginNodeMeta 插件节点元数据
 type PluginNodeMeta struct {
 	PluginID int64    `json:"plugin_id"`
 	NodeType NodeType `json:"node_type"`
@@ -137,6 +151,7 @@ type PluginNodeMeta struct {
 	IconURL  string   `json:"icon_url"`
 }
 
+// PluginCategoryMeta 插件分类元数据
 type PluginCategoryMeta struct {
 	PluginCategoryMeta int64    `json:"plugin_category_meta"`
 	NodeType           NodeType `json:"node_type"`

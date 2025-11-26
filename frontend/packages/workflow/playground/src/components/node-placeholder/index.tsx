@@ -14,10 +14,20 @@
  * limitations under the License.
  */
 
+/**
+ * @file 节点占位符组件
+ * @description 节点加载时显示的骨架屏占位符
+ */
+
 import { Skeleton } from '@coze-arch/bot-semi';
 
 import styles from './index.module.less';
 
+/**
+ * 节点占位符组件
+ *
+ * 在节点数据加载过程中显示骨架屏，提升用户体验
+ */
 export const NodePlaceholder = () => (
   <Skeleton
     loading={true}

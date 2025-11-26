@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 条件分支节点注册导出
+ * @description 条件分支节点 - 根据条件判断选择不同的执行路径
+ */
+
+/** 条件分支节点注册配置 */
 export { IF_NODE_REGISTRY } from './node-registry';
+/** 条件分支节点内容组件 */
 export { IfContent } from './node-content';

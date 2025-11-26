@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file base-adapter 模块导出
+ * @description 提供 base-adapter 相关功能
+ */
+
+
 export { useCommitVersion } from './hooks';
 export {
   IDEGlobalProvider,

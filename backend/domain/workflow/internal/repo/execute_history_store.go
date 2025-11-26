@@ -39,11 +39,29 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// executeHistoryStoreImpl 执行历史存储的实现
+//
+// 该结构体负责工作流和节点执行记录的持久化存储。
+// 主要功能包括：
+//   - 工作流执行记录的 CRUD 操作
+//   - 节点执行记录的 CRUD 操作
+//   - 测试运行和节点调试的最新执行 ID 缓存
+//   - 流式输出的临时存储（Redis）
 type executeHistoryStoreImpl struct {
-	query *query.Query
-	redis cache.Cmdable
+	query *query.Query  // GORM gen 查询对象
+	redis cache.Cmdable // Redis 客户端，用于缓存和流式输出存储
 }
 
+// CreateWorkflowExecution 创建工作流执行记录
+//
+// 创建新的工作流执行记录。如果是子工作流执行，还会更新父节点的子执行 ID。
+//
+// 参数：
+//   - ctx: 上下文
+//   - execution: 工作流执行实体
+//
+// 返回值：
+//   - error: 创建失败时返回错误
 func (e *executeHistoryStoreImpl) CreateWorkflowExecution(ctx context.Context, execution *entity.WorkflowExecution) (err error) {
 	defer func() {
 		if err != nil {
@@ -111,6 +129,20 @@ func (e *executeHistoryStoreImpl) CreateWorkflowExecution(ctx context.Context, e
 	})
 }
 
+// UpdateWorkflowExecution 更新工作流执行记录
+//
+// 只有当前状态在允许的状态列表中时才会更新。
+// 使用乐观锁机制避免并发更新问题。
+//
+// 参数：
+//   - ctx: 上下文
+//   - execution: 工作流执行实体（包含要更新的字段）
+//   - allowedStatus: 允许的当前状态列表
+//
+// 返回值：
+//   - int64: 影响的行数
+//   - entity.WorkflowExecuteStatus: 当前状态（如果更新失败）
+//   - error: 更新失败时返回错误
 func (e *executeHistoryStoreImpl) UpdateWorkflowExecution(ctx context.Context, execution *entity.WorkflowExecution,
 	allowedStatus []entity.WorkflowExecuteStatus) (_ int64, _ entity.WorkflowExecuteStatus, err error) {
 	defer func() {
@@ -160,6 +192,19 @@ func (e *executeHistoryStoreImpl) UpdateWorkflowExecution(ctx context.Context, e
 	return info.RowsAffected, execution.Status, nil
 }
 
+// TryLockWorkflowExecution 尝试锁定工作流执行以进行恢复操作
+//
+// 使用数据库行级锁实现分布式锁。只有当工作流处于中断状态且没有其他恢复操作时才能锁定。
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExeID: 工作流执行 ID
+//   - resumingEventID: 恢复事件 ID
+//
+// 返回值：
+//   - bool: 是否成功获取锁
+//   - entity.WorkflowExecuteStatus: 当前状态（如果获取锁失败）
+//   - error: 操作失败时返回错误
 func (e *executeHistoryStoreImpl) TryLockWorkflowExecution(ctx context.Context, wfExeID, resumingEventID int64) (
 	_ bool, _ entity.WorkflowExecuteStatus, err error) {
 	defer func() {
@@ -199,6 +244,16 @@ func (e *executeHistoryStoreImpl) TryLockWorkflowExecution(ctx context.Context, 
 	return true, entity.WorkflowInterrupted, nil
 }
 
+// GetWorkflowExecution 获取工作流执行记录
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流执行 ID
+//
+// 返回值：
+//   - *entity.WorkflowExecution: 工作流执行实体
+//   - bool: 是否存在
+//   - error: 获取失败时返回错误
 func (e *executeHistoryStoreImpl) GetWorkflowExecution(ctx context.Context, id int64) (*entity.WorkflowExecution, bool, error) {
 	rootExes, err := e.query.WorkflowExecution.WithContext(ctx).
 		Where(e.query.WorkflowExecution.ID.Eq(id)).
@@ -271,6 +326,14 @@ func (e *executeHistoryStoreImpl) GetWorkflowExecution(ctx context.Context, id i
 	return exe, true, nil
 }
 
+// CreateNodeExecution 创建节点执行记录
+//
+// 参数：
+//   - ctx: 上下文
+//   - execution: 节点执行实体
+//
+// 返回值：
+//   - error: 创建失败时返回错误
 func (e *executeHistoryStoreImpl) CreateNodeExecution(ctx context.Context, execution *entity.NodeExecution) error {
 	nodeExec := &model.NodeExecution{
 		ID:                 execution.ID,
@@ -297,6 +360,17 @@ func (e *executeHistoryStoreImpl) CreateNodeExecution(ctx context.Context, execu
 	return e.query.NodeExecution.WithContext(ctx).Create(nodeExec)
 }
 
+// UpdateNodeExecutionStreaming 更新节点流式输出
+//
+// 将节点的流式输出临时存储在 Redis 中，供前端实时获取。
+// 数据有效期 24 小时。
+//
+// 参数：
+//   - ctx: 上下文
+//   - execution: 节点执行实体（包含输出）
+//
+// 返回值：
+//   - error: 更新失败时返回错误
 func (e *executeHistoryStoreImpl) UpdateNodeExecutionStreaming(ctx context.Context, execution *entity.NodeExecution) error {
 	if execution.Output == nil {
 		return nil
@@ -311,6 +385,14 @@ func (e *executeHistoryStoreImpl) UpdateNodeExecutionStreaming(ctx context.Conte
 	return nil
 }
 
+// UpdateNodeExecution 更新节点执行记录
+//
+// 参数：
+//   - ctx: 上下文
+//   - execution: 节点执行实体（包含要更新的字段）
+//
+// 返回值：
+//   - error: 更新失败时返回错误
 func (e *executeHistoryStoreImpl) UpdateNodeExecution(ctx context.Context, execution *entity.NodeExecution) (err error) {
 	defer func() {
 		if err != nil {
@@ -353,6 +435,16 @@ func (e *executeHistoryStoreImpl) UpdateNodeExecution(ctx context.Context, execu
 	return nil
 }
 
+// CancelAllRunningNodes 取消所有正在运行的节点
+//
+// 将指定工作流执行下所有运行中的节点标记为失败，同时取消所有子工作流执行。
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExeID: 工作流执行 ID
+//
+// 返回值：
+//   - error: 取消失败时返回错误
 func (e *executeHistoryStoreImpl) CancelAllRunningNodes(ctx context.Context, wfExeID int64) (err error) {
 	defer func() {
 		if err != nil {
@@ -385,6 +477,13 @@ func (e *executeHistoryStoreImpl) CancelAllRunningNodes(ctx context.Context, wfE
 	return nil
 }
 
+// convertNodeExecution 将数据库模型转换为领域实体
+//
+// 参数：
+//   - nodeExec: 数据库节点执行模型
+//
+// 返回值：
+//   - *entity.NodeExecution: 领域层节点执行实体
 func convertNodeExecution(nodeExec *model.NodeExecution) *entity.NodeExecution {
 	nodeExeEntity := &entity.NodeExecution{
 		ID:                   nodeExec.ID,
@@ -429,6 +528,17 @@ func convertNodeExecution(nodeExec *model.NodeExecution) *entity.NodeExecution {
 	return nodeExeEntity
 }
 
+// GetNodeExecutionsByWfExeID 根据工作流执行 ID 获取所有节点执行记录
+//
+// 对于支持流式输出且正在运行的节点，会从 Redis 获取最新的输出内容。
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExeID: 工作流执行 ID
+//
+// 返回值：
+//   - []*entity.NodeExecution: 节点执行记录列表
+//   - error: 获取失败时返回错误
 func (e *executeHistoryStoreImpl) GetNodeExecutionsByWfExeID(ctx context.Context, wfExeID int64) (result []*entity.NodeExecution, err error) {
 	nodeExecs, err := e.query.NodeExecution.WithContext(ctx).
 		Where(e.query.NodeExecution.ExecuteID.Eq(wfExeID)).
@@ -453,6 +563,14 @@ func (e *executeHistoryStoreImpl) GetNodeExecutionsByWfExeID(ctx context.Context
 	return result, nil
 }
 
+// loadNodeExecutionFromRedis 从 Redis 加载节点的流式输出
+//
+// 参数：
+//   - ctx: 上下文
+//   - nodeExeEntity: 节点执行实体
+//
+// 返回值：
+//   - error: 加载失败时返回错误
 func (e *executeHistoryStoreImpl) loadNodeExecutionFromRedis(ctx context.Context, nodeExeEntity *entity.NodeExecution) error {
 	key := fmt.Sprintf(nodeExecOutputKey, nodeExeEntity.ID)
 
@@ -471,6 +589,17 @@ func (e *executeHistoryStoreImpl) loadNodeExecutionFromRedis(ctx context.Context
 	return nil
 }
 
+// GetNodeExecution 获取指定节点的执行记录
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExeID: 工作流执行 ID
+//   - nodeID: 节点 ID
+//
+// 返回值：
+//   - *entity.NodeExecution: 节点执行记录
+//   - bool: 是否存在
+//   - error: 获取失败时返回错误
 func (e *executeHistoryStoreImpl) GetNodeExecution(ctx context.Context, wfExeID int64, nodeID string) (*entity.NodeExecution, bool, error) {
 	nodeExec, err := e.query.NodeExecution.WithContext(ctx).
 		Where(e.query.NodeExecution.ExecuteID.Eq(wfExeID), e.query.NodeExecution.NodeID.Eq(nodeID)).
@@ -487,6 +616,18 @@ func (e *executeHistoryStoreImpl) GetNodeExecution(ctx context.Context, wfExeID 
 	return nodeExeEntity, true, nil
 }
 
+// GetNodeExecutionByParent 根据父节点 ID 获取子节点执行记录
+//
+// 用于获取复合节点（如循环节点、批处理节点）内部的子节点执行记录。
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExeID: 工作流执行 ID
+//   - parentNodeID: 父节点 ID
+//
+// 返回值：
+//   - []*entity.NodeExecution: 子节点执行记录列表
+//   - error: 获取失败时返回错误
 func (e *executeHistoryStoreImpl) GetNodeExecutionByParent(ctx context.Context, wfExeID int64, parentNodeID string) (
 	[]*entity.NodeExecution, error) {
 	nodeExecs, err := e.query.NodeExecution.WithContext(ctx).
@@ -504,12 +645,34 @@ func (e *executeHistoryStoreImpl) GetNodeExecutionByParent(ctx context.Context, 
 }
 
 const (
-	testRunLastExeKey   = "test_run_last_exe_id:%d:%d"
+	// testRunLastExeKey 测试运行最新执行 ID 的 Redis 键模式
+	// 格式：test_run_last_exe_id:{工作流ID}:{用户ID}
+	testRunLastExeKey = "test_run_last_exe_id:%d:%d"
+
+	// nodeDebugLastExeKey 节点调试最新执行 ID 的 Redis 键模式
+	// 格式：node_debug_last_exe_id:{工作流ID}:{节点ID}:{用户ID}
 	nodeDebugLastExeKey = "node_debug_last_exe_id:%d:%s:%d"
-	nodeExecDataExpiry  = 24 * time.Hour // keep it for 24 hours
-	nodeExecOutputKey   = "wf:node_exec:output:%d"
+
+	// nodeExecDataExpiry 节点执行数据的过期时间（24 小时）
+	nodeExecDataExpiry = 24 * time.Hour
+
+	// nodeExecOutputKey 节点执行输出的 Redis 键模式
+	// 格式：wf:node_exec:output:{节点执行ID}
+	nodeExecOutputKey = "wf:node_exec:output:%d"
 )
 
+// SetTestRunLatestExeID 设置测试运行的最新执行 ID
+//
+// 用于前端获取最近一次测试运行的结果。
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfID: 工作流 ID
+//   - uID: 用户 ID
+//   - exeID: 执行 ID
+//
+// 返回值：
+//   - error: 设置失败时返回错误
 func (e *executeHistoryStoreImpl) SetTestRunLatestExeID(ctx context.Context, wfID int64, uID int64, exeID int64) error {
 	key := fmt.Sprintf(testRunLastExeKey, wfID, uID)
 	err := e.redis.Set(ctx, key, exeID, 7*24*time.Hour).Err()
@@ -520,6 +683,16 @@ func (e *executeHistoryStoreImpl) SetTestRunLatestExeID(ctx context.Context, wfI
 	return nil
 }
 
+// GetTestRunLatestExeID 获取测试运行的最新执行 ID
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfID: 工作流 ID
+//   - uID: 用户 ID
+//
+// 返回值：
+//   - int64: 执行 ID（不存在时返回 0）
+//   - error: 获取失败时返回错误
 func (e *executeHistoryStoreImpl) GetTestRunLatestExeID(ctx context.Context, wfID int64, uID int64) (int64, error) {
 	key := fmt.Sprintf(testRunLastExeKey, wfID, uID)
 	exeIDStr, err := e.redis.Get(ctx, key).Result()
@@ -536,6 +709,17 @@ func (e *executeHistoryStoreImpl) GetTestRunLatestExeID(ctx context.Context, wfI
 	return exeID, nil
 }
 
+// SetNodeDebugLatestExeID 设置节点调试的最新执行 ID
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfID: 工作流 ID
+//   - nodeID: 节点 ID
+//   - uID: 用户 ID
+//   - exeID: 执行 ID
+//
+// 返回值：
+//   - error: 设置失败时返回错误
 func (e *executeHistoryStoreImpl) SetNodeDebugLatestExeID(ctx context.Context, wfID int64, nodeID string, uID int64, exeID int64) error {
 	key := fmt.Sprintf(nodeDebugLastExeKey, wfID, nodeID, uID)
 	err := e.redis.Set(ctx, key, exeID, 7*24*time.Hour).Err()
@@ -545,6 +729,17 @@ func (e *executeHistoryStoreImpl) SetNodeDebugLatestExeID(ctx context.Context, w
 	return nil
 }
 
+// GetNodeDebugLatestExeID 获取节点调试的最新执行 ID
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfID: 工作流 ID
+//   - nodeID: 节点 ID
+//   - uID: 用户 ID
+//
+// 返回值：
+//   - int64: 执行 ID（不存在时返回 0）
+//   - error: 获取失败时返回错误
 func (e *executeHistoryStoreImpl) GetNodeDebugLatestExeID(ctx context.Context, wfID int64, nodeID string, uID int64) (int64, error) {
 	key := fmt.Sprintf(nodeDebugLastExeKey, wfID, nodeID, uID)
 	exeIDStr, err := e.redis.Get(ctx, key).Result()

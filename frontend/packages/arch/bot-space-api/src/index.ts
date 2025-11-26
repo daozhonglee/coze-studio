@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 空间 API 模块导出
+ * @description 提供空间级别的 API 请求封装
+ */
+
 import axios, { type AxiosRequestConfig } from 'axios';
 import { globalVars } from '@coze-arch/web-context';
 import { REPORT_EVENTS as ReportEventNames } from '@coze-arch/report-events';
@@ -22,6 +27,7 @@ import { CustomError } from '@coze-arch/bot-error';
 import type DeveloperApiService from '@coze-arch/bot-api/developer_api';
 import { DeveloperApi, type BotAPIRequestConfig } from '@coze-arch/bot-api';
 
+/** 空间请求类型 - 自动注入 space_id */
 export type SpaceRequest<T> = Omit<T, 'space_id'>;
 
 type D = DeveloperApiService<BotAPIRequestConfig>;

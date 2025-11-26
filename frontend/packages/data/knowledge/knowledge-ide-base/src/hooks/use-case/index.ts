@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file use case 模块导出
+ */
 export { useGetKnowledgeType } from './use-get-knowledge-type';
 export { useReloadKnowledgeIDE } from './use-reload-knowledge-ide';

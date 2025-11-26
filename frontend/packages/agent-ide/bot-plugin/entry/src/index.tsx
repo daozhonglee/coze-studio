@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot-plugin/entry 模块导出
+ * @description 提供 bot-plugin/entry 相关功能
+ */
+
+
 export { PLUGIN_TYPE_MAP, PLUGIN_PUBLISH_MAP } from './common';
 
 import PluginHeader from './components/plugin-header';

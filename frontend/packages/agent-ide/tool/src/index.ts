@@ -15,7 +15,12 @@
  */
 
 /**
- * Types, constants, functions, hooks, components, etc. exposed by START for a long time
+ * @file Agent 工具模块导出
+ * @description 提供 Agent 工具配置、管理和 UI 组件
+ */
+
+/**
+ * 长期稳定导出的类型、常量、函数、Hooks、组件等
  */
 export {
   AbilityScope,

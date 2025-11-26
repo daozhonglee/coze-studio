@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file biz-tooltip-ui 模块导出
+ * @description 提供 biz-tooltip-ui 相关功能
+ */
+
+
 export { RewriteTips, RerankTips } from './components/setting-tips';

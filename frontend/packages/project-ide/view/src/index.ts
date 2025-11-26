@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file view 模块导出
+ * @description 提供 view 相关功能
+ */
+
+
 import PerfectScrollbar from './components/scroll-bar';
 
 export { ReactWidget, ReactWidgetContext } from './widget/react-widget';

@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file Bot/项目选择组件
+ * @description 提供 Bot 和项目选择功能，用于工作流中选择关联的 Bot 或项目
+ */
+
 /* eslint-disable complexity */
 import React from 'react';
 
@@ -36,6 +41,9 @@ import { Bots } from './bots';
 
 import styles from './index.module.less';
 
+/**
+ * Bot/项目选择组件属性
+ */
 interface BotSelectProps {
   value?: ValueType;
   onChange?: (value?: ValueType) => void;
@@ -54,7 +62,9 @@ interface BotSelectProps {
 }
 
 /**
- * copy from bot-select
+ * Bot/项目选择组件
+ *
+ * 提供 Bot 和项目选择功能，支持显示关联的变量、数据表、聊天历史等信息
  */
 export const BotProjectSelect: React.FC<BotSelectProps> = ({
   value: originValue,

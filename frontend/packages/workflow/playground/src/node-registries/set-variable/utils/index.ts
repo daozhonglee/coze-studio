@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file set-variable 工具函数导出
+ */
 export { getLeftRightVariable } from './get-left-right-variable';

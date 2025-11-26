@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// Package workflow 定义了工作流(Workflow)应用层服务（ChatFlow 对话流）
+//
+// ChatFlow 是一种特殊的工作流类型，用于处理多轮对话场景，
+// 支持对话历史管理、中断恢复、消息流式输出等功能。
 package workflow
 
 import (

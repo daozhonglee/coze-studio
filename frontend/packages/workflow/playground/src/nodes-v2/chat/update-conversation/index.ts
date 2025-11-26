@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file update conversation 模块导出
+ */
 /** Update session node */
 
 export { UPDATE_CONVERSATION_NODE_REGISTRY } from './node-registry';

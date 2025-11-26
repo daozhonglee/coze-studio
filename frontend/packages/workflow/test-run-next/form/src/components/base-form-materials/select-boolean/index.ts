@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file select boolean 模块导出
+ */
 export { SelectBoolean } from './select';

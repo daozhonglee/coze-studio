@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file setting on error 模块导出
+ */
 export { SettingOnError } from './setting-on-error';
 export { SettingOnErrorValue } from './types';
 

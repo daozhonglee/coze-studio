@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 费用弹出框组件
+ * @description 显示 Token 消耗和费用信息的弹出框
+ */
+
 import React, { type PropsWithChildren, useRef } from 'react';
 
 import cls from 'classnames';
@@ -23,11 +28,18 @@ import { Tooltip, Popover, Row, Col } from '@coze-arch/bot-semi';
 
 import s from './index.module.less';
 
+/**
+ * 费用来源属性
+ */
 interface SourceProps {
   token: string;
   cost: string;
 }
+/**
+ * 费用弹出框属性
+ */
 interface ExpendProps {
+  /** 费用数据（输入/输出/总计） */
   data: {
     output: SourceProps;
     input: SourceProps;
@@ -37,6 +49,11 @@ interface ExpendProps {
   popoverProps?: Partial<PopoverProps>;
 }
 
+/**
+ * 费用弹出框组件
+ *
+ * 显示 Token 消耗和费用明细，包括输入、输出和总计
+ */
 export const CostPopover: React.FC<PropsWithChildren<ExpendProps>> = ({
   data,
   popoverProps,

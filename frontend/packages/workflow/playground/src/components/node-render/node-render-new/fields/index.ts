@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file node-render-new 字段定义导出
+ */
 export { Conditions } from './conditions';
 export { InputParameters } from './input-parameters';
 export { Model } from './model';

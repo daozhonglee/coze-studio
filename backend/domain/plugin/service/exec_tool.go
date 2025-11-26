@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// exec_tool.go 工具执行服务
+//
+// 本文件提供工具执行的核心功能：
+//   - 工具执行器构建
+//   - HTTP 请求发送
+//   - 认证信息处理
+//   - 响应解析和返回
+
 package service
 
 import (
@@ -42,6 +50,8 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// ExecuteTool 执行工具
+// 根据请求配置调用插件工具并返回结果
 func (p *pluginServiceImpl) ExecuteTool(ctx context.Context, req *model.ExecuteToolRequest, opts ...model.ExecuteToolOpt) (resp *model.ExecuteToolResponse, err error) {
 	opt := &model.ExecuteToolOption{}
 	for _, fn := range opts {

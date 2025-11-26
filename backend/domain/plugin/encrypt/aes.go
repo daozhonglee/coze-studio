@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// aes.go AES 加密解密工具
+//
+// 本文件提供插件认证数据的 AES 加密解密功能：
+//   - AES-CBC 模式加密（安全版本）
+//   - 兼容旧版不安全加密的解密
+//   - PKCS7 填充和去填充
+
 package encrypt
 
 import (
@@ -29,12 +36,14 @@ import (
 	"github.com/bytedance/gopkg/util/logger"
 )
 
+// 加密密钥环境变量名
 const (
-	AuthSecretEnv       = "PLUGIN_AES_AUTH_SECRET"
-	StateSecretEnv      = "PLUGIN_AES_STATE_SECRET"
-	OAuthTokenSecretEnv = "PLUGIN_AES_OAUTH_TOKEN_SECRET"
+	AuthSecretEnv       = "PLUGIN_AES_AUTH_SECRET"        // 认证密钥
+	StateSecretEnv      = "PLUGIN_AES_STATE_SECRET"       // 状态密钥
+	OAuthTokenSecretEnv = "PLUGIN_AES_OAUTH_TOKEN_SECRET" // OAuth Token 密钥
 )
 
+// encryptVersion 当前加密版本标识
 const encryptVersion = "aes-cbc-v1"
 
 // In order to be compatible with the problem of no existing env configuration,
@@ -48,12 +57,15 @@ const (
 	DefaultOAuthTokenSecret = "cn+$PJ(HhJ[5d*z9"
 )
 
+// AESEncryption AES 加密数据结构
 type AESEncryption struct {
 	Version       string `json:"version"`
 	IV            []byte `json:"iv"`
 	EncryptedData []byte `json:"encrypted_data"`
 }
 
+// EncryptByAES 使用 AES-CBC 加密数据
+// 使用随机 IV 确保安全性，返回 Base64 编码的结果
 func EncryptByAES(val []byte, secret string) (string, error) {
 	if secret == "" {
 		return "", fmt.Errorf("secret is required")
@@ -92,6 +104,7 @@ func EncryptByAES(val []byte, secret string) (string, error) {
 	return base64.RawURLEncoding.EncodeToString(encrypted), nil
 }
 
+// pkcs7Padding PKCS7 填充
 func pkcs7Padding(data []byte, blockSize int) []byte {
 	padding := blockSize - len(data)%blockSize
 	padText := bytes.Repeat([]byte{byte(padding)}, padding)
@@ -99,6 +112,8 @@ func pkcs7Padding(data []byte, blockSize int) []byte {
 	return append(data, padText...)
 }
 
+// DecryptByAES 解密 AES 加密的数据
+// 如果解析失败，会回退到旧版不安全解密方法
 func DecryptByAES(data, secret string) ([]byte, error) {
 	if secret == "" {
 		return nil, fmt.Errorf("secret is required")
@@ -196,6 +211,7 @@ func UnsafeDecryptByAES(data, secret string) ([]byte, error) {
 	return decrypted, nil
 }
 
+// pkcs7UnPadding PKCS7 去填充
 func pkcs7UnPadding(decrypted []byte) ([]byte, error) {
 	length := len(decrypted)
 	if length == 0 {

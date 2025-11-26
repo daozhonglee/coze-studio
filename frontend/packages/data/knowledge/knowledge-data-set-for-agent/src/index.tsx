@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/knowledge-data-set-for-agent 模块导出
+ * @description 提供 knowledge/knowledge-data-set-for-agent 相关功能
+ */
+
+
 export { useDatasetStore } from './store/data-set';

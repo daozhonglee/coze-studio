@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 测试运行追踪模块导出
+ * @description 提供测试运行的追踪面板和详情展示组件
+ */
+
+/** 追踪列表面板 */
 export { TraceListPanel } from './components/trace-list-panel';
+/** 追踪详情面板 */
 export { TraceDetailPanel } from './components/trace-detail-panel';

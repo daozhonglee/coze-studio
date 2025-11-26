@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file render life cycle 模块导出
+ */
 import { isWriteablePlugin } from '../../utils/is-writeable-plugin';
 import {
   type OnTextContentRenderingContext,

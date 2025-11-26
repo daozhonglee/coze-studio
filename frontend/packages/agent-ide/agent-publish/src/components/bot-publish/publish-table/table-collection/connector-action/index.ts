@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file connector action 模块导出
+ */
 export { StoreBind } from './store-bind';
 export { ApiBindButton } from './api-bind-button';

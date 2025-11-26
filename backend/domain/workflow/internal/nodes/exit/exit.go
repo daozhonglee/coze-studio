@@ -14,6 +14,23 @@
  * limitations under the License.
  */
 
+// Package exit 实现工作流出口节点
+//
+// 出口节点是工作流的终点，负责输出工作流的执行结果。
+// 核心功能：
+//
+// 1. 输出模式
+//   - ReturnVariables：返回变量模式，直接返回收集到的变量值
+//   - UseAnswerContent：回答内容模式，使用模板生成最终回答
+//
+// 2. 流式输出
+//   - 支持流式输出配置
+//   - 当 StreamingOutput 为 true 时，可以实时输出内容
+//
+// 3. 特殊标识
+//   - 出口节点 ID 固定为 "exit"
+//   - 每个工作流只能有一个出口节点
+//   - 出口节点不能有父节点
 package exit
 
 import (
@@ -33,8 +50,11 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// Config 出口节点配置
 type Config struct {
-	Template      string
+	// Template 输出模板，用于 UseAnswerContent 模式时生成最终回答
+	Template string
+	// TerminatePlan 终止计划，决定输出模式（返回变量或使用回答内容）
 	TerminatePlan vo.TerminatePlan
 }
 

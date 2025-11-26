@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-background 模块导出
+ * @description 提供 chat-background 相关功能
+ */
+
+
 export {
   useChatBackgroundUploader,
   type UseChatBackgroundUploaderProps,

@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+
+/**
+ * @file bot-audit-adapter 模块导出
+ * @description 提供 bot-audit-adapter 相关功能
+ */
 export { botInfoAudit, useBotInfoAuditor } from './hooks/use-bot-audit';
 
 export { AuditErrorMessage } from '@coze-studio/bot-audit-base';

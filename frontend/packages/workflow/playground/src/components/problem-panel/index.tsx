@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 问题面板组件
+ * @description 显示工作流校验错误列表，支持点击定位到问题节点
+ */
+
 import React, { useCallback } from 'react';
 
 import { useMemoizedFn } from 'ahooks';
@@ -36,6 +41,15 @@ import { LayoutPanelKey } from '@/constants';
 import { useScrollToError } from '../test-run/execute-result/execute-result-side-sheet/hooks/use-scroll-to-error';
 import { PanelWrap, PANEL_PADDING } from '../float-layout';
 
+/**
+ * 问题面板组件
+ *
+ * 显示工作流校验过程中发现的错误列表：
+ * - 节点配置错误
+ * - 连线错误
+ * - 变量引用错误
+ * 点击错误项可自动滚动到对应节点
+ */
 export const ProblemPanel = () => {
   const floatLayoutService = useFloatLayoutService();
   const globalState = useGlobalState();

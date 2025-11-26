@@ -14,23 +14,41 @@
  * limitations under the License.
  */
 
+// Package entity 定义了上传(Upload)领域的核心实体（默认图标）
+
 package entity
 
+// 默认图标 URI 常量
+//
+// 各类资源的默认图标路径，存储在对象存储中
 const (
-	BotIconURI        = "default_icon/user_default_icon.png"
-	UserIconURI       = "default_icon/user_default_icon.png"
-	PluginIconURI     = "default_icon/plugin_default_icon.png"
-	DatasetIconURI    = "default_icon/plugin_default_icon.png"
-	WorkflowIconURI   = "default_icon/plugin_default_icon.png"
-	ImageflowIconURI  = "default_icon/plugin_default_icon.png"
-	SocietyIconURI    = "default_icon/plugin_default_icon.png"
-	ConnectorIconURI  = "default_icon/plugin_default_icon.png"
-	ChatFlowIconURI   = "default_icon/plugin_default_icon.png"
-	VoiceIconURI      = "default_icon/plugin_default_icon.png"
+	// BotIconURI 机器人默认图标
+	BotIconURI = "default_icon/user_default_icon.png"
+	// UserIconURI 用户默认头像
+	UserIconURI = "default_icon/user_default_icon.png"
+	// PluginIconURI 插件默认图标
+	PluginIconURI = "default_icon/plugin_default_icon.png"
+	// DatasetIconURI 数据集默认图标
+	DatasetIconURI = "default_icon/plugin_default_icon.png"
+	// WorkflowIconURI 工作流默认图标
+	WorkflowIconURI = "default_icon/plugin_default_icon.png"
+	// ImageflowIconURI 图像流默认图标
+	ImageflowIconURI = "default_icon/plugin_default_icon.png"
+	// SocietyIconURI 社区默认图标
+	SocietyIconURI = "default_icon/plugin_default_icon.png"
+	// ConnectorIconURI 连接器默认图标
+	ConnectorIconURI = "default_icon/plugin_default_icon.png"
+	// ChatFlowIconURI 对话流默认图标
+	ChatFlowIconURI = "default_icon/plugin_default_icon.png"
+	// VoiceIconURI 语音默认图标
+	VoiceIconURI = "default_icon/plugin_default_icon.png"
+	// EnterpriseIconURI 企业/团队默认图标
 	EnterpriseIconURI = "default_icon/team_default_icon.png"
-	ModelIconURI      = "default_icon/team_default_icon.png"
+	// ModelIconURI 模型默认图标
+	ModelIconURI = "default_icon/team_default_icon.png"
 )
 
+// GetDefaultShortcutIconURI 获取快捷指令可选图标列表
 func GetDefaultShortcutIconURI() []string {
 	return []string{
 		"default_icon/shortcut_1coz_ai.png",

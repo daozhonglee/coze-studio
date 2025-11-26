@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file audio 模块导出
+ */
 /* eslint-disable max-lines-per-function */
 import { useState, useCallback, useEffect, useRef } from 'react';
 

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Package connector 定义了连接器(Connector)领域的服务层实现
+
 package connector
 
 import (
@@ -29,16 +31,19 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// connectorImpl 连接器服务实现
 type connectorImpl struct {
 	tos storage.Storage
 }
 
+// NewService 创建连接器服务实例
 func NewService(tos storage.Storage) Connector {
 	return &connectorImpl{
 		tos: tos,
 	}
 }
 
+// i18n2ConnectorDesc 连接器描述的国际化映射
 var i18n2ConnectorDesc = map[i18n.Locale]map[int64]string{
 	i18n.LocaleEN: {
 		consts.WebSDKConnectorID: "Deploy your project to the Chat SDK. This publishing method is supported only for projects that have created a conversation flow, please refer to [Installation Guidelines](coze://web-sdk-guide) for installation methods.",
@@ -47,6 +52,7 @@ var i18n2ConnectorDesc = map[i18n.Locale]map[int64]string{
 	},
 }
 
+// AllConnectorInfo 获取所有连接器的基本信息
 func (c *connectorImpl) AllConnectorInfo(ctx context.Context) []*entity.Connector {
 	connectors := []*entity.Connector{
 		{
@@ -86,6 +92,7 @@ func (c *connectorImpl) AllConnectorInfo(ctx context.Context) []*entity.Connecto
 	return connectors
 }
 
+// List 列出所有可用连接器
 func (c *connectorImpl) List(ctx context.Context) ([]*entity.Connector, error) {
 	allConnectors := c.AllConnectorInfo(ctx)
 	res := make([]*entity.Connector, 0, len(allConnectors))
@@ -102,6 +109,7 @@ func (c *connectorImpl) List(ctx context.Context) ([]*entity.Connector, error) {
 	return res, nil
 }
 
+// GetByID 获取单个连接器
 func (c *connectorImpl) GetByID(ctx context.Context, id int64) (*entity.Connector, error) {
 	res, err := c.GetByIDs(ctx, []int64{id})
 	if err != nil {
@@ -116,6 +124,7 @@ func (c *connectorImpl) GetByID(ctx context.Context, id int64) (*entity.Connecto
 	return connector, nil
 }
 
+// GetByIDs 批量获取连接器
 func (c *connectorImpl) GetByIDs(ctx context.Context, ids []int64) (map[int64]*entity.Connector, error) {
 	connectorsMap := make(map[int64]*entity.Connector, len(ids))
 	allConnectors := c.AllConnectorInfo(ctx)

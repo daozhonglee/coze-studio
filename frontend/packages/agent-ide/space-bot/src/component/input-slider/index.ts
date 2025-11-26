@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file input slider 模块导出
+ */
 export { InputSlider } from './input-slider';

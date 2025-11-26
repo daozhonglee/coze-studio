@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file space-store 模块导出
+ * @description 提供 space-store 相关功能
+ */
+
+
 export { useSpaceStore } from '@coze-foundation/space-store-adapter';
 export { useSpace, useSpaceList, useRefreshSpaces } from './space/hooks';
 export { useSpaceApp } from './hooks/use-space-app';

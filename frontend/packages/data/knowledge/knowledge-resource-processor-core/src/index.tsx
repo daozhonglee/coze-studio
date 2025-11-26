@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/knowledge-resource-processor-core 模块导出
+ * @description 提供 knowledge/knowledge-resource-processor-core 相关功能
+ */
+
+
 export { Upload } from './main';
 export type {
   UploadBaseState,

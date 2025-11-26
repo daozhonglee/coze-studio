@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
+/**
+ * @file 表单扩展 Hooks 导出
+ * @description 提供表单扩展相关的 React Hooks
+ */
+
+/** 获取节点可用变量的 Hook */
 export { useNodeAvailableVariablesWithNode } from './use-node-available-variables';
+/** 适配视口的 Hook */
 export { useFitViewport } from './use-fit-view-port';
+/** LLM 提示词历史记录 Hook */
 export { useLLMPromptHistory } from './use-llm-prompt-history';
+/** 向量模型列表 Hook */
 export { useVectorModelList } from './use-vector-model-list';

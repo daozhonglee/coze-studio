@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file unit progress 模块导出
+ */
 export { UnitProgress } from './unit-progress';

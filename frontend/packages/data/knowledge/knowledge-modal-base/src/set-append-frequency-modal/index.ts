@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file set append frequency modal 模块导出
+ */
 export { useSetAppendFrequencyModal } from './hooks/use-case/use-set-append-frequency-modal';

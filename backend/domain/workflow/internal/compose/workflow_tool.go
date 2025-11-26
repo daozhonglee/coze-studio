@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// workflow_tool.go 工作流作为工具
+//
+// 本文件将工作流包装为 Eino Tool 接口，使工作流可以被 LLM 作为工具调用。
+// 主要功能：
+//   - invokableWorkflow: 支持同步调用的工作流工具
+//   - streamableWorkflow: 支持流式调用的工作流工具
+//   - 中断恢复支持：处理工具调用过程中的中断和恢复
+
 package compose
 
 import (
@@ -40,6 +48,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// answerKey 工作流输出的标准 key
 const answerKey = "output"
 
 type invokableWorkflow struct {

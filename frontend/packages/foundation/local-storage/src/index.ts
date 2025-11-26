@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file local-storage 模块导出
+ * @description 提供 local-storage 相关功能
+ */
+
+
 export { localStorageService } from './core';
 
 export { useValue as useLocalStorageValue } from './hooks/use-value';

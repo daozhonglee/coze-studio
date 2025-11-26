@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file component 模块导出
+ */
 /**comp */
 export {
   TableMemory,

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file runtime 模块导出
+ */
 export { runtimeEnv } from '@coze-studio/bot-env-adapter/runtime';

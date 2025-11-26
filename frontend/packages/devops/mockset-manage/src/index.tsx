@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file mockset-manage 模块导出
+ * @description 提供 mockset-manage 相关功能
+ */
+
+
 export { MockTrafficEnabled, CONNECTOR_ID } from './const';
 
 export {

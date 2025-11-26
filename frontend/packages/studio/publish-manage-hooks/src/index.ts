@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file publish-manage-hooks 模块导出
+ * @description 提供 publish-manage-hooks 相关功能
+ */
+
+
 export {
   useIsPublishRecordReady,
   type UseIsPublishRecordReadyProps,

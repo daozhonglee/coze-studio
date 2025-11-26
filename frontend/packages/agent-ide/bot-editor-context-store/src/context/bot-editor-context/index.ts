@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot editor context 模块导出
+ */
 import { useContext } from 'react';
 
 import { recordExhaustiveCheck } from '../../utils/exhaustive-check';

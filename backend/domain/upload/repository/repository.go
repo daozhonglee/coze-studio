@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// Package repository 定义了上传(Upload)领域的仓储接口
+//
+// 本包提供文件数据的持久化操作抽象
 package repository
 
 import (
@@ -25,15 +28,25 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/upload/internal/dal/dao"
 )
 
+// NewFilesRepo 创建文件仓储实例
 func NewFilesRepo(db *gorm.DB) FilesRepo {
 	return dao.NewFilesDAO(db)
 }
 
+// FilesRepo 文件仓储接口
+//
+// 定义文件的数据访问方法
+//
 //go:generate mockgen -destination ../internal/mock/dal/dao/knowledge_document.go --package dao -source knowledge_document.go
 type FilesRepo interface {
+	// Create 创建文件记录
 	Create(ctx context.Context, file *entity.File) error
+	// BatchCreate 批量创建文件记录
 	BatchCreate(ctx context.Context, files []*entity.File) error
+	// Delete 删除文件记录
 	Delete(ctx context.Context, id int64) error
+	// GetByID 根据ID获取文件
 	GetByID(ctx context.Context, id int64) (*entity.File, error)
+	// MGetByIDs 批量获取文件
 	MGetByIDs(ctx context.Context, ids []int64) ([]*entity.File, error)
 }

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file flowgram-adapter/fixed-layout-editor 模块导出
+ * @description 提供 flowgram-adapter/fixed-layout-editor 相关功能
+ */
+
+
 import 'reflect-metadata';
 export {
   type FlowNodeEntity,

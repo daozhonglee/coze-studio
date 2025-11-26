@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 
+// Package database 实现数据库操作节点的核心逻辑
+//
+// 本包提供了工作流中数据库操作相关的节点实现，包括：
+// - 查询 (Query)：从数据库中查询数据
+// - 插入 (Insert)：向数据库中插入新记录
+// - 更新 (Update)：更新数据库中的现有记录
+// - 删除 (Delete)：从数据库中删除记录
+// - 自定义 SQL (CustomSQL)：执行自定义 SQL 语句
+//
+// 本文件 (common.go) 包含数据库节点共用的工具函数：
+// - 类型转换函数：将数据库返回值转换为工作流数据类型
+// - 响应格式化：将数据库查询结果转换为节点输出格式
+// - 条件转换：将前端配置的查询条件转换为数据库条件
 package database
 
 import (
@@ -34,10 +47,19 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/sonic"
 )
 
-const rowNum = "rowNum"
-const outputList = "outputList"
-const TimeFormat = "2006-01-02 15:04:05 -0700 MST"
+// 输出字段常量定义
+const (
+	// rowNum 影响行数字段名
+	rowNum = "rowNum"
+	// outputList 输出列表字段名
+	outputList = "outputList"
+	// TimeFormat 时间格式化模板
+	TimeFormat = "2006-01-02 15:04:05 -0700 MST"
+)
 
+// toString 将任意类型转换为字符串
+// 支持的类型：[]byte, string, int64, float64, time.Time, bool, map, slice
+// 用于将数据库返回值转换为工作流的字符串类型
 func toString(in any) (any, error) {
 	switch in := in.(type) {
 	case []byte:
@@ -136,8 +158,13 @@ func toBool(in any) (any, error) {
 	}
 }
 
-// formatted convert the interface type according to the datatype type.
-// notice: object is currently not supported by database, and ignore it.
+// formatted 根据数据类型定义将接口类型转换为指定类型
+// 支持的类型：string, number, integer, boolean, time, array
+// 注意：object 类型目前数据库不支持，会被忽略
+//
+// 参数 in: 待转换的原始值
+// 参数 ty: 目标类型信息，包含类型定义和嵌套类型信息
+// 返回: 转换后的值，转换失败时返回 nil
 func formatted(in any, ty *vo.TypeInfo) any {
 	switch ty.Type {
 	case vo.DataTypeString:

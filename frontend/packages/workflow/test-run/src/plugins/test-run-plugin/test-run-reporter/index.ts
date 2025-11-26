@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file test run reporter 模块导出
+ */
 export {
   TestRunReporterService,
   PickReporterParams,

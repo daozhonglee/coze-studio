@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file parameters 模块导出
+ */
 export { Parameters } from './parameters';
 export { ParamTypeAlias } from './types';
 export type { ParameterValue, ParametersError, ParametersProps } from './types';

@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-// Inspire by https://github.com/jantimon/remote-web-worker
-// Patch Worker to allow loading scripts from remote URLs
+/**
+ * @file 远程 Worker 加载模块导出
+ * @description 提供从远程 URL 加载 Web Worker 的功能
+ */
+
+// 灵感来自 https://github.com/jantimon/remote-web-worker
+// 修补 Worker 以允许从远程 URL 加载脚本
 //
-// It's a workaround for the fact that the Worker constructor
-// accepts only local URLs, not remote URLs:
+// 这是一个变通方案，因为 Worker 构造函数
+// 只接受本地 URL，不接受远程 URL：
 // https://developer.mozilla.org/en-US/docs/Web/API/Worker/Worker
 //
-// As a workaround this patched Worker constructor will
-// use `importScripts` to load the remote script.
+// 作为变通方案，这个修补后的 Worker 构造函数将
+// 使用 `importScripts` 来加载远程脚本。
 // https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/importScripts
 //
 // Compatibility: Chrome 4+, Firefox 4+, Safari 4+

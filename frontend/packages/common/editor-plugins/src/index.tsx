@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file editor-plugins 模块导出
+ * @description 提供 editor-plugins 相关功能
+ */
+
+
 export { type Extension } from './types';

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file table-view 模块导出
+ * @description 提供 table-view 相关功能
+ */
+
+
 import './main.css';
 
 export { TableView, type TableViewMethods } from './components/table-view';

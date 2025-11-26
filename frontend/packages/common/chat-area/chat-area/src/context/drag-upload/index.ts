@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file drag upload 模块导出
+ */
 import { useContext } from 'react';
 
 import { DragUploadTargetContext } from './context';

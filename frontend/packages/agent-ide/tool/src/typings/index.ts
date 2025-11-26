@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 类型定义导出
+ */
 import { type ToolKey } from '@coze-agent-ide/tool-config';
 
 export type Nullable<T> = {

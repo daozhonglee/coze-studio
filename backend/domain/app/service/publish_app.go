@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Package service 定义了应用(APP)领域的服务层实现（发布相关）
+
 package service
 
 import (
@@ -34,6 +36,12 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// PublishAPP 发布应用
+//
+// 发布流程：
+// 1. 检查是否可以发布（版本号是否已存在）
+// 2. 创建发布版本记录
+// 3. 打包资源并发布到各连接器
 func (a *appServiceImpl) PublishAPP(ctx context.Context, req *PublishAPPRequest) (resp *PublishAPPResponse, err error) {
 	err = a.checkCanPublishAPP(ctx, req)
 	if err != nil {
@@ -58,6 +66,11 @@ func (a *appServiceImpl) PublishAPP(ctx context.Context, req *PublishAPPRequest)
 	return resp, nil
 }
 
+// publishByConnectors 按连接器发布应用
+//
+// 打包资源并更新各连接器的发布状态：
+// - 打包失败时更新状态为 PackFailed
+// - 所有连接器发布成功时更新状态为 PublishDone
 func (a *appServiceImpl) publishByConnectors(ctx context.Context, recordID int64, req *PublishAPPRequest) (success bool, err error) {
 	defer func() {
 		if err != nil {
@@ -125,6 +138,9 @@ func (a *appServiceImpl) publishByConnectors(ctx context.Context, recordID int64
 	return true, nil
 }
 
+// checkCanPublishAPP 检查是否可以发布应用
+//
+// 校验版本号是否已被使用
 func (a *appServiceImpl) checkCanPublishAPP(ctx context.Context, req *PublishAPPRequest) (err error) {
 	exist, err := a.APPRepo.CheckAPPVersionExist(ctx, req.APPID, req.Version)
 	if err != nil {
@@ -137,6 +153,9 @@ func (a *appServiceImpl) checkCanPublishAPP(ctx context.Context, req *PublishAPP
 	return nil
 }
 
+// createPublishVersion 创建发布版本
+//
+// 基于草稿应用创建新的发布版本记录
 func (a *appServiceImpl) createPublishVersion(ctx context.Context, req *PublishAPPRequest) (recordID int64, err error) {
 	draftAPP, exist, err := a.APPRepo.GetDraftAPP(ctx, req.APPID)
 	if err != nil {
@@ -172,6 +191,9 @@ func (a *appServiceImpl) createPublishVersion(ctx context.Context, req *PublishA
 	return recordID, nil
 }
 
+// packResources 打包应用资源
+//
+// 打包插件和工作流资源，返回打包失败的资源列表
 func (a *appServiceImpl) packResources(ctx context.Context, appID int64, version string, connectorIDs []int64, pConfig map[int64]entity.PublishConfig) (failedResources []*entity.PackResourceFailedInfo, err error) {
 
 	failedPlugins, allDraftPlugins, err := a.packPlugins(ctx, appID, version)
@@ -198,6 +220,9 @@ func (a *appServiceImpl) packResources(ctx context.Context, appID int64, version
 	return failedResources, nil
 }
 
+// packPlugins 打包应用的插件资源
+//
+// 发布应用关联的所有插件，返回打包失败的插件信息
 func (a *appServiceImpl) packPlugins(ctx context.Context, appID int64, version string) (failedInfo []*entity.PackResourceFailedInfo, allDraftPlugins []*plugin.PluginInfo, err error) {
 	res, err := crossplugin.DefaultSVC().PublishAPPPlugins(ctx, &plugin.PublishAPPPluginsRequest{
 		APPID:   appID,
@@ -220,6 +245,9 @@ func (a *appServiceImpl) packPlugins(ctx context.Context, appID int64, version s
 
 }
 
+// packWorkflows 打包应用的工作流资源
+//
+// 发布应用关联的所有工作流，返回打包失败的工作流信息
 func (a *appServiceImpl) packWorkflows(ctx context.Context, appID int64, version string, allDraftPluginIDs []int64, connectorIDs []int64) (workflowFailedInfoList []*entity.PackResourceFailedInfo, err error) {
 	issues, err := crossworkflow.DefaultSVC().ReleaseApplicationWorkflows(ctx, appID, &crossworkflow.ReleaseWorkflowConfig{
 		Version:      version,
@@ -246,6 +274,9 @@ func (a *appServiceImpl) packWorkflows(ctx context.Context, appID int64, version
 	return workflowFailedInfoList, nil
 }
 
+// packResourcesFailedPostProcess 资源打包失败后处理
+//
+// 更新发布状态为失败，并记录失败的资源信息
 func (a *appServiceImpl) packResourcesFailedPostProcess(ctx context.Context, recordID int64, packFailedInfo []*entity.PackResourceFailedInfo) (err error) {
 	publishFailedInfo := &entity.PublishRecordExtraInfo{
 		PackFailedInfo: packFailedInfo,

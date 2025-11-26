@@ -14,28 +14,39 @@
  * limitations under the License.
  */
 
+// Package sqlparser 提供 SQL 解析器接口
+//
+// 本包定义 SQL 解析和修改的接口，用于：
+// - SQL 语句解析
+// - 表名/列名替换
+// - SQL 操作类型识别
+// - SQL 过滤条件追加
+//
+// 实现层在 impl/sqlparser/ 目录下
 package sqlparser
 
-// TableColumn represents table and column name mapping
+// TableColumn 表和列名映射
 type TableColumn struct {
 	NewTableName *string           // if nil, not replace table name
 	ColumnMap    map[string]string // Column name mapping: key is original column name, value is new column name
 }
 
+// ColumnValue 列值结构
 type ColumnValue struct {
 	ColName string
 	Value   interface{}
 }
 
+// PrimaryKeyValue 主键值结构
 type PrimaryKeyValue struct {
 	ColName string
 	Values  []interface{}
 }
 
-// OperationType represents the type of SQL operation
+// OperationType SQL 操作类型
 type OperationType string
 
-// SQL operation types
+// SQL 操作类型常量
 const (
 	OperationTypeSelect   OperationType = "SELECT"
 	OperationTypeInsert   OperationType = "INSERT"
@@ -48,14 +59,16 @@ const (
 	OperationTypeUnknown  OperationType = "UNKNOWN"
 )
 
+// SQLFilterOp SQL 过滤操作符
 type SQLFilterOp string
 
+// SQL 过滤操作符常量
 const (
 	SQLFilterOpAnd SQLFilterOp = "AND"
 	SQLFilterOpOr  SQLFilterOp = "OR"
 )
 
-// SQLParser defines the interface for parsing and modifying SQL statements
+// SQLParser SQL 解析器接口
 type SQLParser interface {
 	// ParseAndModifySQL parses SQL and replaces table/column names according to the provided message
 	ParseAndModifySQL(sql string, tableColumns map[string]TableColumn) (string, error) // tableColumns Original table name -> new TableInfo
@@ -79,4 +92,5 @@ type SQLParser interface {
 	AddSelectFieldsToSelectSQL(origSQL string, cols []string) (string, error)
 }
 
+// New SQL 解析器工厂函数
 var New func() SQLParser

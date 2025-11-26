@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file create preset plugin 模块导出
+ */
 import {
   LabelHandler,
   LifecycleContribution,

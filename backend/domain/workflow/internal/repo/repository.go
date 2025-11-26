@@ -14,6 +14,24 @@
  * limitations under the License.
  */
 
+// Package repo 实现工作流领域的仓储层
+//
+// 本包提供工作流实体的持久化和检索功能，是领域驱动设计中仓储模式的具体实现。
+// 主要职责包括：
+//   - 工作流元数据的 CRUD 操作
+//   - 工作流草稿和版本管理
+//   - 工作流执行历史记录
+//   - 会话模板和会话管理
+//   - 中断事件和取消信号的存储
+//
+// 技术实现：
+//   - 使用 GORM + gen 进行数据库操作
+//   - 使用 Redis 进行缓存和分布式状态管理
+//   - 使用对象存储（TOS）存储大型资源
+//
+// 设计说明：
+// 本包采用组合模式，将多个子存储（如 CheckPointStore、InterruptEventStore 等）
+// 组合到 RepositoryImpl 中，实现职责分离和灵活扩展。
 package repo
 
 import (
@@ -56,23 +74,48 @@ import (
 )
 
 const (
+	// batchCreateSize 批量创建时的批次大小
 	batchCreateSize = 10
 )
 
+// RepositoryImpl 工作流仓储的具体实现
+//
+// 该结构体实现了 workflow.Repository 接口，提供工作流相关的所有持久化操作。
+// 采用组合模式嵌入多个子存储接口，实现功能的模块化：
+//   - IDGenerator: ID 生成器，用于生成唯一标识
+//   - CheckPointStore: 检查点存储，用于工作流执行的断点续传
+//   - InterruptEventStore: 中断事件存储，用于工作流的暂停和恢复
+//   - CancelSignalStore: 取消信号存储，用于工作流的取消操作
+//   - ExecuteHistoryStore: 执行历史存储，用于记录工作流执行日志
+//   - Suggester: 建议生成器，用于生成后续问题建议
 type RepositoryImpl struct {
-	idgen.IDGenerator
-	query *query.Query
-	redis cache.Cmdable
-	tos   storage.Storage
-	einoCompose.CheckPointStore
-	workflow.InterruptEventStore
-	workflow.CancelSignalStore
-	workflow.ExecuteHistoryStore
-	builtinModel modelbuilder.BaseChatModel
-	workflow.WorkflowConfig
-	workflow.Suggester
+	idgen.IDGenerator                            // ID 生成器
+	query                        *query.Query    // GORM gen 查询对象
+	redis                        cache.Cmdable   // Redis 客户端
+	tos                          storage.Storage // 对象存储客户端
+	einoCompose.CheckPointStore                  // Eino 检查点存储
+	workflow.InterruptEventStore                 // 中断事件存储
+	workflow.CancelSignalStore                   // 取消信号存储
+	workflow.ExecuteHistoryStore                 // 执行历史存储
+	builtinModel                 modelbuilder.BaseChatModel
+	workflow.WorkflowConfig      // 工作流配置
+	workflow.Suggester           // 建议生成器
 }
 
+// NewRepository 创建工作流仓储实例
+//
+// 参数：
+//   - idgen: ID 生成器，用于生成唯一标识
+//   - db: GORM 数据库连接
+//   - redis: Redis 客户端，用于缓存和分布式状态管理
+//   - tos: 对象存储客户端，用于存储大型资源
+//   - cpStore: 检查点存储，用于工作流执行的断点续传
+//   - chatModel: 聊天模型，用于生成后续问题建议
+//   - workflowConfig: 工作流配置
+//
+// 返回值：
+//   - workflow.Repository: 工作流仓储接口实现
+//   - error: 创建失败时返回错误
 func NewRepository(idgen idgen.IDGenerator, db *gorm.DB, redis cache.Cmdable, tos storage.Storage,
 	cpStore einoCompose.CheckPointStore, chatModel modelbuilder.BaseChatModel, workflowConfig workflow.WorkflowConfig) (workflow.Repository, error) {
 	var sg workflow.Suggester
@@ -110,6 +153,15 @@ func NewRepository(idgen idgen.IDGenerator, db *gorm.DB, redis cache.Cmdable, to
 
 }
 
+// Suggest 根据用户输入和助手回答生成后续问题建议
+//
+// 参数：
+//   - ctx: 上下文
+//   - input: 建议请求信息，包含用户输入和助手回答
+//
+// 返回值：
+//   - []string: 生成的后续问题建议列表
+//   - error: 生成失败时返回错误
 func (r *RepositoryImpl) Suggest(ctx context.Context, input *vo.SuggestInfo) ([]string, error) {
 	if r.Suggester == nil {
 		return []string{}, nil
@@ -117,6 +169,15 @@ func (r *RepositoryImpl) Suggest(ctx context.Context, input *vo.SuggestInfo) ([]
 	return r.Suggester.Suggest(ctx, input)
 }
 
+// CreateMeta 创建工作流元数据
+//
+// 参数：
+//   - ctx: 上下文
+//   - meta: 工作流元数据，包含名称、描述、图标等基本信息
+//
+// 返回值：
+//   - int64: 创建的工作流 ID
+//   - error: 创建失败时返回错误
 func (r *RepositoryImpl) CreateMeta(ctx context.Context, meta *vo.Meta) (int64, error) {
 	id, err := r.GenID(ctx)
 	if err != nil {
@@ -154,6 +215,18 @@ func (r *RepositoryImpl) CreateMeta(ctx context.Context, meta *vo.Meta) (int64, 
 	return id, nil
 }
 
+// updateReferences 更新工作流引用关系
+//
+// 该方法用于维护工作流之间的引用关系（如子工作流引用）。
+// 采用增量更新策略：比较当前引用和目标引用，执行新增、禁用、启用操作。
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 引用方工作流 ID
+//   - wfRefs: 目标引用关系集合
+//
+// 返回值：
+//   - error: 更新失败时返回错误
 func (r *RepositoryImpl) updateReferences(ctx context.Context, id int64, wfRefs map[entity.WorkflowReferenceKey]struct{}) (
 	err error) {
 	defer func() {
@@ -285,6 +358,22 @@ func (r *RepositoryImpl) updateReferences(ctx context.Context, id int64, wfRefs 
 	return nil
 }
 
+// CreateVersion 创建工作流版本（发布操作）
+//
+// 该方法用于将工作流草稿发布为正式版本。发布时会：
+// 1. 更新工作流引用关系
+// 2. 创建版本记录
+// 3. 更新草稿状态（标记为已测试运行成功、未修改）
+// 4. 更新元数据状态（标记为已发布）
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流 ID
+//   - info: 版本信息，包含版本号、描述、画布内容等
+//   - newRefs: 新的引用关系
+//
+// 返回值：
+//   - error: 创建失败时返回错误
 func (r *RepositoryImpl) CreateVersion(ctx context.Context, id int64, info *vo.VersionInfo, newRefs map[entity.WorkflowReferenceKey]struct{}) (err error) {
 	defer func() {
 		if err != nil {
@@ -340,6 +429,15 @@ func (r *RepositoryImpl) CreateVersion(ctx context.Context, id int64, info *vo.V
 	return nil
 }
 
+// CreateOrUpdateDraft 创建或更新工作流草稿
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流 ID
+//   - draft: 草稿信息，包含画布内容、输入输出参数等
+//
+// 返回值：
+//   - error: 操作失败时返回错误
 func (r *RepositoryImpl) CreateOrUpdateDraft(ctx context.Context, id int64, draft *vo.DraftInfo) error {
 	d := &model.WorkflowDraft{
 		ID:           id,
@@ -361,6 +459,14 @@ func (r *RepositoryImpl) CreateOrUpdateDraft(ctx context.Context, id int64, draf
 	return nil
 }
 
+// UpdateWorkflowDraftTestRunSuccess 更新工作流草稿的测试运行成功状态
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流 ID
+//
+// 返回值：
+//   - error: 更新失败时返回错误
 func (r *RepositoryImpl) UpdateWorkflowDraftTestRunSuccess(ctx context.Context, id int64) error {
 	if _, err := r.query.WorkflowDraft.WithContext(ctx).Where(r.query.WorkflowDraft.ID.Eq(id)).UpdateColumnSimple(r.query.WorkflowDraft.TestRunSuccess.Value(true)); err != nil {
 		return vo.WrapError(errno.ErrDatabaseError, fmt.Errorf("update workflow draft test run success failed: %w", err))
@@ -369,6 +475,20 @@ func (r *RepositoryImpl) UpdateWorkflowDraftTestRunSuccess(ctx context.Context, 
 	return nil
 }
 
+// Delete 删除工作流及其相关数据
+//
+// 该方法在事务中执行，会删除：
+//   - 工作流元数据
+//   - 工作流草稿
+//   - 所有版本记录
+//   - 引用关系（被引用和引用他人的关系）
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流 ID
+//
+// 返回值：
+//   - error: 删除失败时返回错误
 func (r *RepositoryImpl) Delete(ctx context.Context, id int64) (err error) {
 	defer func() {
 		if err != nil {
@@ -407,6 +527,16 @@ func (r *RepositoryImpl) Delete(ctx context.Context, id int64) (err error) {
 	})
 }
 
+// MDelete 批量删除工作流
+//
+// 该方法会同步删除元数据，异步删除草稿、版本和引用关系。
+//
+// 参数：
+//   - ctx: 上下文
+//   - ids: 要删除的工作流 ID 列表
+//
+// 返回值：
+//   - error: 删除失败时返回错误
 func (r *RepositoryImpl) MDelete(ctx context.Context, ids []int64) error {
 	_, err := r.query.WorkflowMeta.WithContext(ctx).Where(r.query.WorkflowMeta.ID.In(ids...)).Delete()
 	if err != nil {
@@ -438,6 +568,15 @@ func (r *RepositoryImpl) MDelete(ctx context.Context, ids []int64) error {
 	return nil
 }
 
+// GetMeta 获取工作流元数据
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流 ID
+//
+// 返回值：
+//   - *vo.Meta: 工作流元数据
+//   - error: 获取失败时返回错误（包括不存在的情况）
 func (r *RepositoryImpl) GetMeta(ctx context.Context, id int64) (_ *vo.Meta, err error) {
 	defer func() {
 		if err != nil {
@@ -457,6 +596,15 @@ func (r *RepositoryImpl) GetMeta(ctx context.Context, id int64) (_ *vo.Meta, err
 	return r.convertMeta(ctx, meta)
 }
 
+// convertMeta 将数据库模型转换为领域值对象
+//
+// 参数：
+//   - ctx: 上下文
+//   - meta: 数据库工作流元数据模型
+//
+// 返回值：
+//   - *vo.Meta: 领域层元数据值对象
+//   - error: 转换失败时返回错误
 func (r *RepositoryImpl) convertMeta(ctx context.Context, meta *model.WorkflowMeta) (*vo.Meta, error) {
 	url, err := r.tos.GetObjectUrl(ctx, meta.IconURI)
 	if err != nil {
@@ -498,6 +646,17 @@ func (r *RepositoryImpl) convertMeta(ctx context.Context, meta *model.WorkflowMe
 	return wfMeta, nil
 }
 
+// UpdateMeta 更新工作流元数据
+//
+// 支持部分更新，只更新传入的非空字段。
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流 ID
+//   - metaUpdate: 要更新的字段（非空字段才会更新）
+//
+// 返回值：
+//   - error: 更新失败时返回错误
 func (r *RepositoryImpl) UpdateMeta(ctx context.Context, id int64, metaUpdate *vo.MetaUpdate) error {
 	var expressions []field.AssignExpr
 
@@ -542,6 +701,21 @@ func (r *RepositoryImpl) UpdateMeta(ctx context.Context, id int64, metaUpdate *v
 	return nil
 }
 
+// GetEntity 获取完整的工作流实体
+//
+// 根据查询策略获取工作流实体，支持多种查询模式：
+//   - FromDraft: 从草稿获取
+//   - FromSpecificVersion: 从指定版本获取
+//   - FromLatestVersion: 从最新版本获取
+//   - MetaOnly: 仅获取元数据
+//
+// 参数：
+//   - ctx: 上下文
+//   - policy: 查询策略，包含查询类型、版本号等
+//
+// 返回值：
+//   - *entity.Workflow: 工作流实体
+//   - error: 获取失败时返回错误
 func (r *RepositoryImpl) GetEntity(ctx context.Context, policy *vo.GetPolicy) (_ *entity.Workflow, err error) {
 	defer func() {
 		if err != nil {
@@ -636,6 +810,17 @@ func (r *RepositoryImpl) GetEntity(ctx context.Context, policy *vo.GetPolicy) (_
 	}, nil
 }
 
+// CreateChatFlowRoleConfig 创建 ChatFlow 角色配置
+//
+// ChatFlow 是一种特殊的工作流模式，支持多轮对话，角色配置定义了对话助手的外观和行为。
+//
+// 参数：
+//   - ctx: 上下文
+//   - chatFlowRole: ChatFlow 角色配置，包含名称、头像、背景等
+//
+// 返回值：
+//   - int64: 创建的配置 ID
+//   - error: 创建失败时返回错误
 func (r *RepositoryImpl) CreateChatFlowRoleConfig(ctx context.Context, chatFlowRole *entity.ChatFlowRole) (int64, error) {
 	id, err := r.GenID(ctx)
 	if err != nil {
@@ -663,6 +848,17 @@ func (r *RepositoryImpl) CreateChatFlowRoleConfig(ctx context.Context, chatFlowR
 	return id, nil
 }
 
+// UpdateChatFlowRoleConfig 更新 ChatFlow 角色配置
+//
+// 支持部分更新，只更新传入的非空字段。
+//
+// 参数：
+//   - ctx: 上下文
+//   - workflowID: 工作流 ID
+//   - chatFlowRole: 要更新的配置字段
+//
+// 返回值：
+//   - error: 更新失败时返回错误
 func (r *RepositoryImpl) UpdateChatFlowRoleConfig(ctx context.Context, workflowID int64, chatFlowRole *vo.ChatFlowRoleUpdate) error {
 	var expressions []field.AssignExpr
 	if chatFlowRole.Name != nil {
@@ -703,6 +899,17 @@ func (r *RepositoryImpl) UpdateChatFlowRoleConfig(ctx context.Context, workflowI
 	return nil
 }
 
+// GetChatFlowRoleConfig 获取 ChatFlow 角色配置
+//
+// 参数：
+//   - ctx: 上下文
+//   - workflowID: 工作流 ID
+//   - version: 版本号（可选，为空时返回最新配置）
+//
+// 返回值：
+//   - *entity.ChatFlowRole: 角色配置
+//   - error: 获取失败时返回错误
+//   - bool: 配置是否存在
 func (r *RepositoryImpl) GetChatFlowRoleConfig(ctx context.Context, workflowID int64, version string) (_ *entity.ChatFlowRole, err error, isExist bool) {
 	defer func() {
 		if err != nil {
@@ -741,11 +948,31 @@ func (r *RepositoryImpl) GetChatFlowRoleConfig(ctx context.Context, workflowID i
 	return res, err, true
 }
 
+// DeleteChatFlowRoleConfig 删除 ChatFlow 角色配置
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 配置 ID
+//   - workflowID: 工作流 ID
+//
+// 返回值：
+//   - error: 删除失败时返回错误
 func (r *RepositoryImpl) DeleteChatFlowRoleConfig(ctx context.Context, id int64, workflowID int64) error {
 	_, err := r.query.ChatFlowRoleConfig.WithContext(ctx).Where(r.query.ChatFlowRoleConfig.ID.Eq(id), r.query.ChatFlowRoleConfig.WorkflowID.Eq(workflowID)).Delete()
 	return err
 }
 
+// GetVersion 获取指定版本的工作流
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流 ID
+//   - version: 版本号
+//
+// 返回值：
+//   - *vo.VersionInfo: 版本信息
+//   - bool: 版本是否存在
+//   - error: 获取失败时返回错误
 func (r *RepositoryImpl) GetVersion(ctx context.Context, id int64, version string) (_ *vo.VersionInfo, existed bool, err error) {
 	defer func() {
 		if err != nil {
@@ -779,6 +1006,17 @@ func (r *RepositoryImpl) GetVersion(ctx context.Context, id int64, version strin
 	}, true, nil
 }
 
+// GetVersionListByConnectorAndWorkflowID 获取连接器关联的工作流版本列表
+//
+// 参数：
+//   - ctx: 上下文
+//   - connectorID: 连接器 ID
+//   - workflowID: 工作流 ID
+//   - limit: 返回数量限制
+//
+// 返回值：
+//   - []string: 版本号列表（按创建时间降序）
+//   - error: 获取失败时返回错误
 func (r *RepositoryImpl) GetVersionListByConnectorAndWorkflowID(ctx context.Context, connectorID, workflowID int64, limit int) (_ []string, err error) {
 	if limit <= 0 {
 		return nil, vo.WrapError(errno.ErrInvalidParameter, errors.New("limit must be greater than 0"))
@@ -801,6 +1039,17 @@ func (r *RepositoryImpl) GetVersionListByConnectorAndWorkflowID(ctx context.Cont
 	return versionList, nil
 }
 
+// IsApplicationConnectorWorkflowVersion 检查是否为应用连接器的工作流版本
+//
+// 参数：
+//   - ctx: 上下文
+//   - connectorID: 连接器 ID
+//   - workflowID: 工作流 ID
+//   - version: 版本号
+//
+// 返回值：
+//   - bool: 是否为应用连接器版本
+//   - error: 检查失败时返回错误
 func (r *RepositoryImpl) IsApplicationConnectorWorkflowVersion(ctx context.Context, connectorID, workflowID int64, version string) (b bool, err error) {
 	connectorWorkflowVersion := r.query.ConnectorWorkflowVersion
 	_, err = connectorWorkflowVersion.WithContext(ctx).
@@ -818,6 +1067,19 @@ func (r *RepositoryImpl) IsApplicationConnectorWorkflowVersion(ctx context.Conte
 	return true, nil
 }
 
+// DraftV2 获取工作流草稿（V2 版本）
+//
+// 支持通过 commitID 获取特定快照版本的草稿。
+// 如果指定的 commitID 在草稿表中不存在，会尝试从快照表中获取。
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流 ID
+//   - commitID: 提交 ID（可选，为空时返回最新草稿）
+//
+// 返回值：
+//   - *vo.DraftInfo: 草稿信息
+//   - error: 获取失败时返回错误
 func (r *RepositoryImpl) DraftV2(ctx context.Context, id int64, commitID string) (_ *vo.DraftInfo, err error) {
 	defer func() {
 		if err != nil {
@@ -886,6 +1148,18 @@ func (r *RepositoryImpl) DraftV2(ctx context.Context, id int64, commitID string)
 	}, nil
 }
 
+// MGetDrafts 批量获取工作流草稿
+//
+// 支持按 ID 列表、名称、空间 ID、应用 ID 等条件查询，并支持分页。
+//
+// 参数：
+//   - ctx: 上下文
+//   - policy: 查询策略，包含查询条件和分页参数
+//
+// 返回值：
+//   - []*entity.Workflow: 工作流实体列表
+//   - int64: 总数（需要 NeedTotalNumber=true）
+//   - error: 查询失败时返回错误
 func (r *RepositoryImpl) MGetDrafts(ctx context.Context, policy *vo.MGetPolicy) (_ []*entity.Workflow, totalCount int64, err error) {
 	defer func() {
 		if err != nil {
@@ -1055,6 +1329,18 @@ func (r *RepositoryImpl) MGetDrafts(ctx context.Context, policy *vo.MGetPolicy) 
 	return result, totalCount, nil
 }
 
+// MGetLatestVersion 批量获取工作流最新版本
+//
+// 支持按 ID 列表、名称、空间 ID、应用 ID 等条件查询，并支持分页。
+//
+// 参数：
+//   - ctx: 上下文
+//   - policy: 查询策略，包含查询条件和分页参数
+//
+// 返回值：
+//   - []*entity.Workflow: 工作流实体列表
+//   - int64: 总数（需要 NeedTotalNumber=true）
+//   - error: 查询失败时返回错误
 func (r *RepositoryImpl) MGetLatestVersion(ctx context.Context, policy *vo.MGetPolicy) (
 	_ []*entity.Workflow, totalCount int64, err error) {
 	defer func() {
@@ -1218,6 +1504,15 @@ func (r *RepositoryImpl) MGetLatestVersion(ctx context.Context, policy *vo.MGetP
 	return result, totalCount, nil
 }
 
+// MGetReferences 批量获取工作流引用关系
+//
+// 参数：
+//   - ctx: 上下文
+//   - policy: 查询策略，包含被引用 ID、引用方 ID、引用类型等
+//
+// 返回值：
+//   - []*entity.WorkflowReference: 引用关系列表
+//   - error: 查询失败时返回错误
 func (r *RepositoryImpl) MGetReferences(ctx context.Context, policy *vo.MGetReferencePolicy) (
 	_ []*entity.WorkflowReference, err error) {
 	defer func() {
@@ -1286,6 +1581,16 @@ func (r *RepositoryImpl) MGetReferences(ctx context.Context, policy *vo.MGetRefe
 	return result, nil
 }
 
+// MGetMetas 批量获取工作流元数据
+//
+// 参数：
+//   - ctx: 上下文
+//   - query: 查询条件，包含 ID 列表、名称、空间 ID 等
+//
+// 返回值：
+//   - map[int64]*vo.Meta: ID 到元数据的映射
+//   - int64: 总数（需要 NeedTotalNumber=true）
+//   - error: 查询失败时返回错误
 func (r *RepositoryImpl) MGetMetas(ctx context.Context, query *vo.MetaQuery) (
 	_ map[int64]*vo.Meta, _ int64, err error) {
 	defer func() {
@@ -1377,6 +1682,15 @@ func (r *RepositoryImpl) MGetMetas(ctx context.Context, query *vo.MetaQuery) (
 	return wfMap, total, nil
 }
 
+// GetLatestVersion 获取工作流最新版本
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流 ID
+//
+// 返回值：
+//   - *vo.VersionInfo: 版本信息
+//   - error: 获取失败时返回错误
 func (r *RepositoryImpl) GetLatestVersion(ctx context.Context, id int64) (*vo.VersionInfo, error) {
 	version, err := r.query.WorkflowVersion.WithContext(ctx).Where(r.query.WorkflowVersion.WorkflowID.Eq(id)).
 		Order(r.query.WorkflowVersion.CreatedAt.Desc()).First()
@@ -1403,6 +1717,18 @@ func (r *RepositoryImpl) GetLatestVersion(ctx context.Context, id int64) (*vo.Ve
 	}, nil
 }
 
+// CreateSnapshotIfNeeded 按需创建工作流快照
+//
+// 在执行工作流前调用，确保当前草稿有对应的快照可用于历史查看。
+// 如果快照已存在，则不重复创建。
+//
+// 参数：
+//   - ctx: 上下文
+//   - id: 工作流 ID
+//   - commitID: 提交 ID
+//
+// 返回值：
+//   - error: 创建失败时返回错误
 func (r *RepositoryImpl) CreateSnapshotIfNeeded(ctx context.Context, id int64, commitID string) error {
 	latestSnapshot, err := r.query.WorkflowSnapshot.WithContext(ctx).Where(
 		r.query.WorkflowSnapshot.WorkflowID.Eq(id),
@@ -1441,6 +1767,19 @@ func (r *RepositoryImpl) CreateSnapshotIfNeeded(ctx context.Context, id int64, c
 	})
 }
 
+// WorkflowAsTool 将工作流转换为工具
+//
+// 该方法将工作流编译为可被其他工作流或 Agent 调用的工具。
+// 支持配置输入输出参数的禁用和默认值。
+//
+// 参数：
+//   - ctx: 上下文
+//   - policy: 工作流获取策略
+//   - wfToolConfig: 工具配置，包含输入输出参数配置
+//
+// 返回值：
+//   - workflow.ToolFromWorkflow: 工具接口实现
+//   - error: 转换失败时返回错误
 func (r *RepositoryImpl) WorkflowAsTool(ctx context.Context, policy vo.GetPolicy, wfToolConfig vo.WorkflowToolConfig) (workflow.ToolFromWorkflow, error) {
 	var (
 		canvas               vo.Canvas
@@ -1590,6 +1929,21 @@ func (r *RepositoryImpl) WorkflowAsTool(ctx context.Context, policy vo.GetPolicy
 	), nil
 }
 
+// CopyWorkflow 复制工作流
+//
+// 创建工作流的副本，支持：
+//   - 自动生成副本名称（原名称_序号）
+//   - 复制到不同空间或应用
+//   - 修改画布内容
+//
+// 参数：
+//   - ctx: 上下文
+//   - workflowID: 源工作流 ID
+//   - policy: 复制策略，包含目标空间、应用等配置
+//
+// 返回值：
+//   - *entity.Workflow: 复制后的工作流实体
+//   - error: 复制失败时返回错误
 func (r *RepositoryImpl) CopyWorkflow(ctx context.Context, workflowID int64, policy vo.CopyWorkflowPolicy) (
 	_ *entity.Workflow, err error) {
 	const (
@@ -1708,6 +2062,16 @@ func (r *RepositoryImpl) CopyWorkflow(ctx context.Context, workflowID int64, pol
 	return copiedWorkflow, nil
 }
 
+// GetDraftWorkflowsByAppID 根据应用 ID 获取所有草稿工作流
+//
+// 参数：
+//   - ctx: 上下文
+//   - AppID: 应用 ID
+//
+// 返回值：
+//   - map[int64]*vo.DraftInfo: 工作流 ID 到草稿信息的映射
+//   - map[int64]string: 工作流 ID 到名称的映射
+//   - error: 查询失败时返回错误
 func (r *RepositoryImpl) GetDraftWorkflowsByAppID(ctx context.Context, AppID int64) (
 	_ map[int64]*vo.DraftInfo, _ map[int64]string, err error) {
 	defer func() {
@@ -1748,6 +2112,17 @@ func (r *RepositoryImpl) GetDraftWorkflowsByAppID(ctx context.Context, AppID int
 	return result, wid2Named, nil
 }
 
+// BatchCreateConnectorWorkflowVersion 批量创建连接器工作流版本关联
+//
+// 参数：
+//   - ctx: 上下文
+//   - appID: 应用 ID
+//   - connectorID: 连接器 ID
+//   - workflowIDs: 工作流 ID 列表
+//   - version: 版本号
+//
+// 返回值：
+//   - error: 创建失败时返回错误
 func (r *RepositoryImpl) BatchCreateConnectorWorkflowVersion(ctx context.Context, appID, connectorID int64, workflowIDs []int64, version string) error {
 	objects := make([]*model.ConnectorWorkflowVersion, 0, len(workflowIDs))
 	for idx := range workflowIDs {
@@ -1767,14 +2142,38 @@ func (r *RepositoryImpl) BatchCreateConnectorWorkflowVersion(ctx context.Context
 	return nil
 }
 
+// GetKnowledgeRecallChatModel 获取知识库召回使用的聊天模型
+//
+// 返回值：
+//   - modelbuilder.BaseChatModel: 聊天模型实例
 func (r *RepositoryImpl) GetKnowledgeRecallChatModel() modelbuilder.BaseChatModel {
 	return r.builtinModel
 }
 
+// GetObjectUrl 获取对象存储资源的 URL
+//
+// 参数：
+//   - ctx: 上下文
+//   - objectKey: 对象键
+//   - opts: 可选配置
+//
+// 返回值：
+//   - string: 资源 URL
+//   - error: 获取失败时返回错误
 func (r *RepositoryImpl) GetObjectUrl(ctx context.Context, objectKey string, opts ...storage.GetOptFn) (string, error) {
 	return r.tos.GetObjectUrl(ctx, objectKey, opts...)
 }
 
+// filterDisabledAPIParameters 过滤被禁用的 API 参数
+//
+// 递归处理嵌套的对象类型参数。
+//
+// 参数：
+//   - parametersCfg: 参数配置列表
+//   - m: 原始参数映射
+//
+// 返回值：
+//   - map[string]any: 过滤后的参数映射
 func filterDisabledAPIParameters(parametersCfg []*workflow3.APIParameter, m map[string]any) map[string]any {
 	result := make(map[string]any, len(m))
 	responseParameterMap := slices.ToMap(parametersCfg, func(p *workflow3.APIParameter) (string, *workflow3.APIParameter) {
@@ -1798,6 +2197,17 @@ func filterDisabledAPIParameters(parametersCfg []*workflow3.APIParameter, m map[
 	return result
 }
 
+// transformDefaultValue 将字符串默认值转换为实际类型
+//
+// 根据参数类型将字符串值转换为对应的 Go 类型。
+//
+// 参数：
+//   - value: 字符串默认值
+//   - p: 参数配置，包含类型信息
+//
+// 返回值：
+//   - any: 转换后的值
+//   - error: 转换失败时返回错误
 func transformDefaultValue(value string, p *workflow3.APIParameter) (any, error) {
 	switch p.Type {
 	default:

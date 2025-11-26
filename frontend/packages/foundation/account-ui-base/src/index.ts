@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file account-ui-base 模块导出
+ * @description 提供 account-ui-base 相关功能
+ */
+
+
 export { useLogout } from './hooks/logout';
 export { RequireAuthContainer } from './components/require-auth-container';
 export { LoadingContainer } from './components/loading-container';

@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file role background 模块导出
+ */
 export { RoleBackground } from './role-background';
 export { AddBackground } from './add-background';

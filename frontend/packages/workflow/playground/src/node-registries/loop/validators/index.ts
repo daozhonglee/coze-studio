@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file loop 验证器导出
+ */
 export { LoopArrayNameValidator } from './loop-array-name';
 export { LoopInputNameValidator } from './loop-input-name';
 export { LoopArrayValueValidator } from './loop-array-value';

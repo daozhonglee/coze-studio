@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+// config.go 插件配置加载
+//
+// 本文件提供插件配置的初始化和加载功能：
+//   - 插件产品元数据加载
+//   - OAuth Schema 加载
+
 package conf
 
 import (
@@ -28,6 +34,8 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/logs"
 )
 
+// InitConfig 初始化插件配置
+// 从 resources/conf/plugin 目录加载配置文件
 func InitConfig(ctx context.Context) (err error) {
 	cwd, err := os.Getwd()
 	if err != nil {
@@ -50,12 +58,15 @@ func InitConfig(ctx context.Context) (err error) {
 	return nil
 }
 
+// oauthSchema OAuth 认证 Schema 配置
 var oauthSchema string
 
+// GetOAuthSchema 获取 OAuth Schema 配置
 func GetOAuthSchema() string {
 	return oauthSchema
 }
 
+// loadOAuthSchema 加载 OAuth Schema 配置文件
 func loadOAuthSchema(ctx context.Context, basePath string) (err error) {
 	filePath := path.Join(basePath, "common", "oauth_schema.json")
 	file, err := os.ReadFile(filePath)
@@ -72,6 +83,7 @@ func loadOAuthSchema(ctx context.Context, basePath string) (err error) {
 	return nil
 }
 
+// isValidJSON 检查数据是否为有效的 JSON
 func isValidJSON(data []byte) bool {
 	var js json.RawMessage
 	return sonic.Unmarshal(data, &js) == nil

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 类型定义导出
+ */
 export { CustomLine, NodeType, DependencyOrigin, EdgeItem } from './line';
 
 export { TreeNode } from './tree';

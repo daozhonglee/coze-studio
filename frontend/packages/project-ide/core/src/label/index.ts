@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 标签导出
+ */
 export { type LabelChangeEvent, LabelHandler } from './label-handler';
 export { LabelService } from './label-service';
 export {

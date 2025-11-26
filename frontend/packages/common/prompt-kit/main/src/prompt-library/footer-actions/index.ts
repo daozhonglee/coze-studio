@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file footer actions 模块导出
+ */
 export { CopyPrompt } from './copy-prompt';
 export { InsertToEditor } from './insert-to-editor';
 export { PromptDiff } from './prompt-diff';

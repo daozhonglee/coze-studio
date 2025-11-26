@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file biz-plugin 模块导出
+ * @description 提供 biz-plugin 相关功能
+ */
+
+
 export { default as usePluginResource } from './hooks/use-plugin-resource';

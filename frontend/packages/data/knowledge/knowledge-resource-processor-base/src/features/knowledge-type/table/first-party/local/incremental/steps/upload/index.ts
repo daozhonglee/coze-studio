@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file upload 模块导出
+ */
 export { TableUpload } from './upload';

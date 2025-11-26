@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// interrupt_event.go 中断事件实体
+//
+// 本文件定义了工作流执行中断相关的实体：
+//   - InterruptEvent: 中断事件（问答、输入等）
+//   - ResumeRequest: 恢复执行请求
+//   - ToolInterruptEvent: 工具中断事件
+
 package entity
 
 import (
@@ -26,6 +33,8 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/entity/vo"
 )
 
+// InterruptEvent 中断事件
+// 表示工作流执行过程中需要暂停等待用户输入的事件
 type InterruptEvent struct {
 	ID            int64              `json:"id"`
 	NodeKey       vo.NodeKey         `json:"node_key"`
@@ -57,6 +66,8 @@ func (i *InterruptEvent) String() string {
 	return string(s)
 }
 
+// ResumeRequest 恢复执行请求
+// 包含恢复执行所需的执行 ID、事件 ID 和用户提供的数据
 type ResumeRequest struct {
 	ExecuteID  int64
 	EventID    int64
@@ -68,6 +79,8 @@ func (r *ResumeRequest) GetResumeID() string {
 	return fmt.Sprintf("%d_%d", r.ExecuteID, r.EventID)
 }
 
+// ToolInterruptEvent 工具中断事件
+// LLM 调用工作流工具时产生的中断事件
 type ToolInterruptEvent struct {
 	ToolCallID string
 	ToolName   string
@@ -75,6 +88,8 @@ type ToolInterruptEvent struct {
 	*InterruptEvent
 }
 
+// ConvRelatedInfo 会话关联信息
+// 用于关联中断事件和会话上下文
 type ConvRelatedInfo struct {
 	EventID  int64
 	ExecID   int64

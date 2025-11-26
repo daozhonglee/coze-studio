@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file input slot 模块导出
+ */
 export { InputSlotWidget } from './input-slot-widget';
 export { insertInputSlot } from './action/insert-input-slot-action';
 export {

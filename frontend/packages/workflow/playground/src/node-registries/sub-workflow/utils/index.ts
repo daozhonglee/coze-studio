@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file sub-workflow 工具函数导出
+ */
 export { syncToLatestReleaseState } from './sync-to-latest-release';
 export { getInputDefaultValue } from './get-input-default-value';
 export { getIdentifier } from './get-identifier';

@@ -31,19 +31,47 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// interruptEventStoreImpl 中断事件存储的实现
+//
+// 该结构体基于 Redis 实现工作流中断事件的存储和管理。
+// 工作流在执行过程中遇到需要用户交互的节点（如问答节点）时，
+// 会产生中断事件并暂停执行，等待用户响应后恢复。
+//
+// 中断事件以列表形式存储在 Redis 中，支持：
+//   - 按顺序处理多个中断事件
+//   - 优先处理上一次恢复的节点产生的新事件
 type interruptEventStoreImpl struct {
-	redis cache.Cmdable
+	redis cache.Cmdable // Redis 客户端
 }
 
 const (
-	// interruptEventListKeyPattern stores events as a list (e.g., "interrupt_event_list:{wfExeID}")
-	interruptEventListKeyPattern   = "interrupt_event_list:%d"
-	interruptEventTTL              = 24 * time.Hour // Example: expire after 24 hours
+	// interruptEventListKeyPattern 中断事件列表的 Redis 键模式
+	// 格式：interrupt_event_list:{工作流执行ID}
+	interruptEventListKeyPattern = "interrupt_event_list:%d"
+
+	// interruptEventTTL 中断事件的过期时间（24 小时）
+	interruptEventTTL = 24 * time.Hour
+
+	// previousResumedEventKeyPattern 上一次恢复的事件键模式
+	// 用于优先处理同一节点产生的新中断事件
 	previousResumedEventKeyPattern = "previous_resumed_event:%d"
-	ConvToEventExecFormat          = "conv_relate_info:%d"
+
+	// ConvToEventExecFormat 会话与执行关联信息的键模式
+	ConvToEventExecFormat = "conv_relate_info:%d"
 )
 
-// SaveInterruptEvents saves multiple interrupt events to the end of a Redis list.
+// SaveInterruptEvents 保存中断事件到 Redis 列表
+//
+// 将多个中断事件追加到 Redis 列表末尾。如果事件已存在则跳过。
+// 如果有之前恢复过的事件，会优先将同一节点的新事件放到列表头部。
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExeID: 工作流执行 ID
+//   - events: 要保存的中断事件列表
+//
+// 返回值：
+//   - error: 保存失败时返回错误
 func (i *interruptEventStoreImpl) SaveInterruptEvents(ctx context.Context, wfExeID int64, events []*entity.InterruptEvent) (err error) {
 	if len(events) == 0 {
 		return nil
@@ -143,7 +171,16 @@ func (i *interruptEventStoreImpl) SaveInterruptEvents(ctx context.Context, wfExe
 	return nil
 }
 
-// GetFirstInterruptEvent retrieves the first interrupt event from the list without removing it.
+// GetFirstInterruptEvent 获取列表中的第一个中断事件（不删除）
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExeID: 工作流执行 ID
+//
+// 返回值：
+//   - *entity.InterruptEvent: 中断事件
+//   - bool: 是否存在事件
+//   - error: 获取失败时返回错误
 func (i *interruptEventStoreImpl) GetFirstInterruptEvent(ctx context.Context, wfExeID int64) (
 	_ *entity.InterruptEvent, _ bool, err error) {
 	defer func() {
@@ -172,6 +209,17 @@ func (i *interruptEventStoreImpl) GetFirstInterruptEvent(ctx context.Context, wf
 	return &event, true, nil
 }
 
+// UpdateFirstInterruptEvent 更新列表中的第一个中断事件
+//
+// 同时会记录此事件为"上一次恢复的事件"，用于后续优先处理。
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExeID: 工作流执行 ID
+//   - event: 更新后的事件
+//
+// 返回值：
+//   - error: 更新失败时返回错误
 func (i *interruptEventStoreImpl) UpdateFirstInterruptEvent(ctx context.Context, wfExeID int64, event *entity.InterruptEvent) (err error) {
 	defer func() {
 		if err != nil {
@@ -199,7 +247,16 @@ func (i *interruptEventStoreImpl) UpdateFirstInterruptEvent(ctx context.Context,
 	return nil
 }
 
-// PopFirstInterruptEvent retrieves and removes the first interrupt event from the list.
+// PopFirstInterruptEvent 获取并删除列表中的第一个中断事件
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExeID: 工作流执行 ID
+//
+// 返回值：
+//   - *entity.InterruptEvent: 中断事件
+//   - bool: 是否存在事件
+//   - error: 操作失败时返回错误
 func (i *interruptEventStoreImpl) PopFirstInterruptEvent(ctx context.Context, wfExeID int64) (*entity.InterruptEvent, bool, error) {
 	listKey := fmt.Sprintf(interruptEventListKeyPattern, wfExeID)
 
@@ -224,6 +281,15 @@ func (i *interruptEventStoreImpl) PopFirstInterruptEvent(ctx context.Context, wf
 	return &event, true, nil
 }
 
+// ListInterruptEvents 列出所有中断事件
+//
+// 参数：
+//   - ctx: 上下文
+//   - wfExeID: 工作流执行 ID
+//
+// 返回值：
+//   - []*entity.InterruptEvent: 中断事件列表
+//   - error: 获取失败时返回错误
 func (i *interruptEventStoreImpl) ListInterruptEvents(ctx context.Context, wfExeID int64) ([]*entity.InterruptEvent, error) {
 	listKey := fmt.Sprintf(interruptEventListKeyPattern, wfExeID)
 
@@ -250,6 +316,17 @@ func (i *interruptEventStoreImpl) ListInterruptEvents(ctx context.Context, wfExe
 	return events, nil
 }
 
+// BindConvRelatedInfo 绑定会话关联信息
+//
+// 将会话 ID 与工作流执行信息关联，用于通过会话查找对应的执行。
+//
+// 参数：
+//   - ctx: 上下文
+//   - convID: 会话 ID
+//   - info: 关联信息
+//
+// 返回值：
+//   - error: 绑定失败时返回错误
 func (i *interruptEventStoreImpl) BindConvRelatedInfo(ctx context.Context, convID int64, info entity.ConvRelatedInfo) error {
 	data, err := sonic.Marshal(info)
 	if err != nil {
@@ -262,6 +339,17 @@ func (i *interruptEventStoreImpl) BindConvRelatedInfo(ctx context.Context, convI
 	return nil
 }
 
+// GetConvRelatedInfo 获取会话关联信息
+//
+// 参数：
+//   - ctx: 上下文
+//   - convID: 会话 ID
+//
+// 返回值：
+//   - *entity.ConvRelatedInfo: 关联信息
+//   - bool: 是否存在
+//   - func() error: 删除函数，用于清理关联信息
+//   - error: 获取失败时返回错误
 func (i *interruptEventStoreImpl) GetConvRelatedInfo(ctx context.Context, convID int64) (*entity.ConvRelatedInfo, bool, func() error, error) {
 	data, err := i.redis.Get(ctx, fmt.Sprintf(ConvToEventExecFormat, convID)).Bytes()
 	if err != nil {

@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file 引用节点信息组件导出
+ * @description 提供引用节点的来源和版本信息展示功能
+ */
+
+/** 引用节点来源组件 */
 export { ReferenceNodeOrigin } from './reference-node-origin';
+/** 引用节点版本组件 */
 export { ReferenceNodeVersion } from './reference-node-version';
+/** 子工作流/API 技能版本组件 */
 export { SubWorkflowSkillVersion, ApiSkillVersion } from './skill-version';

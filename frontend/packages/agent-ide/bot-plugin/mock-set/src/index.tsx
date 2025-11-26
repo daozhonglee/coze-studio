@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot-plugin/mock-set 模块导出
+ * @description 提供 bot-plugin/mock-set 相关功能
+ */
+
+
 // export { DemoComponent } from './demo';

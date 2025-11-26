@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file expression-editor 组件导出
+ */
 export { ExpressionEditorCounter } from './counter';
 export { ExpressionEditorLeaf } from './leaf';
 export { ExpressionEditorRender } from './render';

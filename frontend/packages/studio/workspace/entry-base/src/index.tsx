@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file workspace/entry-base 模块导出
+ * @description 提供 workspace/entry-base 相关功能
+ */
+
+
 export { default as Plugin } from './pages/plugin';
 export { default as Tool } from './pages/tool';
 export { default as MocksetDetail } from './pages/mockset';

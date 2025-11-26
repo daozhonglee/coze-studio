@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
+// Package consts 定义全局常量
+//
+// 本包包含系统级别的常量定义：
+// - 环境变量名称
+// - 上下文键
+// - 默认值
+// - 消息队列配置
+// - 存储配置
 package consts
 
 import "time"
 
+// 环境变量名称常量
 const (
-	RunMode            = "RUN_MODE"
-	MySQLDsn           = "MYSQL_DSN"
+	RunMode            = "RUN_MODE"  // 运行模式
+	MySQLDsn           = "MYSQL_DSN" // MySQL 连接字符串
 	RedisAddr          = "REDIS_ADDR"
 	VeImageXAK         = "VE_IMAGEX_AK"
 	VeImageXSK         = "VE_IMAGEX_SK"

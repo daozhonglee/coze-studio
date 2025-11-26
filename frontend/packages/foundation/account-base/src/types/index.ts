@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file src 类型定义导出
+ */
+/**
  * User information of the currently logged in account
  */
 export interface UserInfo {

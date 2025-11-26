@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 弹出层容器组件
+ * @description 为弹出层组件提供挂载容器，解决工作流画布中弹出层定位问题
+ */
+
 import React, {
   type PropsWithChildren,
   type ReactElement,
@@ -25,6 +30,12 @@ import classNames from 'classnames';
 
 import s from './index.module.less';
 
+/**
+ * 弹出层容器组件
+ *
+ * 为 Popover、Select 等弹出层组件提供专用的挂载容器，
+ * 避免弹出层被画布滚动影响或层级遮挡
+ */
 export const PopupContainer: React.FC<
   PropsWithChildren<{
     className?: string;

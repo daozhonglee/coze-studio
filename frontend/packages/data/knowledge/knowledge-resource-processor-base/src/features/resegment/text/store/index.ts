@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file text 状态存储导出
+ */
 export { UploadTextResegmentStore } from './types';
 export { createTextResegmentStore } from './store';

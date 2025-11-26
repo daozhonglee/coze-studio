@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file Bot 选择组件
+ * @description 提供 Bot 选择功能，用于工作流中选择关联的 Bot
+ */
+
 /* eslint-disable complexity */
 import React from 'react';
 
@@ -32,6 +37,10 @@ import { ChatHistory } from './chat-history';
 import { Bots } from './bots';
 
 import styles from './index.module.less';
+
+/**
+ * Bot 选择组件属性
+ */
 interface BotSelectProps {
   value?: string;
   onChange?: (value: string) => void;
@@ -45,6 +54,11 @@ interface BotSelectProps {
   hasChatHistoryEnabledLLM?: boolean;
 }
 
+/**
+ * Bot 选择组件
+ *
+ * 提供 Bot 选择功能，支持显示关联的变量、数据表、聊天历史等信息
+ */
 export const BotSelect: React.FC<BotSelectProps> = ({
   value,
   onChange,

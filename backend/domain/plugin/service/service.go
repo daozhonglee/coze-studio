@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+// service.go 插件服务接口定义
+//
+// 本文件定义了插件领域服务的核心接口 PluginService。
+// 提供插件和工具的完整生命周期管理功能。
+
 package service
 
 import (
@@ -24,6 +29,15 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/plugin/entity"
 )
 
+// PluginService 插件领域服务接口
+//
+// 提供插件和工具的核心业务功能：
+//   - 草稿插件的增删改查
+//   - 在线插件的发布和查询
+//   - 工具的管理和执行
+//   - 代理工具的绑定
+//   - OAuth 认证管理
+//
 //go:generate mockgen -destination ../../../internal/mock/domain/plugin/interface.go --package mockPlugin -source service.go
 type PluginService interface {
 	// Draft Plugin

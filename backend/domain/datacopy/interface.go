@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// Package datacopy 定义了数据复制(DataCopy)领域的服务层
+//
+// 本包提供数据复制服务，用于在不同空间或应用间复制数据，
+// 支持知识库、数据库、变量等类型的数据复制。
 package datacopy
 
 import (
@@ -24,22 +28,37 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/datacopy/entity"
 )
 
+// DataCopy 数据复制服务接口
+//
+// 定义数据复制任务的管理操作
 type DataCopy interface {
+	// CheckAndGenCopyTask 检查并生成复制任务
+	// 如果任务已存在，返回现有任务状态；否则创建新任务
 	CheckAndGenCopyTask(ctx context.Context, req *CheckAndGenCopyTaskReq) (*CheckAndGenCopyTaskResp, error)
+	// UpdateCopyTask 更新复制任务状态
 	UpdateCopyTask(ctx context.Context, req *UpdateCopyTaskReq) error
+	// UpdateCopyTaskWithTX 在事务中更新复制任务状态
 	UpdateCopyTaskWithTX(ctx context.Context, req *UpdateCopyTaskReq, tx *gorm.DB) error
 }
 
+// CheckAndGenCopyTaskReq 检查并生成复制任务请求
 type CheckAndGenCopyTaskReq struct {
+	// Task 复制任务信息
 	Task *entity.CopyDataTask
 }
 
+// CheckAndGenCopyTaskResp 检查并生成复制任务响应
 type CheckAndGenCopyTaskResp struct {
+	// CopyTaskStatus 任务状态
 	CopyTaskStatus entity.DataCopyTaskStatus
-	FailReason     string
-	TargetID       int64
+	// FailReason 失败原因
+	FailReason string
+	// TargetID 目标数据ID
+	TargetID int64
 }
 
+// UpdateCopyTaskReq 更新复制任务请求
 type UpdateCopyTaskReq struct {
+	// Task 复制任务信息
 	Task *entity.CopyDataTask
 }

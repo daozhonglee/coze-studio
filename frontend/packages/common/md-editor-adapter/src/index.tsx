@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file md-editor-adapter 模块导出
+ * @description 提供 md-editor-adapter 相关功能
+ */
+
+
 /* eslint-disable @typescript-eslint/no-extraneous-class */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

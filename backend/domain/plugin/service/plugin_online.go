@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// plugin_online.go 在线插件服务
+//
+// 本文件提供在线插件的查询和管理功能：
+//   - 单个/批量在线插件查询
+//   - 版本插件查询
+//   - 自定义插件列表
+//   - 插件产品列表
+
 package service
 
 import (
@@ -38,6 +46,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// GetOnlinePlugin 获取在线插件
 func (p *pluginServiceImpl) GetOnlinePlugin(ctx context.Context, pluginID int64) (plugin *entity.PluginInfo, err error) {
 	pl, exist, err := p.pluginRepo.GetOnlinePlugin(ctx, pluginID)
 	if err != nil {

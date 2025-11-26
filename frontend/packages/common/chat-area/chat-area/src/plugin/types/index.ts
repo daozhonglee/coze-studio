@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin 类型定义导出
+ */
 import { type Reporter } from '@coze-arch/logger';
 
 import { type PluginStore } from '../../store/plugins';

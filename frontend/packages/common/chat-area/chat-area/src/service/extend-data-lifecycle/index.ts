@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file extend data lifecycle 模块导出
+ */
+/**
  * This module is used to extend the lifecycle of chat area data
  */
 

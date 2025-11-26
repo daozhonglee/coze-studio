@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file shared apply record service 模块导出
+ */
 import { type IApplyMetadata } from '@coze-common/md-editor-adapter';
 
 import { type EditorApplyDataSetField, type EditorApplyDataSet } from './type';

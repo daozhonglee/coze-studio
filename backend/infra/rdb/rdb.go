@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// Package rdb 提供关系型数据库操作接口
+//
+// 本包定义动态表操作的接口，用于 Agent 数据库功能：
+// - 表的创建/修改/删除
+// - 数据的 CRUD 操作
+// - SQL 执行
+//
+// 实现层在 impl/rdb/ 目录下
 package rdb
 
 import (
@@ -22,6 +30,8 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/rdb/entity"
 )
 
+// RDB 关系型数据库操作接口
+//
 //go:generate mockgen -destination  ../../internal/mock/infra/rdb/rdb_mock.go  --package rdb  -source rdb.go
 type RDB interface {
 	CreateTable(ctx context.Context, req *CreateTableRequest) (*CreateTableResponse, error)
@@ -48,7 +58,7 @@ type CreateTableResponse struct {
 	Table *entity.Table
 }
 
-// AlterTableOperation Modify table operation
+// AlterTableOperation 修改表操作
 type AlterTableOperation struct {
 	Action       entity.AlterTableAction
 	Column       *entity.Column
@@ -101,14 +111,14 @@ type InsertDataResponse struct {
 	AffectedRows int64
 }
 
-// Condition defines query conditions
+// Condition 查询条件
 type Condition struct {
 	Field    string
 	Operator entity.Operator
 	Value    interface{}
 }
 
-// ComplexCondition
+// ComplexCondition 复合条件（支持嵌套）
 type ComplexCondition struct {
 	Conditions       []*Condition
 	NestedConditions []*ComplexCondition // Conditions mutual exclusion example: WHERE (age > = 18 AND status = 'active') OR (age > = 21 AND status = 'pending')
@@ -140,9 +150,10 @@ type DeleteDataResponse struct {
 	AffectedRows int64
 }
 
+// OrderBy 排序条件
 type OrderBy struct {
-	Field     string               // sort field
-	Direction entity.SortDirection // sort direction
+	Field     string               // 排序字段
+	Direction entity.SortDirection // 排序方向
 }
 
 // SelectDataRequest query data request

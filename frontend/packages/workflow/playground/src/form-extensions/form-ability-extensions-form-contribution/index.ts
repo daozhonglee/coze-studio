@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file form ability extensions form contribution 模块导出
+ */
 export { FormAbilityExtensionsFormContribution } from './form-ability-extensions-form-contribution';

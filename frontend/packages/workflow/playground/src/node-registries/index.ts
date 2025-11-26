@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { CODE_NODE_REGISTRY } from './code';
+
+/**
+ * @file node registries 模块导出
+ */export { CODE_NODE_REGISTRY } from './code';
 export { COMMENT_NODE_REGISTRY } from './comment';
 export { DATABASE_NODE_REGISTRY } from './database/database-base';
 export { DATABASE_CREATE_NODE_REGISTRY } from './database/database-create';

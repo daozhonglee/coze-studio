@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Package middleware 提供 HTTP 中间件（上下文缓存）
 package middleware
 
 import (
@@ -24,6 +25,9 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
+// ContextCacheMW 上下文缓存中间件
+//
+// 初始化请求级别的缓存，用于在请求生命周期内共享数据
 func ContextCacheMW() app.HandlerFunc {
 	return func(c context.Context, ctx *app.RequestContext) {
 		c = ctxcache.Init(c)

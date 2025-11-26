@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file validate 模块导出
+ */
 export * from './encapsulate-validate-manager';
 export * from './types';
 export * from './encapsulate-validate-service';

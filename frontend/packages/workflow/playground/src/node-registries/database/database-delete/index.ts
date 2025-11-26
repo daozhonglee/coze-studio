@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file database delete 模块导出
+ */
 export { DATABASE_DELETE_NODE_REGISTRY } from './database-delete-node-registry';

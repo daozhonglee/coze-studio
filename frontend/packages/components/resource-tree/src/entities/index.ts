@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 实体定义导出
+ */
 export { CustomRenderStateEntity } from './render-state-entity';
 export { CustomRenderStateConfigEntity } from './custom-render-state';

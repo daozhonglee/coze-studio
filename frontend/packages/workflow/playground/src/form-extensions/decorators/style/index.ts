@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file style 模块导出
+ */
 export { style } from './style';

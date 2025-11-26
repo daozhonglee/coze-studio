@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file log detail 模块导出
+ */
+/**
  * Components that parse run results
  */
 export { LogDetail } from './log-detail';

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Package permission 定义了权限(Permission)领域的常量
+
 package permission
 
 type (
@@ -52,10 +54,11 @@ const (
 	ResourceTypeKnowledgeSlice                   = 27
 )
 
+// 权限决策结果常量
 const (
-	// Allow represents permission granted
+	// Allow 允许
 	Allow Decision = 1
-	// Deny represents permission denied
+	// Deny 拒绝
 	Deny Decision = 2
 )
 

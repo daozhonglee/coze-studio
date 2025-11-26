@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
+// Package workflow 定义了工作流(Workflow)应用层服务
+//
+// 本包提供工作流相关的应用层业务逻辑，包括：
+// - 工作流的 CRUD 操作
+// - 工作流的执行和调试
+// - 节点模板管理
+// - 版本管理和发布
+// - 跨领域服务协调
+//
+// 应用层是 API 层和领域层之间的桥梁，负责用例编排和事务管理。
 package workflow
 
 import (
@@ -73,23 +83,38 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// ApplicationService 工作流应用服务
+//
+// 提供工作流相关的应用层业务逻辑
 type ApplicationService struct {
-	DomainSVC   domainWorkflow.Service
-	ImageX      imagex.ImageX // we set Imagex here, because Imagex is used as a proxy to get auth token, there is no actual correlation with the workflow domain.
-	TosClient   storage.Storage
+	// DomainSVC 工作流领域服务
+	DomainSVC domainWorkflow.Service
+	// ImageX 图像处理服务（用于获取认证 token）
+	ImageX imagex.ImageX
+	// TosClient 对象存储客户端
+	TosClient storage.Storage
+	// IDGenerator ID 生成器
 	IDGenerator idgen.IDGenerator
 }
 
+// 全局变量
 var (
-	SVC                = &ApplicationService{}
-	nodeIconURLCache   = make(map[string]string)
+	// SVC 工作流应用服务单例
+	SVC = &ApplicationService{}
+	// nodeIconURLCache 节点图标 URL 缓存
+	nodeIconURLCache = make(map[string]string)
+	// nodeIconURLCacheMu 节点图标缓存互斥锁
 	nodeIconURLCacheMu sync.Mutex
 )
 
+// GetWorkflowDomainSVC 获取工作流领域服务
 func GetWorkflowDomainSVC() domainWorkflow.Service {
 	return SVC.DomainSVC
 }
 
+// InitNodeIconURLCache 初始化节点图标 URL 缓存
+//
+// 预加载所有节点类型的图标 URL，提高运行时性能
 func (w *ApplicationService) InitNodeIconURLCache(ctx context.Context) error {
 	if err := w.refreshNodeIconURLCache(ctx); err != nil {
 		return err
@@ -151,6 +176,9 @@ func (w *ApplicationService) refreshNodeIconURLCache(ctx context.Context) error 
 	return nil
 }
 
+// GetNodeTemplateList 获取节点模板列表
+//
+// 根据请求的节点类型返回可用的节点模板
 func (w *ApplicationService) GetNodeTemplateList(ctx context.Context, req *workflow.NodeTemplateListRequest) (
 	_ *workflow.NodeTemplateListResponse, err error,
 ) {

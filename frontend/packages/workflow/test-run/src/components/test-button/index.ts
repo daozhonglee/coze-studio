@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file test button 模块导出
+ */
 export { BaseTestButton } from './base-test-button';
 export { TraceIconButton } from './trace-icon-button';

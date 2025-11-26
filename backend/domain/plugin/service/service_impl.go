@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// service_impl.go 插件服务实现
+//
+// 本文件提供插件服务的主入口和组件初始化。
+
 package service
 
 import (
@@ -29,6 +33,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/safego"
 )
 
+// Components 插件服务依赖组件
 type Components struct {
 	IDGen      idgen.IDGenerator
 	DB         *gorm.DB
@@ -39,6 +44,7 @@ type Components struct {
 	OAuthRepo  repository.OAuthRepository
 }
 
+// NewService 创建插件服务实例
 func NewService(components *Components) PluginService {
 	impl := &pluginServiceImpl{
 		db:         components.DB,
@@ -59,6 +65,7 @@ func NewService(components *Components) PluginService {
 	return impl
 }
 
+// pluginServiceImpl 插件服务实现
 type pluginServiceImpl struct {
 	db         *gorm.DB
 	oss        storage.Storage

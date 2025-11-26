@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// plugin.go 插件数据传输对象
+//
+// 本文件定义了插件领域的请求和响应 DTO 结构：
+//   - 草稿插件的增删改查请求
+//   - 插件发布和上架请求
+//   - 分页查询请求和响应
+
 package dto
 
 import (
@@ -24,6 +31,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/plugin/entity"
 )
 
+// CreateDraftPluginRequest 创建草稿插件请求
 type CreateDraftPluginRequest struct {
 	PluginType   common.PluginType
 	IconURI      string

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/common/components 模块导出
+ * @description 提供 knowledge/common/components 相关功能
+ */
+
+
 export { PreviewMd } from './doc-preview/preview-md';
 export { PreviewTxt } from './doc-preview/preview-txt';
 export { usePreviewPdf } from './doc-preview/use-preview-pdf';

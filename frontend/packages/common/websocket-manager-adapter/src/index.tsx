@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file websocket-manager-adapter 模块导出
+ * @description 提供 websocket-manager-adapter 相关功能
+ */
+
+
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-useless-constructor */
 /* eslint-disable @typescript-eslint/no-explicit-any */

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-background-config-content-adapter 模块导出
+ * @description 提供 chat-background-config-content-adapter 相关功能
+ */
+
+
 export {
   BackgroundConfigContent,
   type BackgroundConfigContentProps,

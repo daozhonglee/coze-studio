@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 类型定义导出
+ */
 export { type WidgetRegistry, RegistryHandler } from './registry';
 export type { WidgetUIState } from './widget';
 export { type ProjectIDEServices } from './services';

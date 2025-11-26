@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file node panel 模块导出
+ */
 export { NodePanel } from './components';

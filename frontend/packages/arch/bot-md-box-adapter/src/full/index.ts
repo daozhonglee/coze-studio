@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file full 模块导出
+ */
 export {
   Calypso as MdBox,
   type CalypsoProps as MdBoxProps,

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// Package knowledge 定义了知识库(Knowledge)应用层服务
+//
+// 本包提供知识库相关的应用层业务逻辑
 package knowledge
 
 import (
@@ -50,12 +53,19 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// KnowledgeApplicationService 知识库应用服务
+//
+// 提供知识库相关的应用层业务逻辑
 type KnowledgeApplicationService struct {
+	// DomainSVC 知识库领域服务
 	DomainSVC service.Knowledge
-	eventBus  search.ResourceEventBus
-	storage   storage.Storage
+	// eventBus 资源事件总线
+	eventBus search.ResourceEventBus
+	// storage 对象存储服务
+	storage storage.Storage
 }
 
+// KnowledgeSVC 知识库应用服务单例
 var KnowledgeSVC = &KnowledgeApplicationService{}
 
 func (k *KnowledgeApplicationService) deleteKnowledgeInternal(ctx context.Context, knowledgeID int64) error {

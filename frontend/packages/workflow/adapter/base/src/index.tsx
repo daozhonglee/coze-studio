@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 基础适配器模块导出
+ * @description 提供工作流的基础工具函数和 Hooks
+ */
+
+/** 节点类型和资源上传工具 */
 export { getEnabledNodeTypes, getUploadCDNAsset } from './utils';
+/** 图像流节点支持查询 Hook */
 export { useSupportImageflowNodesQuery } from './hooks/use-support-imageflow-nodes-query';

@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// workflow_from_node.go 单节点工作流
+//
+// 本文件提供从单个节点创建工作流的能力，用于节点调试场景。
+// 与完整工作流不同，这种工作流：
+//   - 没有 Entry 和 Exit 节点
+//   - 直接以目标节点作为输入输出
+//   - 仅支持 Invoke 模式（非流式）
+
 package compose
 
 import (
@@ -26,6 +34,20 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/internal/schema"
 )
 
+// NewWorkflowFromNode 从单个节点创建工作流
+//
+// 用于节点调试场景，创建一个仅包含指定节点的最小工作流。
+// 该工作流没有 Entry 和 Exit 节点，直接以目标节点作为执行入口。
+//
+// 参数：
+//   - ctx: 上下文
+//   - sc: 工作流 Schema（包含所有节点定义）
+//   - nodeKey: 目标节点的 Key
+//   - opts: 编译选项
+//
+// 返回值：
+//   - *Workflow: 构建的工作流对象
+//   - error: 构建错误
 func NewWorkflowFromNode(ctx context.Context, sc *schema.WorkflowSchema, nodeKey vo.NodeKey, opts ...compose.GraphCompileOption) (
 	*Workflow, error) {
 	sc.Init()

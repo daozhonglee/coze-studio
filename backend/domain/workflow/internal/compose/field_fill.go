@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// field_fill.go 字段填充处理
+//
+// 本文件提供节点输入输出字段的填充功能，确保数据完整性。
+// 主要功能：
+//   - 输出字段填充：为缺失的输出字段填充 nil
+//   - 输入字段填充：为缺失的输入字段填充零值
+//   - 类型转换：处理输入数据的类型转换
+//   - 流式数据处理：支持流式输入的字段填充
+
 package compose
 
 import (
@@ -29,7 +38,10 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/sonic"
 )
 
-// outputValueFiller will fill the output value with nil if the key is not present in the output map.
+// outputValueFiller 输出值填充器
+//
+// 如果输出 map 中缺少某个 key，则用 nil 填充。
+// 注意：如果节点输出流式数据，需要在节点内部自行处理缺失的 key。
 // if a node emits stream as output, the node needs to handle these absent keys in stream themselves.
 func outputValueFiller(s *schema2.NodeSchema) func(ctx context.Context, output map[string]any) (map[string]any, error) {
 	if len(s.OutputTypes) == 0 {

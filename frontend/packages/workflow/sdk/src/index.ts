@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工作流 SDK 导出
+ * @description 提供工作流 SDK 的核心工具和表达式编辑器组件
+ */
+
+/** Schema 提取器和节点结果提取器 */
 export { schemaExtractor, nodeResultExtractor } from './utils';
+/** 表达式编辑器组件和 Hooks */
 export {
   ExpressionEditorEvent,
   ExpressionEditorToken,

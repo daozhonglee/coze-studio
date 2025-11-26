@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin component 模块导出
+ */
 import { type ComponentType } from 'react';
 
 import { type MessageGroup } from '../../../store/types';

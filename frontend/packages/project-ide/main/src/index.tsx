@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file main 模块导出
+ * @description 提供 main 相关功能
+ */
+
+
 import 'reflect-metadata';
 import { useNavigate } from 'react-router-dom';
 import React, { useMemo, memo } from 'react';

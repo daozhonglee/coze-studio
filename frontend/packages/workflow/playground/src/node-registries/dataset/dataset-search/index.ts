@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file dataset search 模块导出
+ */
 export { DATASET_NODE_REGISTRY } from './node-registry';

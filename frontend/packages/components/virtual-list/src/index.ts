@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file virtual-list 模块导出
+ * @description 提供 virtual-list 相关功能
+ */
+
+
 // Centralized management of virtual list dependencies used in coze
 
 export {

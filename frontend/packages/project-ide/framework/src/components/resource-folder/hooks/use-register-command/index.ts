@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file use register command 模块导出
+ */
 import { useEffect, useRef } from 'react';
 
 import { CommandRegistry, useIDEService } from '@coze-project-ide/client';

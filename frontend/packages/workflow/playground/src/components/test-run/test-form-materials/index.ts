@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file test form materials 模块导出
+ */
 export { NodeFieldCollapse } from './node-field-collapse';
 export { RelatedFieldCollapse } from './related-field-collapse';

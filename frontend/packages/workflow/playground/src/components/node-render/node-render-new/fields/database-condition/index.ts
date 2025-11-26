@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file database condition 模块导出
+ */
 export { DatabaseCondition } from './database-condition';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file shortcuts 模块导出
+ */
 export { WORKFLOW_CLIPBOARD_TYPE } from './constant';
 export { bindShortcuts } from './utils';
 export {

@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file 节点适配器模块导出
+ * @description 提供工作流节点的适配组件
+ */
+
+/** 演示组件 */
 export { DemoComponent } from './demo';

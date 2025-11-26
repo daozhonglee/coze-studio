@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file src 常量定义导出
+ */
+/**
  * Fixed internal field name
  */
 export enum TestFormFieldName {

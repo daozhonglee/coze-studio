@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file ui sign 模块导出
+ */
 export { SignFrame } from './sign-frame';
 export { SignPanel } from './sign-panel';

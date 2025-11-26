@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file field item 模块导出
+ */
 export { FieldItem, type FieldItemProps } from './item';

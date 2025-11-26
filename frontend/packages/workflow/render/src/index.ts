@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工作流渲染模块导出
+ * @description 提供工作流画布的渲染相关组件和服务
+ */
+
 import 'reflect-metadata';
+/** 渲染提供者 */
 export * from './workflow-render-provider';
+/** 渲染贡献者 */
 export * from './workflow-render-contribution';
+/** 端口渲染组件 */
 export * from './components/workflow-port-render';
+/** 快捷键贡献者 */
 export * from './workflow-shorcuts-contribution';
+/** 渲染注册表 */
 export {
   FlowRendererKey,
   FlowRendererRegistry,

@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-// Temporary files, later deleted
+/**
+ * @file IDL 类型定义模块导出
+ * @description 提供从 IDL 自动生成的类型定义
+ */
 
+// 临时文件，后续会删除
+
+/** 建议回复模式 */
 export { SuggestReplyMode } from './auto-generated/developer_api/namespaces/developer_api';
+/** 复制任务类型 */
 export { TaskType as CopyTaskType } from './auto-generated/intelligence_api/namespaces/method_struct';
+/** Bot 通用模型信息 */
 export { ModelInfo as BotCommonModelInfo } from './auto-generated/intelligence_api/namespaces/bot_common';
+/** 创建房间场景 */
 export { Scene as CreateRoomScene } from './auto-generated/playground_api/namespaces/playground';

@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工具栏组件导出
+ * @description 提供工作流编辑器工具栏功能
+ */
+
+/** 工具栏容器组件 */
 export { ToolbarContainer as Toolbar } from './components';
+/** 添加节点的 Hook */
 export { useAddNode } from './hooks';

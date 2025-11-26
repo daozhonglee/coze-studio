@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// Package singleagent 定义了单 Agent 应用层服务
+//
+// 本包提供单 Agent 相关的应用层业务逻辑
 package singleagent
 
 import (
@@ -52,12 +55,19 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// SingleAgentApplicationService 单 Agent 应用服务
+//
+// 提供单 Agent 相关的应用层业务逻辑
 type SingleAgentApplicationService struct {
-	appContext     *ServiceComponents
-	DomainSVC      singleagent.SingleAgent
+	// appContext 应用上下文（依赖组件）
+	appContext *ServiceComponents
+	// DomainSVC 单 Agent 领域服务
+	DomainSVC singleagent.SingleAgent
+	// ShortcutCmdSvc 快捷命令服务
 	ShortcutCmdSvc shortcutCmd.ShortcutCmd
 }
 
+// newApplicationService 创建单 Agent 应用服务实例
 func newApplicationService(s *ServiceComponents, domain singleagent.SingleAgent) *SingleAgentApplicationService {
 	return &SingleAgentApplicationService{
 		appContext:     s,

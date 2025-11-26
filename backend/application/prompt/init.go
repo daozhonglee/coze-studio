@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+// Package prompt 定义了提示词(Prompt)应用层服务
+//
+// 本包提供提示词相关的应用层业务逻辑，包括：
+// - 提示词的创建、更新、删除
+// - 提示词版本管理
+// - 官方提示词模板
 package prompt
 
 import (
@@ -25,6 +31,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/idgen"
 )
 
+// InitService 初始化提示词应用服务
 func InitService(db *gorm.DB, idGenSVC idgen.IDGenerator, re search.ResourceEventBus) *PromptApplicationService {
 	repo := repository.NewPromptRepo(db, idGenSVC)
 	PromptSVC.DomainSVC = prompt.NewService(repo)

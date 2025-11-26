@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file memory/database-v2-main 模块导出
+ * @description 提供 memory/database-v2-main 相关功能
+ */
+
+
 export { useLibraryCreateDatabaseModal } from './hooks/use-library-create-database-modal';
 export {
   SelectDatabaseModal,

@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// node.go 节点相关值对象定义
+//
+// 本文件定义了节点执行相关的值对象：
+//   - NodeKey: 节点标识
+//   - FieldInfo/FieldSource: 字段映射信息
+//   - TypeInfo: 类型信息
+//   - WorkflowError: 工作流错误接口
+//   - DataType/FileSubType: 数据类型定义
+
 package vo
 
 import (
@@ -30,13 +39,16 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// NodeKey 节点标识（在工作流图中的唯一键）
 type NodeKey string
 
+// FieldInfo 字段映射信息
 type FieldInfo struct {
 	Path   compose.FieldPath `json:"path"`
 	Source FieldSource       `json:"source"`
 }
 
+// Reference 字段引用（指向其他节点输出或全局变量）
 type Reference struct {
 	FromNodeKey NodeKey           `json:"from_node_key,omitempty"`
 	FromPath    compose.FieldPath `json:"from_path"`
@@ -44,6 +56,7 @@ type Reference struct {
 	VariableType *GlobalVarType `json:"variable_type,omitempty"`
 }
 
+// FieldSource 字段来源（引用或静态值）
 type FieldSource struct {
 	Ref       *Reference `json:"ref,omitempty"`
 	Val       any        `json:"val,omitempty"`
@@ -55,6 +68,7 @@ type FileExtra struct {
 	FileNames []string `json:"file_names,omitempty"`
 }
 
+// TypeInfo 类型信息
 type TypeInfo struct {
 	Type         DataType             `json:"type"`
 	ElemTypeInfo *TypeInfo            `json:"elem_type_info,omitempty"`
@@ -63,6 +77,8 @@ type TypeInfo struct {
 	Desc         string               `json:"desc,omitempty"`
 	Properties   map[string]*TypeInfo `json:"properties,omitempty"`
 }
+
+// NamedTypeInfo 带名称的类型信息
 type NamedTypeInfo struct {
 	Name         string           `json:"name"`
 	Type         DataType         `json:"type"`
@@ -73,6 +89,7 @@ type NamedTypeInfo struct {
 	Properties   []*NamedTypeInfo `json:"properties,omitempty"`
 }
 
+// ErrorLevel 错误级别
 type ErrorLevel string
 
 const (
@@ -81,6 +98,7 @@ const (
 	LevelCancel ErrorLevel = "pending" // forget about why it's called 'pending', somebody named it and it's now part of the protocol
 )
 
+// WorkflowError 工作流错误接口
 type WorkflowError interface {
 	errorx.StatusError
 	DebugURL() string

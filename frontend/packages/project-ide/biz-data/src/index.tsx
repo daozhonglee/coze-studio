@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file biz-data 模块导出
+ * @description 提供 biz-data 相关功能
+ */
+
+
 export {
   KnowledgeWidgetRegistry,
   VariablesWidgetRegistry,

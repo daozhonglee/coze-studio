@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file custom 模块导出
+ */
 export { TableCustomAddConfig } from './add/config';
 export { TableCustomIncrementalConfig } from './incremental/config';

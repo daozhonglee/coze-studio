@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 类型定义导出
+ */
 // eslint-disable-next-line @coze-arch/no-batch-import-or-export
 export * from './workflow-list';

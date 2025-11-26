@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file query message list 模块导出
+ */
 /** View a list of messages (for a session) */
 export { QUERY_MESSAGE_LIST_NODE_REGISTRY } from './node-registry';

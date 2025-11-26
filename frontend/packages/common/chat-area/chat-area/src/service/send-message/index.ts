@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file send message 模块导出
+ */
 import {
   ContentType,
   type TextAndFileMixMessageProps,

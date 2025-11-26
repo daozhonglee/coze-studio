@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file biz-components 模块导出
+ * @description 提供 biz-components 相关功能
+ */
+
+
 export {
   ResourceFolderCoze,
   type BizResourceType,

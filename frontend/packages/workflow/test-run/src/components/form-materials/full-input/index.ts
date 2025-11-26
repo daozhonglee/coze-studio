@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file full input 模块导出
+ */
 export { FullInput } from './full-input';

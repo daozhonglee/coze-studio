@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
+// tool.go 工具实体定义
+//
+// 本文件定义了工具领域的实体类型别名。
+// ToolInfo 直接使用跨域模型定义。
+
 package entity
 
 import (
 	"github.com/coze-dev/coze-studio/backend/crossdomain/plugin/model"
 )
 
+// ToolInfo 工具信息实体
+// 直接使用 crossdomain/plugin/model.ToolInfo 的类型别名
 type ToolInfo = model.ToolInfo

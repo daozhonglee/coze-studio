@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 export * from './tools';
 export { codicon, codiconArray } from './icon';
 export { createPortal } from './create-portal';

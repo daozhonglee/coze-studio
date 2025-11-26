@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file context 模块导出
+ * @description 提供 context 相关功能
+ */
+
+
 import { createContext, useContext } from 'react';
 
 export enum BotCreatorScene {

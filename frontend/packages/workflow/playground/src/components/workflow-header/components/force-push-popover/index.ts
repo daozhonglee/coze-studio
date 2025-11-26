@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file force push popover 模块导出
+ */
 export { ForcePushPopover } from './force-push-popover';
 export { useForcePush } from './use-force-push';

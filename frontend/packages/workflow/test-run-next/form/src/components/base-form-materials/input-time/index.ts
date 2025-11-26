@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file input time 模块导出
+ */
 export { InputTime, type InputTimeProps } from './time';

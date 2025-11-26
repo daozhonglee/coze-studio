@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot-utils 模块导出
+ * @description 提供 bot-utils 相关功能
+ */
+
+
 export { withSlardarIdButton } from './with-slardar-id-button';

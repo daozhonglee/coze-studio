@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 类型定义导出
+ */
 export { DatabaseTabs } from './database-tabs';
 export { CreateType } from './database-field';
 export { type NL2DBInfo } from './database-field';

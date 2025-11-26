@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file store Bot 技能导出
+ */
 export {
   useBotSkillStore,
   getDefaultBotSkillStore,

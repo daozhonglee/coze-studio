@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file auto-save Bot 技能导出
+ */
 import { AutosaveManager } from '@coze-studio/autosave';
 
 import { useBotSkillStore, type BotSkillStore } from '@/store/bot-skill';

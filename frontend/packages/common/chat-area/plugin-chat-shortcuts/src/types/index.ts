@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 类型定义导出
+ */
 export enum ElementPropsType {
   SLOT = 'slot',
   WORKSPACE_SLOT = 'workspaceSlot',

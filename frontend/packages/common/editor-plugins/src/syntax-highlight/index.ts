@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file syntax highlight 模块导出
+ */
 import { Markdown } from './markdown';
 import { Jinja } from './jinja';
 

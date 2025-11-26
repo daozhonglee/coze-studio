@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file use send message 模块导出
+ */
 import { useChatAreaStoreSet } from '../../context/use-chat-area-context';
 export {
   useResendMessage,

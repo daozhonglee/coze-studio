@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 通用功能导出
+ */
 export {
   createLifecyclePlugin,
   definePluginCreator,

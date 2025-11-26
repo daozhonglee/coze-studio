@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file message 类型定义导出
+ */
 import { type RequiredAction } from '@coze-arch/bot-api/developer_api';
 
 import { type PartiallyRequired } from '../../shared/utils/data-handler';

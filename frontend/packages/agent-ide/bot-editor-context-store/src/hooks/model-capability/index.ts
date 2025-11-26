@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file model capability 模块导出
+ */
 import { useShallow } from 'zustand/react/shallow';
 import { useMultiAgentStore } from '@coze-studio/bot-detail-store/multi-agent';
 import { useModelStore as useBotDetailModelStore } from '@coze-studio/bot-detail-store/model';

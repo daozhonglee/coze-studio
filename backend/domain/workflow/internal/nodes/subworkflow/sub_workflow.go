@@ -14,6 +14,26 @@
  * limitations under the License.
  */
 
+// Package subworkflow 实现子工作流调用节点
+//
+// 子工作流节点用于在工作流中调用另一个工作流，实现工作流的模块化和复用。
+// 核心功能：
+//
+// 1. 工作流嵌套
+//   - 支持调用已保存的工作流作为子流程
+//   - 支持指定工作流版本（草稿或已发布版本）
+//   - 支持流式输出透传
+//
+// 2. 执行控制
+//   - 继承父工作流的执行上下文
+//   - 支持检查点和中断恢复
+//   - 传递输入参数并接收输出
+//
+// 3. 流式支持
+//   - 当内部工作流的出口节点配置为流式输出时
+//   - 子工作流节点可以透传流式输出
+//
+// 通过子工作流，可以将复杂逻辑拆分为多个独立维护的工作流单元。
 package subworkflow
 
 import (
@@ -32,8 +52,11 @@ import (
 	schema2 "github.com/coze-dev/coze-studio/backend/domain/workflow/internal/schema"
 )
 
+// Config 子工作流节点配置
 type Config struct {
-	WorkflowID      int64
+	// WorkflowID 被调用的工作流 ID
+	WorkflowID int64
+	// WorkflowVersion 工作流版本，空表示使用草稿版本
 	WorkflowVersion string
 }
 

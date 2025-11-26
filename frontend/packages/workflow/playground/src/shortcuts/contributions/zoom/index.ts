@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file zoom 模块导出
+ */
 import { inject, injectable } from 'inversify';
 import { PlaygroundConfigEntity } from '@flowgram-adapter/free-layout-editor';
 import { WorkflowCommands } from '@flowgram-adapter/free-layout-editor';

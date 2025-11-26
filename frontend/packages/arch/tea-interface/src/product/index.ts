@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file product 模块导出
+ */
 export type ProductEventSource =
   | 'add_plugin_menu'
   | 'bots_card'

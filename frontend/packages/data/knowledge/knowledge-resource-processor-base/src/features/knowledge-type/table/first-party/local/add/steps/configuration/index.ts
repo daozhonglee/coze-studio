@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file configuration 模块导出
+ */
 export { TableConfiguration } from './configuration';

@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file entry-adapter 模块导出
+ * @description 提供 entry-adapter 相关功能
+ */
+
+
 export { BotEditorWithContext as BotEditor } from './editor/agent-editor';

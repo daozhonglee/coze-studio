@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 变量节点注册导出
+ * @description 变量节点 - 读取和引用工作流中的变量
+ */
+
+/** 变量节点注册配置 */
 export { VARIABLE_NODE_REGISTRY } from './node-registry';
+/** 变量节点内容组件 */
 export { VariableContent } from './node-content';

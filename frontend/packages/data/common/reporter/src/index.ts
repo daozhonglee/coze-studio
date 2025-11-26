@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file common/reporter 模块导出
+ * @description 提供 common/reporter 相关功能
+ */
+
+
 export {
   DataErrorBoundary,
   ErrorFallbackComponent,

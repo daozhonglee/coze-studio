@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
+// Package entity 定义了 OpenAPI 认证领域的常量
+
 package entity
 
+// AkType API 密钥类型
 type AkType int32
 
 const (
-	AkTypeCustomer  AkType = 0
+	// AkTypeCustomer 用户自定义密钥（长期有效）
+	AkTypeCustomer AkType = 0
+	// AkTypeTemporary 临时密钥（短期有效）
 	AkTypeTemporary AkType = 1
 )

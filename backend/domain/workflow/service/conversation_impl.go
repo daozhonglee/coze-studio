@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
+// conversation_impl.go 会话管理服务实现
+//
+// 本文件实现了 ChatFlow 工作流的会话管理功能：
+//   - 会话模板的创建、查询、更新、删除
+//   - 静态会话和动态会话的管理
+//   - 会话列表的获取和分页
+//   - 会话名称的重复检查
+//
+// 会话类型：
+//   - 静态会话：基于模板创建的固定会话
+//   - 动态会话：用户自定义创建的会话
+
 package service
 
 import (
@@ -39,6 +51,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// conversationImpl 会话管理服务实现
 type conversationImpl struct {
 	repo workflow.Repository
 }

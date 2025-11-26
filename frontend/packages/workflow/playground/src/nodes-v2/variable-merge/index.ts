@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file 变量合并节点注册导出
+ * @description 变量合并节点 - 用于合并多个分支的变量值
+ */
+
+/** 变量合并节点注册配置 */
 export { VARIABLE_MERGE_NODE_REGISTRY } from './variable-merge-node-registry';

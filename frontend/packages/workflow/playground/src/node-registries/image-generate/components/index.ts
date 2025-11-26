@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file image-generate 组件导出
+ */
 export { ModelSettingField } from './model-setting-field';
 export { ReferencesField } from './references-field';
 export { PromptField } from './prompt-field';

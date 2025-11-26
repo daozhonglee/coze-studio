@@ -18,8 +18,14 @@ package entity
 
 import "github.com/coze-dev/coze-studio/backend/api/model/app/developer_api"
 
+// AgentDraftDisplayInfo Agent 草稿展示信息
+//
+// 存储 Agent 草稿在 IDE 中的展示配置，如面板展开状态等。
 type AgentDraftDisplayInfo struct {
-	AgentID     int64
+	// AgentID Agent ID
+	AgentID int64
+	// DisplayInfo 展示配置数据
 	DisplayInfo *developer_api.DraftBotDisplayInfoData
-	SpaceID     *string
+	// SpaceID 空间 ID
+	SpaceID *string
 }

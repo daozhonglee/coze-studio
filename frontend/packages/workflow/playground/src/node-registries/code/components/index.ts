@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file code 组件导出
+ */
 export { CodeField } from './code-field';

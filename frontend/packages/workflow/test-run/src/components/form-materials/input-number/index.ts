@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file input number 模块导出
+ */
 export { InputInteger } from './input-integer';
 export { InputNumber } from './input-number';

@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// Package plugin 定义了插件(Plugin)应用层服务
+//
+// 本包提供插件相关的应用层业务逻辑，包括：
+// - 插件的创建、更新、删除、发布
+// - 插件市场和商店功能
+// - 工具(Tool)的管理
+// - OAuth 认证配置
 package plugin
 
 import (
@@ -46,15 +53,25 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// PluginApplicationSVC 插件应用服务单例
 var PluginApplicationSVC = &PluginApplicationService{}
 
+// PluginApplicationService 插件应用服务
+//
+// 提供插件相关的应用层业务逻辑，包括插件管理、市场功能等
 type PluginApplicationService struct {
+	// DomainSVC 插件领域服务
 	DomainSVC service.PluginService
-	eventbus  search.ResourceEventBus
-	oss       storage.Storage
-	userSVC   user.User
+	// eventbus 资源事件总线
+	eventbus search.ResourceEventBus
+	// oss 对象存储服务
+	oss storage.Storage
+	// userSVC 用户领域服务
+	userSVC user.User
 
-	toolRepo   repository.ToolRepository
+	// toolRepo 工具仓储
+	toolRepo repository.ToolRepository
+	// pluginRepo 插件仓储
 	pluginRepo repository.PluginRepository
 }
 

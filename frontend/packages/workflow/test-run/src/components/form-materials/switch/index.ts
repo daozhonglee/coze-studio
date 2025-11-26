@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file switch 模块导出
+ */
 export { Switch } from './switch';

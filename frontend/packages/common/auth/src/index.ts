@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file auth 模块导出
+ * @description 提供 auth 相关功能
+ */
+
+
 export { useDestorySpace } from './space/use-destory-space';
 export { useSpaceAuth } from './space/use-space-auth';
 export { ESpacePermisson, SpaceRoleType } from './space/constants';

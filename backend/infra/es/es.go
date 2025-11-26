@@ -14,12 +14,22 @@
  * limitations under the License.
  */
 
+// Package es 提供 Elasticsearch 客户端接口
+//
+// 本包定义 Elasticsearch 服务的接口，用于：
+// - 索引管理（创建/删除索引）
+// - 文档 CRUD 操作
+// - 搜索查询
+// - 批量索引
+//
+// 实现层在 impl/es/ 目录下，支持 ES7 和 ES8
 package es
 
 import (
 	"context"
 )
 
+// Client Elasticsearch 客户端接口
 type Client interface {
 	Create(ctx context.Context, index, id string, document any) error
 	Update(ctx context.Context, index, id string, document any) error
@@ -32,12 +42,14 @@ type Client interface {
 	NewBulkIndexer(index string) (BulkIndexer, error)
 }
 
+// Types ES 类型定义接口
 type Types interface {
 	NewLongNumberProperty() any
 	NewTextProperty() any
 	NewUnsignedLongNumberProperty() any
 }
 
+// BulkIndexer 批量索引器接口
 type BulkIndexer interface {
 	Add(ctx context.Context, item BulkIndexerItem) error
 	Close(ctx context.Context) error

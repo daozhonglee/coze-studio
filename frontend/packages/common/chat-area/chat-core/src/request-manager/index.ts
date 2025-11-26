@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file request manager 模块导出
+ */
 import { merge } from 'lodash-es';
 import axios, {
   type AxiosInstance,

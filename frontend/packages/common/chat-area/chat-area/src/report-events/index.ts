@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file report events 模块导出
+ */
 export { ReportEventNames } from './report-event-names';
 export { getReportError } from './get-report-error';

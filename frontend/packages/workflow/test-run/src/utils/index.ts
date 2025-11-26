@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 export { typeSafeJSONParse } from './safe-json-parse';
 export { stringifyValue } from './stringify-value';
 

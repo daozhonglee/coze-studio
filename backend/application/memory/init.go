@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// Package memory 定义了记忆(Memory)应用层服务
+//
+// 本包提供记忆相关的应用层业务逻辑，包括：
+// - 变量管理（Agent 运行时变量）
+// - 数据库管理（Agent 关联的结构化数据）
+// - RDB 服务（关系数据库操作）
+//
+// 记忆是 AI Agent 保持上下文和状态的重要机制。
 package memory
 
 import (
@@ -30,21 +38,37 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/storage"
 )
 
+// MemoryApplicationServices 记忆应用服务集合
+//
+// 包含变量和数据库领域服务
 type MemoryApplicationServices struct {
+	// VariablesDomainSVC 变量领域服务
 	VariablesDomainSVC variables.Variables
-	DatabaseDomainSVC  database.Database
-	RDBDomainSVC       rdb.RDB
+	// DatabaseDomainSVC 数据库领域服务
+	DatabaseDomainSVC database.Database
+	// RDBDomainSVC RDB 领域服务
+	RDBDomainSVC rdb.RDB
 }
 
+// ServiceComponents 记忆应用服务依赖组件
 type ServiceComponents struct {
-	IDGen                  idgen.IDGenerator
-	DB                     *gorm.DB
-	EventBus               search.ResourceEventBus
-	TosClient              storage.Storage
+	// IDGen ID 生成器
+	IDGen idgen.IDGenerator
+	// DB 数据库连接
+	DB *gorm.DB
+	// EventBus 资源事件总线
+	EventBus search.ResourceEventBus
+	// TosClient 对象存储客户端
+	TosClient storage.Storage
+	// ResourceDomainNotifier 资源领域通知器
 	ResourceDomainNotifier search.ResourceEventBus
-	CacheCli               cache.Cmdable
+	// CacheCli 缓存客户端
+	CacheCli cache.Cmdable
 }
 
+// InitService 初始化记忆应用服务
+//
+// 创建变量和数据库领域服务
 func InitService(c *ServiceComponents) *MemoryApplicationServices {
 	repo := repository.NewVariableRepo(c.DB, c.IDGen)
 	variablesDomainSVC := variables.NewService(repo)

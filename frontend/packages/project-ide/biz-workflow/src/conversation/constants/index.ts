@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file conversation 常量定义导出
+ */
 import { I18n } from '@coze-arch/i18n';
 
 export const DEFAULT_CONVERSATION_NAME = 'Default';

@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file steps 模块导出
+ */
 export { TextSegment } from './segment';
 export { TextProcessing } from './processing';

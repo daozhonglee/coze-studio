@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file picture upload 模块导出
+ */
 export {
   PictureUpload,
   type GenerateInfo,

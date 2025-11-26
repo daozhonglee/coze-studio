@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file publish button v2 模块导出
+ */
 export { PublishButton } from './publish-button';

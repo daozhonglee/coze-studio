@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file log 模块导出
+ */
 export { NodeStatusBar } from './components/node-status-bar';
 export { LogImages } from './components/log-images';
 export { DataViewer } from './components/data-viewer';

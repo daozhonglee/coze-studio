@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file navigate 模块导出
+ * @description 提供 navigate 相关功能
+ */
+
+
 export { useNavigateWorkflowEditPage } from './hooks/navigate-tools-page';

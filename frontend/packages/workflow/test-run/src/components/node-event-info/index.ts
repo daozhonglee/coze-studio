@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file node event info 模块导出
+ */
 export { NodeEventInfo } from './node-event-info';

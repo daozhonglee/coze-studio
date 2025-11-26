@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
+/**
+ * @file Slardar 适配器模块导出
+ * @description 提供 Slardar 监控的适配器实现
+ */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import slardarInstance from '@coze-studio/default-slardar';
 
+/** JS 错误插件 */
 export const jsErrorPlugin = () => ({});
 
+/** 自定义插件 */
 export const customPlugin = () => ({});
 
+/** 创建最小化浏览器客户端 */
 export const createMinimalBrowserClient: () => any = () => slardarInstance;

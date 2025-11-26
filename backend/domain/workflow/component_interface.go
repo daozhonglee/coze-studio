@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// component_interface.go 工作流组件接口定义
+//
+// 本文件定义了工作流领域的组件级接口：
+//   - Executable: 执行服务接口
+//   - AsTool: 作为工具接口
+//   - ChatFlowRole: 角色管理接口
+//   - Conversation: 会话管理接口
+//   - 各种存储接口
+
 package workflow
 
 import (
@@ -30,6 +39,13 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/entity/vo"
 )
 
+// Executable 工作流执行接口
+//
+// 提供工作流的各种执行模式：
+//   - 同步执行：SyncExecute
+//   - 异步执行：AsyncExecute
+//   - 流式执行：StreamExecute
+//   - 恢复执行：AsyncResume/StreamResume
 type Executable interface {
 	SyncExecute(ctx context.Context, config workflowModel.ExecuteConfig, input map[string]any) (*entity.WorkflowExecution, vo.TerminatePlan, error)
 	AsyncExecute(ctx context.Context, config workflowModel.ExecuteConfig, input map[string]any) (int64, error)
@@ -48,6 +64,8 @@ type Executable interface {
 	Cancel(ctx context.Context, wfExeID int64, wfID, spaceID int64) error
 }
 
+// AsTool 工作流作为工具接口
+// 提供将工作流转换为 LLM 可调用工具的功能
 type AsTool interface {
 	WorkflowAsModelTool(ctx context.Context, policies []*vo.GetPolicy) ([]ToolFromWorkflow, error)
 	WithMessagePipe() (compose.Option, *schema.StreamReader[*entity.Message], func())
@@ -56,6 +74,7 @@ type AsTool interface {
 		allInterruptEvents map[string]*entity.ToolInterruptEvent) compose.Option
 }
 
+// ChatFlowRole ChatFlow 角色管理接口
 type ChatFlowRole interface {
 	CreateChatFlowRole(ctx context.Context, role *vo.ChatFlowRoleCreate) (int64, error)
 	UpdateChatFlowRole(ctx context.Context, workflowID int64, role *vo.ChatFlowRoleUpdate) error
@@ -64,6 +83,8 @@ type ChatFlowRole interface {
 	PublishChatFlowRole(ctx context.Context, policy *vo.PublishRolePolicy) error
 }
 
+// Conversation 会话管理接口
+// 管理 ChatFlow 工作流的会话模板和会话实例
 type Conversation interface {
 	CreateDraftConversationTemplate(ctx context.Context, template *vo.CreateConversationTemplateMeta) (int64, error)
 	UpdateDraftConversationTemplateName(ctx context.Context, appID int64, userID int64, templateID int64, name string) error
@@ -82,6 +103,7 @@ type Conversation interface {
 	GetConversationNameByID(ctx context.Context, env vo.Env, bizID, connectorID, conversationID int64) (string, bool, error)
 }
 
+// InterruptEventStore 中断事件存储接口
 type InterruptEventStore interface {
 	SaveInterruptEvents(ctx context.Context, wfExeID int64, events []*entity.InterruptEvent) error
 	GetFirstInterruptEvent(ctx context.Context, wfExeID int64) (*entity.InterruptEvent, bool, error)
@@ -93,11 +115,13 @@ type InterruptEventStore interface {
 	GetConvRelatedInfo(ctx context.Context, convID int64) (*entity.ConvRelatedInfo, bool, func() error, error)
 }
 
+// CancelSignalStore 取消信号存储接口
 type CancelSignalStore interface {
 	SetWorkflowCancelFlag(ctx context.Context, wfExeID int64) error
 	GetWorkflowCancelFlag(ctx context.Context, wfExeID int64) (bool, error)
 }
 
+// ExecuteHistoryStore 执行历史存储接口
 type ExecuteHistoryStore interface {
 	CreateWorkflowExecution(ctx context.Context, execution *entity.WorkflowExecution) error
 	UpdateWorkflowExecution(ctx context.Context, execution *entity.WorkflowExecution, allowedStatus []entity.WorkflowExecuteStatus) (int64, entity.WorkflowExecuteStatus, error)
@@ -117,14 +141,17 @@ type ExecuteHistoryStore interface {
 	GetNodeDebugLatestExeID(ctx context.Context, wfID int64, nodeID string, uID int64) (int64, error)
 }
 
+// ToolFromWorkflow 工作流工具接口
 type ToolFromWorkflow interface {
 	tool.BaseTool
 	TerminatePlan() vo.TerminatePlan
 	GetWorkflow() *entity.Workflow
 }
 
+// ConversationIDGenerator 会话 ID 生成器函数类型
 type ConversationIDGenerator func(ctx context.Context, appID int64, userID, connectorID int64) (*conventity.Conversation, error)
 
+// ConversationRepository 会话仓储接口
 type ConversationRepository interface {
 	CreateDraftConversationTemplate(ctx context.Context, template *vo.CreateConversationTemplateMeta) (int64, error)
 	UpdateDraftConversationTemplateName(ctx context.Context, templateID int64, name string) error
@@ -146,10 +173,13 @@ type ConversationRepository interface {
 	GetStaticConversationByID(ctx context.Context, env vo.Env, bizID, connectorID, conversationID int64) (string, bool, error)
 	GetDynamicConversationByID(ctx context.Context, env vo.Env, bizID, connectorID, conversationID int64) (*entity.DynamicConversation, bool, error)
 }
+
+// WorkflowConfig 工作流配置接口
 type WorkflowConfig interface {
 	GetNodeOfCodeConfig() *config.NodeOfCodeConfig
 }
 
+// Suggester 建议生成接口
 type Suggester interface {
 	Suggest(ctx context.Context, input *vo.SuggestInfo) ([]string, error)
 }

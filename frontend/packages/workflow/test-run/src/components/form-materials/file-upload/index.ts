@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file file upload 模块导出
+ */
 export { FileUpload } from './file-upload';

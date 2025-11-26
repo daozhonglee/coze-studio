@@ -24,8 +24,13 @@ import (
 	"github.com/coze-dev/coze-studio/backend/api/model/data/variable/project_memory"
 )
 
+// SysConfVariables 系统预定义变量配置列表
+//
+// 系统变量是由系统自动生成的只读变量，如 sys_uuid、飞书用户信息等。
+// 这些变量无需用户手动定义，在 Agent 启用时自动包含。
 type SysConfVariables []*kvmemory.VariableInfo
 
+// ToVariables 转换为变量元数据集合
 func (v SysConfVariables) ToVariables() *VariablesMeta {
 	vars := make([]*VariableMeta, 0)
 	for _, vv := range v {
@@ -51,6 +56,10 @@ func (v SysConfVariables) ToVariables() *VariablesMeta {
 	}
 }
 
+// GroupByName 按组名分组变量
+//
+// 将变量按 GroupName 分组，返回分组后的变量信息列表。
+// 空组名的变量归入"未分组"分组。
 func (v SysConfVariables) GroupByName() []*kvmemory.GroupVariableInfo {
 	groups := make(map[string]*kvmemory.GroupVariableInfo)
 
@@ -89,6 +98,9 @@ func (v SysConfVariables) GroupByName() []*kvmemory.GroupVariableInfo {
 	return result
 }
 
+// RemoveLocalChannelVariable 移除位置渠道变量
+//
+// 过滤掉位置相关的系统变量（如经纬度），用于某些不支持位置信息的场景。
 func (v SysConfVariables) RemoveLocalChannelVariable() SysConfVariables {
 	var res []*kvmemory.VariableInfo
 	for _, vv := range v {
@@ -103,6 +115,12 @@ func (v SysConfVariables) RemoveLocalChannelVariable() SysConfVariables {
 	return res
 }
 
+// genChannelFromName 根据变量名推断渠道类型
+//
+// 规则：
+// - 包含 "lark" 的归类为飞书渠道
+// - 包含 "lon" 或 "lat" 的归类为位置渠道
+// - 其他归类为系统渠道
 func (v SysConfVariables) genChannelFromName(name string) project_memory.VariableChannel {
 	if strings.Contains(name, "lark") {
 		return project_memory.VariableChannel_Feishu

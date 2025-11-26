@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file batch 字段定义导出
+ */
 export { BatchConcurrentSizeField } from './batch-concurrent-size';
 export { BatchInputsField } from './batch-inputs';
 export { BatchOutputsField } from './batch-outputs';

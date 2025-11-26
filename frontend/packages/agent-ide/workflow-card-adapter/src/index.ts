@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file workflow-card-adapter 模块导出
+ * @description 提供 workflow-card-adapter 相关功能
+ */
+
+
 export {
   WorkflowCard,
   type IWorkflowCardProps,

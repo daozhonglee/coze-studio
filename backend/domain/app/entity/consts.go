@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Package entity 定义了应用(APP)领域的核心实体（常量定义）
+
 package entity
 
 import "github.com/coze-dev/coze-studio/backend/crossdomain/app/model"
@@ -21,37 +23,55 @@ import "github.com/coze-dev/coze-studio/backend/crossdomain/app/model"
 type PublishStatus = model.PublishStatus
 
 const (
-	PublishStatusOfPacking             PublishStatus = 0
-	PublishStatusOfPackFailed          PublishStatus = 1
-	PublishStatusOfAuditing            PublishStatus = 2
-	PublishStatusOfAuditNotPass        PublishStatus = 3
+	// PublishStatusOfPacking 打包中 - 正在打包应用资源
+	PublishStatusOfPacking PublishStatus = 0
+	// PublishStatusOfPackFailed 打包失败 - 资源打包过程出错
+	PublishStatusOfPackFailed PublishStatus = 1
+	// PublishStatusOfAuditing 审核中 - 等待审核通过
+	PublishStatusOfAuditing PublishStatus = 2
+	// PublishStatusOfAuditNotPass 审核未通过 - 审核被拒绝
+	PublishStatusOfAuditNotPass PublishStatus = 3
+	// PublishStatusOfConnectorPublishing 连接器发布中 - 正在发布到各连接器
 	PublishStatusOfConnectorPublishing PublishStatus = 4
-	PublishStatusOfPublishDone         PublishStatus = 5
+	// PublishStatusOfPublishDone 发布完成 - 发布流程成功完成
+	PublishStatusOfPublishDone PublishStatus = 5
 )
 
 type ConnectorPublishStatus = model.ConnectorPublishStatus
 
 const (
-	ConnectorPublishStatusOfDefault  ConnectorPublishStatus = 0
+	// ConnectorPublishStatusOfDefault 默认状态 - 初始状态
+	ConnectorPublishStatusOfDefault ConnectorPublishStatus = 0
+	// ConnectorPublishStatusOfAuditing 审核中 - 等待连接器审核
 	ConnectorPublishStatusOfAuditing ConnectorPublishStatus = 1
-	ConnectorPublishStatusOfSuccess  ConnectorPublishStatus = 2
-	ConnectorPublishStatusOfFailed   ConnectorPublishStatus = 3
-	ConnectorPublishStatusOfDisable  ConnectorPublishStatus = 4
+	// ConnectorPublishStatusOfSuccess 发布成功 - 已成功发布到连接器
+	ConnectorPublishStatusOfSuccess ConnectorPublishStatus = 2
+	// ConnectorPublishStatusOfFailed 发布失败 - 发布到连接器失败
+	ConnectorPublishStatusOfFailed ConnectorPublishStatus = 3
+	// ConnectorPublishStatusOfDisable 已禁用 - 连接器发布已被禁用
+	ConnectorPublishStatusOfDisable ConnectorPublishStatus = 4
 )
 
 type ResourceType = model.ResourceType
 
 const (
-	ResourceTypeOfPlugin    ResourceType = "plugin"
-	ResourceTypeOfWorkflow  ResourceType = "workflow"
+	// ResourceTypeOfPlugin 插件资源
+	ResourceTypeOfPlugin ResourceType = "plugin"
+	// ResourceTypeOfWorkflow 工作流资源
+	ResourceTypeOfWorkflow ResourceType = "workflow"
+	// ResourceTypeOfKnowledge 知识库资源
 	ResourceTypeOfKnowledge ResourceType = "knowledge"
-	ResourceTypeOfDatabase  ResourceType = "database"
+	// ResourceTypeOfDatabase 数据库资源
+	ResourceTypeOfDatabase ResourceType = "database"
 )
 
 type ResourceCopyStatus = model.ResourceCopyStatus
 
 const (
-	ResourceCopyStatusOfSuccess    ResourceCopyStatus = 1
+	// ResourceCopyStatusOfSuccess 复制成功
+	ResourceCopyStatusOfSuccess ResourceCopyStatus = 1
+	// ResourceCopyStatusOfProcessing 复制中
 	ResourceCopyStatusOfProcessing ResourceCopyStatus = 2
-	ResourceCopyStatusOfFailed     ResourceCopyStatus = 3
+	// ResourceCopyStatusOfFailed 复制失败
+	ResourceCopyStatusOfFailed ResourceCopyStatus = 3
 )

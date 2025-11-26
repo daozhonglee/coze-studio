@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file input json 模块导出
+ */
 export { InputJson } from '../../base-form-materials';

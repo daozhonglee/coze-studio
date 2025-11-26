@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 实体定义导出
+ */
 export { WorkflowNode } from './workflow-node';

@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot move modal 模块导出
+ */
 export { useBotMoveModal } from './move-modal';
 export { useBotMoveFailedModal } from './move-failed-modal';

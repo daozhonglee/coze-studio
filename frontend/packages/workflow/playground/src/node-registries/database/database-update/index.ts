@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file database update 模块导出
+ */
 export { DATABASE_UPDATE_NODE_REGISTRY } from './database-update-node-registry';

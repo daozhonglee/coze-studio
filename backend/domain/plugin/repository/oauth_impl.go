@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// oauth_impl.go OAuth 仓储实现
+//
+// 本文件实现了 OAuthRepository 接口，提供 OAuth 认证数据的持久化操作。
+
 package repository
 
 import (
@@ -26,17 +30,20 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/idgen"
 )
 
+// OAuthRepoComponents OAuth 仓储依赖组件
 type OAuthRepoComponents struct {
 	IDGen idgen.IDGenerator
 	DB    *gorm.DB
 }
 
+// NewOAuthRepo 创建 OAuth 仓储实例
 func NewOAuthRepo(components *OAuthRepoComponents) OAuthRepository {
 	return &oauthRepoImpl{
 		oauthAuth: dal.NewPluginOAuthAuthDAO(components.DB, components.IDGen),
 	}
 }
 
+// oauthRepoImpl OAuth 仓储实现
 type oauthRepoImpl struct {
 	oauthAuth *dal.PluginOAuthAuthDAO
 }

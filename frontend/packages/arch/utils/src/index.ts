@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工具函数模块导出
+ * @description 提供通用的工具函数
+ */
+
+/** URL 解析工具 */
 export { parseHashOrQuery } from './url/parse-hash-or-query';

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file foundation-sdk 模块导出
+ * @description 提供 foundation-sdk 相关功能
+ */
+
+
 import { type useCurrentTheme as useCurrentThemeOfSDK } from '@coze-arch/foundation-sdk';
 import { useTheme } from '@coze-arch/coze-design';
 

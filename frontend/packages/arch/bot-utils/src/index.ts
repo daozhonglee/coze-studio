@@ -14,17 +14,33 @@
  * limitations under the License.
  */
 
+/**
+ * @file Bot 工具函数模块导出
+ * @description 提供常用的工具函数和辅助方法
+ */
+
+/** 数据转换工具 */
 export { arrayBufferToObject } from './array-buffer-to-object';
 
+/** 设备检测 */
 export { isMobile } from './is-mobile';
+/** JSON 解析工具 */
 export { safeJSONParse, typeSafeJSONParse } from './safe-json-parse';
+/** 文件上传工具 */
 export { type BytedUploader, upLoadFile } from './upload-file';
+/** 消息上报 */
 export { messageReportEvent, type MessageReportEvent } from './message-report';
+/** 数组工具 */
 export { ArrayUtil } from './array';
+/** 技能转换 */
 export { skillKeyToApiStatusKeyTransformer } from './skill';
+/** 图片加载 */
 export { loadImage } from './image';
+/** HTML 渲染 */
 export { renderHtmlTitle } from './html';
+/** URL 工具 */
 export { getParamsFromQuery, appendUrlParam, openUrl } from './url';
+/** 响应式表格列 */
 export { responsiveTableColumn } from './responsive-table-column';
 export {
   getFormatDateType,

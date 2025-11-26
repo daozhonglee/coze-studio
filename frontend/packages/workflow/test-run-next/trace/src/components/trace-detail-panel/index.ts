@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file trace detail panel 模块导出
+ */
 export { TraceDetailPanel } from './trace-detail-panel';

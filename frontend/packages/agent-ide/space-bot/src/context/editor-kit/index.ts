@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file editor kit 模块导出
+ */
 import { useContext } from 'react';
 
 import { PromptEditorKitContext, PromptEditorKitProvider } from './context';

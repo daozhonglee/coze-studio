@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file setting-on-error 工具函数导出
+ */
 /* eslint-disable @typescript-eslint/naming-convention */
 import {
   ViewVariableType,

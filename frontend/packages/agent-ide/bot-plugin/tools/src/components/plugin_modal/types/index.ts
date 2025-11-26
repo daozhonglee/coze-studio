@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin_modal 类型定义导出
+ */
 /* eslint-disable @coze-arch/no-batch-import-or-export */
 export * from './modal';
 export * from './params';

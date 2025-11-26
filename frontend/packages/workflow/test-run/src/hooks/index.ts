@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
+/**
+ * @file 测试运行 Hooks 导出
+ * @description 提供测试运行相关的 React Hooks
+ */
+
+/** 测试运行服务 Hook */
 export { useTestRunService } from './use-test-run-service';
+/** 表单提交状态 Hook */
 export { useFormSubmitting } from './use-form-submitting';
+/** 文档内容变化监听 Hook */
 export { useDocumentContentChange } from './use-document-content-change';
+/** 测试运行报告服务 Hook */
 export { useTestRunReporterService } from './use-test-run-reporter-service';

@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file 环境变量模块导出
+ * @description 提供全局环境变量配置
+ */
+
+/** 全局环境变量 */
 export { GLOBAL_ENVS } from '@coze-studio/bot-env-adapter';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file query conversation history 模块导出
+ */
 /** Query session history node */
 
 export { QUERY_CONVERSATION_HISTORY_NODE_REGISTRY } from './node-registry';

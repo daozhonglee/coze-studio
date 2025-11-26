@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file debug panel 模块导出
+ */
 export { useDebugStore } from './store';

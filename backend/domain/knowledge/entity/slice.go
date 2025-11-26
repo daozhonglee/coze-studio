@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
+// slice.go 文档分片实体定义
+//
+// 本文件定义了知识库文档分片相关的实体和查询选项。
+
 package entity
 
 import (
 	model "github.com/coze-dev/coze-studio/backend/crossdomain/knowledge/model"
 )
 
+// Slice 文档分片实体类型别名
 type Slice = model.Slice
 
+// WhereSliceOpt 分片查询条件选项
 type WhereSliceOpt struct {
 	KnowledgeID int64
 	DocumentID  int64
@@ -32,6 +38,7 @@ type WhereSliceOpt struct {
 	NotEmpty    *bool
 }
 
+// WherePhotoSliceOpt 图片分片查询条件选项
 type WherePhotoSliceOpt struct {
 	KnowledgeID int64
 	DocumentIDs []int64

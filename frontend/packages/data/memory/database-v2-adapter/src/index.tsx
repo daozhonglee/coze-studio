@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file memory/database-v2-adapter 模块导出
+ * @description 提供 memory/database-v2-adapter 相关功能
+ */
+
+
 export { DatabaseDetailWaring } from '@coze-data/database-v2-base/features/database-detail-waring';

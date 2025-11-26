@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file log 常量定义导出
+ */
 export {
   totalConditionValueMap,
   ConditionRightType,

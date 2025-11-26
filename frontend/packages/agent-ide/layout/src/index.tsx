@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file layout 模块导出
+ * @description 提供 layout 相关功能
+ */
+
+
 import {
   BotEditorInitLayout,
   type BotEditorLayoutSlot,

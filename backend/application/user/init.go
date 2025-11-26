@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+// Package user 定义了用户(User)应用层服务
+//
+// 本包提供用户相关的应用层业务逻辑，包括：
+// - 用户信息管理
+// - 工作空间管理
+// - 用户配置
 package user
 
 import (
@@ -27,6 +33,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/storage"
 )
 
+// InitService 初始化用户应用服务
 func InitService(ctx context.Context, db *gorm.DB, oss storage.Storage, idgen idgen.IDGenerator) *UserApplicationService {
 	UserApplicationSVC.DomainSVC = service.NewUserDomain(ctx, &service.Components{
 		IconOSS:   oss,

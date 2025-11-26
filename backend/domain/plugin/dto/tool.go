@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// tool.go 工具相关数据传输对象
+//
+// 本文件定义了工具管理相关的 DTO 结构：
+//   - 草稿工具创建和更新
+//   - OpenAPI 文档转换
+//   - Bot 默认参数更新
+
 package dto
 
 import (
@@ -23,6 +30,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/crossdomain/plugin/model"
 )
 
+// CreateDraftToolsWithCodeRequest 通过代码创建草稿工具请求
 type CreateDraftToolsWithCodeRequest struct {
 	PluginID   int64
 	OpenapiDoc *model.Openapi3T

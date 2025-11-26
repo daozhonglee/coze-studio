@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file auto gen button 模块导出
+ */
 export { AutoGenButton } from './auto-gen-button';

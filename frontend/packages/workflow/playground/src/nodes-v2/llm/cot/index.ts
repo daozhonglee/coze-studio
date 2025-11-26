@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file cot 模块导出
+ */
 export { provideReasoningContentEffect } from './provide-reasoning-content';
 export {
   formatReasoningContentOnInit,

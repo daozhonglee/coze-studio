@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/knowledge-ide-adapter 模块导出
+ * @description 提供 knowledge/knowledge-ide-adapter 相关功能
+ */
+
+
 export { BaseKnowledgeIDE, type BaseKnowledgeIDEProps } from './scenes/base';
 export { useBaseKnowledgeIDEFullScreenModal } from './scenes/base/modal';
 

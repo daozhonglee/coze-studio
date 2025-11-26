@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
+// Package storage 提供对象存储接口
+//
+// 本包定义对象存储服务的接口，用于文件的存取：
+// - 支持文件上传/下载
+// - 支持文件删除
+// - 支持生成预签名 URL
+// - 支持文件列表查询
+//
+// 实现层在 impl/ 目录下，支持多种后端：
+// - MinIO（本地开发）
+// - S3（AWS 兼容）
+// - TOS（火山引擎对象存储）
 package storage
 
 import (
@@ -23,10 +35,13 @@ import (
 	"time"
 )
 
+// ErrObjectNotFound 对象不存在错误
 var (
 	ErrObjectNotFound = errors.New("object not found")
 )
 
+// Storage 对象存储接口
+//
 //go:generate  mockgen -destination ../../internal/mock/infra/storage/storage_mock.go -package mock -source storage.go Factory
 type Storage interface {
 	// PutObject puts the object with the specified key.
@@ -50,6 +65,7 @@ type Storage interface {
 	ListObjectsPaginated(ctx context.Context, input *ListObjectsPaginatedInput, opts ...GetOptFn) (*ListObjectsPaginatedOutput, error)
 }
 
+// SecurityToken 安全令牌，用于临时授权访问
 type SecurityToken struct {
 	AccessKeyID     string `thrift:"access_key_id,1" frugal:"1,default,string" json:"access_key_id"`
 	SecretAccessKey string `thrift:"secret_access_key,2" frugal:"2,default,string" json:"secret_access_key"`
@@ -58,12 +74,14 @@ type SecurityToken struct {
 	CurrentTime     string `thrift:"current_time,5" frugal:"5,default,string" json:"current_time"`
 }
 
+// ListObjectsPaginatedInput 分页列表请求参数
 type ListObjectsPaginatedInput struct {
 	Prefix   string
 	PageSize int
 	Cursor   string
 }
 
+// ListObjectsPaginatedOutput 分页列表响应
 type ListObjectsPaginatedOutput struct {
 	Files  []*FileInfo
 	Cursor string
@@ -72,6 +90,7 @@ type ListObjectsPaginatedOutput struct {
 	IsTruncated bool
 }
 
+// FileInfo 文件信息
 type FileInfo struct {
 	Key          string            `json:"key"`
 	LastModified time.Time         `json:"last_modified"`

@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file src 消息导出
+ */
+/**
  * 1. Responsible for standardizing imported parameters exported parameters of various types of message creation to reduce message creation costs
  * 2. For the received message, spit out the specified message format for different message types
  */

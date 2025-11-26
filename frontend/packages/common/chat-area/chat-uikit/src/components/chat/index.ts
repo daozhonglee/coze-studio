@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file components 聊天功能导出
+ */
 export * from './chat-input';
 export * from './chat-upload';
 export * from './on-boarding';

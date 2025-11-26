@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file lazy 模块导出
+ */
 export {
   CalypsoLazy as MdBoxLazy,
   ImageStatus,

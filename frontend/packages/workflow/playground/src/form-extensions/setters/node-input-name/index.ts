@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file node input name 模块导出
+ */
 import { I18n } from '@coze-arch/i18n';
 import {
   type ValidatorProps,

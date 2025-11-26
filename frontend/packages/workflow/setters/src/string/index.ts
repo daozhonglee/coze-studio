@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file string 模块导出
+ */
 export { String } from './string';
 export type { StringOptions } from './string';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file file icon 模块导出
+ */
 export { FileIcon } from './file-icon';
 
 export { FileItemStatus } from './constants';

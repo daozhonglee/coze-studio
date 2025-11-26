@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file vision 模块导出
+ */
 export { Vision } from './components/vision';
 export { isVisionInput, isVisionEqual } from './utils';

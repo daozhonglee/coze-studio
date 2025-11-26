@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot mobile 模块导出
+ */
 import { devtools } from 'zustand/middleware';
 import { create } from 'zustand';
 

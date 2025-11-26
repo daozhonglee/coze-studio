@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file conversation item 模块导出
+ */
 export { PcConversationItem } from './pc';
 export { MobileConversationItem } from './mobile';

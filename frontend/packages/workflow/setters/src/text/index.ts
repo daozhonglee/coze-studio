@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file text 模块导出
+ */
 export { Text } from './text';
 export type { TextOptions } from './text';

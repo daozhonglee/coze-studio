@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file vision 工具函数导出
+ */
 export { isVisionInput } from './is-vision-input';
 export { isVisionEqual } from './is-vision-equal';

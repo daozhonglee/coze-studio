@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 测试运行类型定义导出
+ * @description 定义测试运行相关的 TypeScript 类型
+ */
+
 export {
   ComponentAdapterCommonProps,
   TestFormSchema,
@@ -23,10 +28,10 @@ export {
 } from './test-form';
 
 /*******************************************************************************
- * Log related types
+ * 日志相关类型
  */
 
-/** Type of condition rvalue */
+/** 条件右值类型 */
 export enum ConditionRightType {
   Ref = 'ref',
   Literal = 'literal',

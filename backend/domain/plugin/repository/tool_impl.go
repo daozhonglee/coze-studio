@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+// tool_impl.go 工具仓储实现
+//
+// 本文件实现了 ToolRepository 接口，提供工具数据的持久化操作。
+// 包含草稿工具、在线工具、版本工具和代理工具的数据访问实现。
+
 package repository
 
 import (
@@ -44,6 +49,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/saasapi"
 )
 
+// toolRepoImpl 工具仓储实现
 type toolRepoImpl struct {
 	query *query.Query
 

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file node result extractor 模块导出
+ */
 import { type WorkflowJSON } from '../../types';
 import { type NodeResult } from '../../api';
 import {

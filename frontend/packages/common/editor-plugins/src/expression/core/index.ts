@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file expression 核心功能导出
+ */
 export {
   ExpressionEditorEvent,
   ExpressionEditorToken,

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file role input 模块导出
+ */
 export { RoleDefaultInput } from './role-default-input';

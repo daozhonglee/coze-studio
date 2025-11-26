@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file bottom panel 模块导出
+ */
 export { BottomPanel } from './panel';

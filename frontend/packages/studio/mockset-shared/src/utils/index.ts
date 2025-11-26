@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 import type { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
 import {
   TrafficScene,

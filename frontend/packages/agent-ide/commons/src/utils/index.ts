@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 import dayjs from 'dayjs';
 import { userStoreService } from '@coze-studio/user-store';
 import { useBotInfoStore } from '@coze-studio/bot-detail-store/bot-info';

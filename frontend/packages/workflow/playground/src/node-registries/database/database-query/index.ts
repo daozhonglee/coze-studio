@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file database query 模块导出
+ */
 export { DATABASE_QUERY_NODE_REGISTRY } from './database-query-node-registry';

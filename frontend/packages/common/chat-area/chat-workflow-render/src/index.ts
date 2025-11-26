@@ -14,5 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/chat-workflow-render 模块导出
+ * @description 提供 chat-area/chat-workflow-render 相关功能
+ */
+
+
 export { WorkflowRender } from './components/workflow-render';
 export { ChatFlowRender } from './components/chat-flow-render';

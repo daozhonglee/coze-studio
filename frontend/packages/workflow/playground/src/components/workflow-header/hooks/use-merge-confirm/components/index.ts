@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file use-merge-confirm 组件导出
+ */
 export { default as TitleBar } from './title-bar';
 export { default as MergeTable } from './merge-table';
 export { default as MergeBanner } from './merge-banner';

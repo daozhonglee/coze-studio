@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file question form 模块导出
+ */
 export { QuestionForm } from './form';

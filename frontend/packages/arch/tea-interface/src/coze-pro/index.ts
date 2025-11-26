@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file coze pro 模块导出
+ */
 export type SecondEnvironment = 'cn-coze-pro' | 'cn-coze-basic';
 
 export interface TeamInviteParams {

@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 子工作流节点注册导出
+ * @description 子工作流节点 - 调用其他已发布的工作流作为子流程
+ */
+
+/** 子工作流节点注册配置 */
 export { SUB_WORKFLOW_NODE_REGISTRY } from './node-registry';
+/** 子工作流节点内容组件 */
 export { SubWorkflowContent } from './node-content';

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file common/utils 模块导出
+ * @description 提供 common/utils 相关功能
+ */
+
+
 export { isValidUrl, completeUrl } from './url';
 export { getFormatTypeFromUnitType } from './knowledge-page';
 

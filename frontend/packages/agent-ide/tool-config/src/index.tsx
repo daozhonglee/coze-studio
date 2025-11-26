@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file tool-config 模块导出
+ * @description 提供 tool-config 相关功能
+ */
+
+
 export {
   AbilityScope,
   ToolKey,

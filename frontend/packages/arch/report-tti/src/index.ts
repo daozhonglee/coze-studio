@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file TTI 上报模块导出
+ * @description 提供页面 Time To Interactive (TTI) 性能指标上报功能
+ */
+
 import { useEffect } from 'react';
 
 import {
@@ -21,6 +26,7 @@ import {
   REPORT_TTI_DEFAULT_SCENE,
 } from './utils/custom-perf-metric';
 
+/** TTI 上报参数 */
 export interface ReportTtiParams {
   isLive: boolean;
   extra?: Record<string, string>;

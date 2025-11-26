@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file model setting field 模块导出
+ */
 export { ModelSettingField } from './model-setting-field';

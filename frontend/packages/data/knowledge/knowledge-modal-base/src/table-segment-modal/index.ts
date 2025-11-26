@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file table segment modal 模块导出
+ */
 export {
   useTableSegmentModal,
   type UseTableSegmentModalParams,

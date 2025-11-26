@@ -14,16 +14,26 @@
  * limitations under the License.
  */
 
+// Package official 提供官方预定义的提示词模板
+//
+// 包含多种场景的提示词模板，如：
+// - 通用结构：适用于多种场景的提示词框架
+// - 任务执行：适用于有明确步骤的任务场景
+// - 角色扮演：适用于聊天陪伴和互动娱乐
+// - 技能调用：适用于调用插件获取信息的场景
+// - 知识库问答：适用于基于知识库回答的客服场景
 package official
 
 import (
 	"github.com/coze-dev/coze-studio/backend/domain/prompt/entity"
 )
 
+// GetPromptList 获取官方提示词列表
 func GetPromptList() []*entity.PromptResource {
 	return officialPromptList
 }
 
+// officialPromptList 官方预定义的提示词模板列表
 var officialPromptList = []*entity.PromptResource{
 	{
 		ID:          10001,

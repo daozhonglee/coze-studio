@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file workflow-as-agent-adapter 模块导出
+ * @description 提供 workflow-as-agent-adapter 相关功能
+ */
+
+
 export { WorkflowCard } from './components/workflow-card';

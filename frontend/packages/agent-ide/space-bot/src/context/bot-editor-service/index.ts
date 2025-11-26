@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot editor service 模块导出
+ */
 import { useContext } from 'react';
 
 import { BotEditorServiceContext } from './context';

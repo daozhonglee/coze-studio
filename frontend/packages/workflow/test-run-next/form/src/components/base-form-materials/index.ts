@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file base form materials 模块导出
+ */
+/**
  * basic form material
  */
 export { InputNumber, InputNumberProps } from './input-number';

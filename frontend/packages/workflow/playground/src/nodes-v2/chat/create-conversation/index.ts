@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file create conversation 模块导出
+ */
 /** Create a session node */
 
 export { CREATE_CONVERSATION_NODE_REGISTRY } from './node-registry';

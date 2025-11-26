@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 角色按钮组件
+ * @description 工作流编辑器中的角色配置入口按钮
+ */
+
 import { useEffect, useRef, useState } from 'react';
 
 import { useMemoizedFn } from 'ahooks';
@@ -34,6 +39,12 @@ import { OnBoardingPopover } from './onboarding';
 
 import css from './role-button.module.less';
 
+/**
+ * 角色按钮组件
+ *
+ * 显示当前角色信息，点击后打开角色配置面板
+ * 首次使用时会显示引导提示
+ */
 export const RoleButton = () => {
   const floatLayoutService = useFloatLayoutService();
   const roleService = useRoleService();

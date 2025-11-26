@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file query conversation list 模块导出
+ */
 /** Query session list */
 
 export { QUERY_CONVERSATION_LIST_NODE_REGISTRY } from './node-registry';

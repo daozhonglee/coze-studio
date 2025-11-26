@@ -31,7 +31,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/entity/vo"
 )
 
-// TODO (@fanlv): Parameter references need to be modified.
+// Workflow 工作流跨域服务接口
 type Workflow interface {
 	WorkflowAsModelTool(ctx context.Context, policies []*vo.GetPolicy) ([]workflow.ToolFromWorkflow, error)
 	WithResumeToolWorkflow(resumingEvent *workflowEntity.ToolInterruptEvent, resumeData string,
@@ -48,20 +48,31 @@ type Workflow interface {
 	MGet(ctx context.Context, policy *vo.MGetPolicy) ([]*entity.Workflow, int64, error)
 }
 
-type ExecuteConfig = workflowModel.ExecuteConfig
-type ExecuteMode = workflowModel.ExecuteMode
+// 类型别名定义
+type (
+	// ExecuteConfig 执行配置
+	ExecuteConfig = workflowModel.ExecuteConfig
+	// ExecuteMode 执行模式
+	ExecuteMode = workflowModel.ExecuteMode
+	// WorkflowMessage 工作流消息
+	WorkflowMessage = workflowEntity.Message
+	// StateMessage 状态消息
+	StateMessage = workflowEntity.StateMessage
+	// NodeType 节点类型
+	NodeType = entity.NodeType
+	// MessageType 消息类型
+	MessageType = entity.MessageType
+	// InterruptEvent 中断事件
+	InterruptEvent = workflowEntity.InterruptEvent
+	// EventType 事件类型
+	EventType = workflowEntity.InterruptEventType
+	// ResumeRequest 恢复请求
+	ResumeRequest = entity.ResumeRequest
+	// WorkflowExecuteStatus 工作流执行状态
+	WorkflowExecuteStatus = entity.WorkflowExecuteStatus
+)
 
-type WorkflowMessage = workflowEntity.Message
-
-type StateMessage = workflowEntity.StateMessage
-
-type NodeType = entity.NodeType
-type MessageType = entity.MessageType
-type InterruptEvent = workflowEntity.InterruptEvent
-type EventType = workflowEntity.InterruptEventType
-type ResumeRequest = entity.ResumeRequest
-type WorkflowExecuteStatus = entity.WorkflowExecuteStatus
-
+// 工作流执行状态常量
 const (
 	WorkflowRunning     = WorkflowExecuteStatus(entity.WorkflowRunning)
 	WorkflowSuccess     = WorkflowExecuteStatus(entity.WorkflowSuccess)
@@ -76,58 +87,73 @@ const (
 	ToolResponse MessageType = "tool_response"
 )
 
+// 节点类型常量
 const (
 	NodeTypeOutputEmitter NodeType = "OutputEmitter"
 	NodeTypeInputReceiver NodeType = "InputReceiver"
 	NodeTypeQuestion      NodeType = "QuestionAnswer"
 )
 
+// 执行模式常量
 const (
 	ExecuteModeDebug     ExecuteMode = "debug"
 	ExecuteModeRelease   ExecuteMode = "release"
 	ExecuteModeNodeDebug ExecuteMode = "node_debug"
 )
 
+// TaskType 任务类型
 type TaskType = workflowModel.TaskType
 
+// SyncPattern 同步模式
 type SyncPattern = workflowModel.SyncPattern
 
+// 同步模式常量
 const (
 	SyncPatternSync   SyncPattern = "sync"
 	SyncPatternAsync  SyncPattern = "async"
 	SyncPatternStream SyncPattern = "stream"
 )
 
+// 任务类型常量
 const (
 	TaskTypeForeground TaskType = "foreground"
 	TaskTypeBackground TaskType = "background"
 )
 
+// BizType 业务类型
 type BizType = workflowModel.BizType
 
+// 业务类型常量
 const (
 	BizTypeAgent    BizType = "agent"
 	BizTypeWorkflow BizType = "workflow"
 )
 
+// Locator 定位器（版本定位）
 type Locator = workflowModel.Locator
 
+// 版本定位常量
 const (
 	FromDraft Locator = iota
 	FromSpecificVersion
 	FromLatestVersion
 )
 
+// ReleaseWorkflowConfig 发布工作流配置
 type ReleaseWorkflowConfig = vo.ReleaseWorkflowConfig
 
+// ToolInterruptEvent 工具中断事件
 type ToolInterruptEvent = workflowEntity.ToolInterruptEvent
 
+// defaultSVC 默认服务实例
 var defaultSVC Workflow
 
+// DefaultSVC 获取默认服务实例
 func DefaultSVC() Workflow {
 	return defaultSVC
 }
 
+// SetDefaultSVC 设置默认服务实例
 func SetDefaultSVC(svc Workflow) {
 	defaultSVC = svc
 }

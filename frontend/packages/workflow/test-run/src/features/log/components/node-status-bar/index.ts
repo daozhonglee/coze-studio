@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file node status bar 模块导出
+ */
 export { NodeStatusBar } from './node-status-bar';

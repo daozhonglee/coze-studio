@@ -14,5 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file scroll-view 模块导出
+ * @description 提供 scroll-view 相关功能
+ */
+
+
 export { ScrollView } from './scroll-view';
 export { type ScrollViewController } from './scroll-view/type';

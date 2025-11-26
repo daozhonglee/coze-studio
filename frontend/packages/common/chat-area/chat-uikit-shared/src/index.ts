@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/chat-uikit-shared 模块导出
+ * @description 提供 chat-area/chat-uikit-shared 相关功能
+ */
+
+
 export {
   type ICardEmptyConfig,
   type ICopywritingConfig,

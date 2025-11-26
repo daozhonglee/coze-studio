@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file add button 模块导出
+ */
 export { AddButton } from './add-button';

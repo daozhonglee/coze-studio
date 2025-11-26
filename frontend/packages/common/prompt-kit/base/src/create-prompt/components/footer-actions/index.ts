@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file footer actions 模块导出
+ */
 export { CloseModal } from './close-modal';
 export { SavePrompt } from './save-prompt';
 export { PromptDiff } from './prompt-diff';

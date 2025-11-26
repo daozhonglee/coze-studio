@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file parsers 模块导出
+ */
 /* eslint-disable @typescript-eslint/no-namespace -- namespace is necessary */
 
 import { CommentEditorTextParser } from './text';

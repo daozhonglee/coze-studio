@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/knowledge-modal-base 模块导出
+ * @description 提供 knowledge/knowledge-modal-base 相关功能
+ */
+
+
 export {
   useEditKnowledgeModal,
   type EditModalData,

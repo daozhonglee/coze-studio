@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file ui breadcrumb 模块导出
+ */
 export { UIBreadcrumb, type BreadCrumbProps } from './bread-crumb';

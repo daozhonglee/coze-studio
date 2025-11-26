@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file cropper 模块导出
+ */
 export { CropperImg } from './cropper-img';

@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// message.go 工作流执行消息实体
+//
+// 本文件定义了工作流执行过程中产生的消息实体：
+//   - Message: 统一消息容器
+//   - StateMessage: 状态变更消息
+//   - DataMessage: 数据消息（用于对话历史）
+//   - FunctionCallInfo/ToolResponseInfo: 函数调用相关信息
+
 package entity
 
 import (
@@ -23,12 +31,15 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/entity/vo"
 )
 
+// Message 工作流执行消息
+// 包含状态消息和数据消息两种类型
 type Message struct {
 	*StateMessage
 	*DataMessage
 }
 
-// StateMessage represents a status change for the workflow execution.
+// StateMessage 状态消息
+// 表示工作流执行状态的变更，包含执行 ID、状态、Token 使用量、错误信息等
 type StateMessage struct {
 	ExecuteID      int64
 	EventID        int64 // the resuming event ID for current execution
@@ -39,7 +50,8 @@ type StateMessage struct {
 	InterruptEvent *InterruptEvent
 }
 
-// DataMessage represents a full or chunked message during a run that should go into message history.
+// DataMessage 数据消息
+// 表示执行过程中产生的完整或分块消息，用于记录到对话历史
 type DataMessage struct {
 	ExecuteID    int64 // the root execute ID for current execution
 	Role         schema.RoleType

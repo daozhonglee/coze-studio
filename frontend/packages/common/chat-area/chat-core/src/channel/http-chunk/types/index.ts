@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file http-chunk 类型定义导出
+ */
 import {
   type FetchSteamConfig,
   FetchStreamErrorCode,

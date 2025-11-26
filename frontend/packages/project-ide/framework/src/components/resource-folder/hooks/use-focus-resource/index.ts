@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file use focus resource 模块导出
+ */
 import { useRef } from 'react';
 
 import { calcOffsetTopByCollapsedMap } from '../../utils';

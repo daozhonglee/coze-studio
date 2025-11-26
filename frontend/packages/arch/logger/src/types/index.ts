@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file src 类型定义导出
+ */
+/**
  * log level
  */
 export const enum LogLevel {

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/plugin-chat-shortcuts 模块导出
+ * @description 提供 chat-area/plugin-chat-shortcuts 相关功能
+ */
+
+
 // ! Notice prohibits direct export of shortcut-tool, causing downstream dependencies on unwanted knowledge-uploads
 // export { ShortcutToolConfig } from './shortcut-tool';
 export { ShortcutBar } from './shortcut-bar';

@@ -13,6 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// plugin.go 工作流插件适配器
+//
+// 本文件提供工作流中调用插件的功能：
+//   - 获取插件工具信息
+//   - 获取可调用的插件工具
+//   - 插件工具的执行适配
+//
+// 支持的插件来源：
+//   - SaaS 插件：云端托管的插件
+//   - 自定义插件：用户开发的插件（草稿/已发布/版本化）
+
 package plugin
 
 import (
@@ -167,6 +178,8 @@ func getPluginsWithTools(ctx context.Context, pluginEntity *vo.PluginEntity, too
 	return &pluginInfo{PluginInfo: pInfo}, toolsInfo, nil
 }
 
+// GetPluginToolsInfo 获取插件工具信息
+// 获取指定插件和工具 ID 的详细信息，包括输入输出参数、示例等
 func GetPluginToolsInfo(ctx context.Context, req *ToolsInfoRequest) (_ *ToolsInfoResponse, err error) {
 	defer func() {
 		if err != nil {
@@ -254,6 +267,8 @@ func GetPluginToolsInfo(ctx context.Context, req *ToolsInfoRequest) (_ *ToolsInf
 	return response, nil
 }
 
+// GetPluginInvokableTools 获取可调用的插件工具
+// 返回可直接执行的工具实例映射
 func GetPluginInvokableTools(ctx context.Context, req *ToolsInvokableRequest) (
 	_ map[int64]crossplugin.InvokableTool, err error) {
 	defer func() {
@@ -303,6 +318,7 @@ func GetPluginInvokableTools(ctx context.Context, req *ToolsInvokableRequest) (
 	return result, nil
 }
 
+// pluginInvokeTool 插件工具调用实现
 type pluginInvokeTool struct {
 	pluginEntity  vo.PluginEntity
 	toolInfo      *model.ToolInfo

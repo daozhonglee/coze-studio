@@ -14,15 +14,27 @@
  * limitations under the License.
  */
 
+// interface.go 文档处理器接口定义
+//
+// 本文件定义了文档处理器接口 DocProcessor。
+// 处理器负责文档的创建、存储和索引流程。
+
 package processor
 
 import "github.com/coze-dev/coze-studio/backend/domain/knowledge/entity"
 
+// DocProcessor 文档处理器接口
+//
+// 定义文档处理的完整流程：
+//   - BeforeCreate: 准备数据源
+//   - BuildDBModel: 构建数据库模型
+//   - InsertDBModel: 插入数据库记录
+//   - Indexing: 发起索引任务
+//   - GetResp: 获取处理结果
 type DocProcessor interface {
-	BeforeCreate() error         // Get data source
-	BuildDBModel() error         // Build Doc Record
-	InsertDBModel() error        // Insert a Doc record into the database
-	Indexing() error             // Initiate indexing task
-	GetResp() []*entity.Document // Return the processed document information
-	//GetColumnName()
+	BeforeCreate() error         // 准备数据源
+	BuildDBModel() error         // 构建数据库记录
+	InsertDBModel() error        // 插入数据库记录
+	Indexing() error             // 发起索引任务
+	GetResp() []*entity.Document // 返回处理后的文档信息
 }

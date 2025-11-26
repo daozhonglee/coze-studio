@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file 节点版本 Hook 导出
+ * @description 提供节点版本管理相关的 Hook
+ */
+
+/** 节点版本服务 Hook - 获取和管理节点版本 */
 export { useNodeVersionService } from './use-node-version-service';

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file common 高阶组件导出
+ */
 export { withNodeConfigForm } from './with-node-config-form';

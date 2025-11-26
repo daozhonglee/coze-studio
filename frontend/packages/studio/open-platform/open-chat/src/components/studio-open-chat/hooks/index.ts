@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file studio-open-chat Hooks 导出
+ */
 export { useUserInfo } from './use-user-info';
 export { useError } from './use-error';

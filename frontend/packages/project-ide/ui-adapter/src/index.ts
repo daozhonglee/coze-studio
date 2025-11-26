@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file ui-adapter 模块导出
+ * @description 提供 ui-adapter 相关功能
+ */
+
+
 export { useCommitVersion } from './hooks';
 export {
   IDEGlobalProvider,

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/hooks 模块导出
+ * @description 提供 chat-area/hooks 相关功能
+ */
+
+
 export { useImperativeLayoutEffect } from './hooks/use-imperative-layout-effect';
 export { useSearch } from './hooks/use-search';
 export { useEventCallback } from './hooks/use-event-callback';

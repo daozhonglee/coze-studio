@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file trigger upsert 模块导出
+ */
 export { TRIGGER_UPSERT_NODE_REGISTRY } from './node-registry';
 export { TriggerUpsertContent } from './node-content';

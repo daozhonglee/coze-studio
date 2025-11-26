@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file node input name 模块导出
+ */
 export { NodeInputName } from './node-input-name';

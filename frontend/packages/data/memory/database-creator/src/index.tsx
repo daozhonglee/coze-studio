@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file memory/database-creator 模块导出
+ * @description 提供 memory/database-creator 相关功能
+ */
+
+
 export { DatabaseModal, DatabaseModalProps } from './components/database-modal';
 export {
   ProcessingTag,

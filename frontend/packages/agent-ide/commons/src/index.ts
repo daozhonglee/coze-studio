@@ -14,12 +14,22 @@
  * limitations under the License.
  */
 
+/**
+ * @file Agent IDE 公共模块导出
+ * @description 提供 Agent IDE 的公共组件、Hooks 和工具函数
+ */
+
+/** 差异节点渲染组件 */
 export { DiffNodeRender } from './components/diff-node-render';
 
+/** 发布服务条款组件 */
 export { PublishTermService } from './components/term-service';
 
+/** 发送差异事件 Hook */
 export { useSendDiffEvent } from './hooks/use-send-diff-event';
 
+/** 工具函数 */
 export { sendTeaEventInBot, transTimestampText } from './utils';
 
+/** 差异表格缩进常量 */
 export { DIFF_TABLE_INDENT_BASE, DIFF_TABLE_INDENT_LENGTH } from './constants';

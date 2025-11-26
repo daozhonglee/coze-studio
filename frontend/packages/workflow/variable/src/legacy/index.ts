@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file legacy 模块导出
+ */
 export { variableUtils } from './variable-utils';
 export { WorkflowVariableService } from './workflow-variable-service';
 export { WorkflowBatchService } from './workflow-batch-service';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file encapsulate 模块导出
+ */
 export * from './encapsulate-service';
 export * from './types';
 export * from './encapsulate-manager';

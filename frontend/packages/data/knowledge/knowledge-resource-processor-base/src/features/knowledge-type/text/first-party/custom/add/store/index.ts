@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file add 状态存储导出
+ */
 export { createTextCustomAddUpdateStore } from './store';
 export { UploadTextCustomAddUpdateStore } from './types';

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file src UI 导出
+ */
 window.CozeWebSDK = window.CozeWebSDK || {};

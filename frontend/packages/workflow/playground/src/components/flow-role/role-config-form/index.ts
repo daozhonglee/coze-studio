@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file role config form 模块导出
+ */
 export { RoleConfigForm } from './config-form';

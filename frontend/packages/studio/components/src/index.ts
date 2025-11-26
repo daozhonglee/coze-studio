@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file components 模块导出
+ * @description 提供 components 相关功能
+ */
+
+
 export { AvatarBackgroundNoticeDot } from './avatar-background-notice-dot';
 
 export { ImageList, type ImageItem, type ImageListProps } from './image-list';

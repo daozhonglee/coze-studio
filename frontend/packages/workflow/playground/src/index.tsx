@@ -14,8 +14,16 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工作流 Playground 模块主入口
+ * @description 提供工作流编辑器的核心组件、Hooks、服务和类型定义
+ */
+
+/** 工作流全局状态 */
 export { WorkflowGlobalState } from './entities';
+/** 工作流全局状态实体类型 */
 export { WorkflowGlobalStateEntity } from './typing';
+/** 工作流 Playground 主组件 */
 export { WorkflowPlayground } from './workflow-playground';
 export {
   useGlobalState,

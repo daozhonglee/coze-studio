@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file role avatar upload 模块导出
+ */
 export { RoleAvatarUpload } from './picture-upload';
 export { default as customUploadRequest } from './utils/custom-upload-request';

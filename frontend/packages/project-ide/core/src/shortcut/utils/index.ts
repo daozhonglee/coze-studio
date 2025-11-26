@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file shortcut 工具函数导出
+ */
 export { isKeyStringMatch } from './key-match';
 export { getKeyLabel } from './key-label';
 export { domEditable } from './dom';

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file trace select 模块导出
+ */
 export { TraceSelect } from './trace-select';

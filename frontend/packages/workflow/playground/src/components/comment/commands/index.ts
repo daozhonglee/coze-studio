@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file commands 模块导出
+ */
 export { selectAllCommand } from './select-all';
 export { boldCommand } from './bold';
 export { italicCommand } from './italic';

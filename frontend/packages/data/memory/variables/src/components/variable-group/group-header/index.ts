@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file group header 模块导出
+ */
 export { VariableGroupParamHeader } from './render';
 export { useGetHideKeys } from './hooks/use-get-hide-keys';

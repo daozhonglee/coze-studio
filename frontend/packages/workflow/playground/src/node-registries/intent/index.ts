@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 意图识别节点注册导出
+ * @description 意图识别节点 - 根据用户输入识别意图并路由到对应分支
+ */
+
+/** 意图识别节点注册配置 */
 export { INTENT_NODE_REGISTRY } from './node-registry';
+/** 意图识别节点内容组件 */
 export { IntentContent } from './node-content';

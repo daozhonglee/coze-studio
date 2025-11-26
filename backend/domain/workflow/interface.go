@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// interface.go 工作流领域服务接口定义
+//
+// 本文件定义了工作流领域的核心服务接口：
+//   - Service: 工作流服务主接口
+//   - Repository: 工作流数据仓储接口
+//
+// 这是工作流领域的对外契约，定义了所有可用的操作。
+
 package workflow
 
 import (
@@ -30,6 +38,16 @@ import (
 )
 
 //go:generate mockgen -destination ../../internal/mock/domain/workflow/interface.go --package mockWorkflow -source interface.go
+
+// Service 工作流服务主接口
+//
+// 提供工作流管理的所有功能：
+//   - CRUD：创建、查询、更新、删除工作流
+//   - 发布：版本管理和发布流程
+//   - 验证：画布验证和节点检查
+//   - 执行：同步/异步/流式执行
+//   - 工具：工作流作为 LLM 工具
+//   - 会话：ChatFlow 会话管理
 type Service interface {
 	ListNodeMeta(ctx context.Context, nodeTypes map[entity.NodeType]bool) (map[string][]*entity.NodeTypeMeta, []entity.Category, error)
 	Create(ctx context.Context, meta *vo.MetaCreate) (int64, error)
@@ -66,6 +84,14 @@ type Service interface {
 	Suggest(ctx context.Context, input *vo.SuggestInfo) ([]string, error)
 }
 
+// Repository 工作流数据仓储接口
+//
+// 提供工作流数据的持久化操作：
+//   - 元数据管理
+//   - 版本管理
+//   - 草稿管理
+//   - 引用关系管理
+//   - 执行历史管理
 type Repository interface {
 	CreateMeta(ctx context.Context, meta *vo.Meta) (int64, error)
 	CreateVersion(ctx context.Context, id int64, info *vo.VersionInfo, newRefs map[entity.WorkflowReferenceKey]struct{}) (err error)

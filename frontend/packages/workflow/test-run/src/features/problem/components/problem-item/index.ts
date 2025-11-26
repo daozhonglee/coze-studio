@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file problem item 模块导出
+ */
 export { NodeItem } from './node-item';
 export { LineItem } from './line-item';
 export { TextItem } from './base-item';

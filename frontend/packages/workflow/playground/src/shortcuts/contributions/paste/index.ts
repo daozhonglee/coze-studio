@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file paste 模块导出
+ */
 import { inject, injectable } from 'inversify';
 import {
   FlowNodeBaseType,

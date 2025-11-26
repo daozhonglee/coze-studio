@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file dsl template 模块导出
+ */
 import { type shortcut_command } from '@coze-arch/bot-api/playground_api';
 
 import { type DSL } from '../../types';

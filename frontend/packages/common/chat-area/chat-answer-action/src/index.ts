@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/chat-answer-action 模块导出
+ * @description 提供 chat-area/chat-answer-action 相关功能
+ */
+
+
 export { ActionBarContainer } from './components/action-bar-container';
 export { ActionBarHoverContainer } from './components/action-bar-hover-container';
 export {

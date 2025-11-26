@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
+// chatflow_role.go ChatFlow 角色实体
+//
+// 本文件定义了 ChatFlow 工作流的角色配置实体。
+// ChatFlowRole 用于定义对话机器人的外观和行为设置。
+
 package entity
 
 import "time"
 
+// ChatFlowRole ChatFlow 角色配置
+// 定义对话机器人的名称、头像、背景、开场白等个性化设置
 type ChatFlowRole struct {
 	ID                  int64
 	WorkflowID          int64

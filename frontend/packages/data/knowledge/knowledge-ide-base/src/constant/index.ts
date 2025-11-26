@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file constant 模块导出
+ */
 import { I18n } from '@coze-arch/i18n';
 import { DocumentUpdateType, FormatType } from '@coze-arch/bot-api/memory';
 import { UnitType } from '@coze-data/knowledge-resource-processor-core';

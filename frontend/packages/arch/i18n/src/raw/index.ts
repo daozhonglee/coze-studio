@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file raw 模块导出
+ */
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 import locale from '../resource';

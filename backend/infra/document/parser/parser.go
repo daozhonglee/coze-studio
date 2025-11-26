@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
+// Package parser 提供文档解析器接口
+//
+// 本包定义文档解析器的接口和实现，支持多种文档格式：
+// - PDF、DOCX、XLSX、CSV
+// - Markdown、JSON、纯文本
+// - 图片 OCR 解析
+//
+// 实现层在 impl/ 目录下，支持内置解析器和 Python 解析器
 package parser
 
 import "github.com/cloudwego/eino/components/document/parser"
 
+// Parser 文档解析器接口（复用 Eino 框架定义）
 type Parser = parser.Parser

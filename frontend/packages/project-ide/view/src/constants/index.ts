@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 常量定义导出
+ */
 export { VIEW_CONTAINER_CLASS_NAME, PANEL_CLASS_NAME_MAP } from './view';
 export * from './class-names';
 export * from './hover';

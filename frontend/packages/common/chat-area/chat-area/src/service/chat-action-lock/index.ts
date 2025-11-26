@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat action lock 模块导出
+ */
 import { type Reporter } from '@coze-arch/logger';
 
 import {

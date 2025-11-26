@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file type 模块导出
+ */
 import { type UploadValue } from '@coze-common/biz-components';
 
 export type ModifyUploadValueType<T extends { icon_uri?: string }> = Omit<

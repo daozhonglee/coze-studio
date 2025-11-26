@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file reporter 模块导出
+ */
 export { dataReporter } from './data-reporter';

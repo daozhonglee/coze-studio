@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file node-panel 组件导出
+ */
 export { NodePanel } from './panel';

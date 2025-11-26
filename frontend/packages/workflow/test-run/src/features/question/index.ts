@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file question 模块导出
+ */
 export { QuestionForm } from './components/question-form';

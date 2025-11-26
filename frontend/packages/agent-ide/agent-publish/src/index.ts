@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file Agent 发布模块导出
+ * @description 提供 Agent 发布页面和相关功能
+ */
+
+/** Agent 发布页面组件 */
 export { AgentPublishPage } from './components/bot-publish';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 常量定义导出
+ */
 export const WORKFLOW_INNER_SIDE_SHEET_HOLDER =
   'workflow-inner-side-sheet-holder';
 

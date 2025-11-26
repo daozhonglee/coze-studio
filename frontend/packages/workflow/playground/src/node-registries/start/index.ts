@@ -15,7 +15,11 @@
  */
 
 /**
- * Node development specification:
+ * @file 开始节点注册导出
+ * @description 开始节点 - 工作流的入口点，定义输入参数和触发方式
  */
+
+/** 开始节点注册配置 */
 export { START_NODE_REGISTRY } from './node-registry';
+/** 开始节点内容组件 */
 export { StartContent } from './node-content';

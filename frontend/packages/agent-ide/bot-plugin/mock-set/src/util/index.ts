@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file util 模块导出
+ */
 // @ts-expect-error -- linter-disable-autofix
 import { isEqual } from 'lodash-es';
 import { safeJSONParse } from '@coze-arch/bot-utils';

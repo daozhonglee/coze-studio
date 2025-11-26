@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file shortcuts 贡献点导出
+ */
 export { WorkflowPasteShortcutsContribution } from './paste';
 export { WorkflowLayoutShortcutsContribution } from './layout';
 export { WorkflowDeleteShortcutsContribution } from './delete';

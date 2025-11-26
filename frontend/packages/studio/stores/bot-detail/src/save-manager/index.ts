@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 保存管理导出
+ */
 export { autosaveManager } from './auto-save/index';
 export { personaSaveManager } from './auto-save/persona';
 export { botSkillSaveManager } from './auto-save/bot-skill';

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file explore 模块导出
+ * @description 提供 explore 相关功能
+ */
+
+
 export { ExploreSubMenu } from './components/sub-menu';
 export { TemplatePage } from './pages/template';
 export { PluginPage } from './pages/plugin';

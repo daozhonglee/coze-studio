@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// Package coze 提供 Coze API 的 HTTP 处理器
+//
+// 本包实现 HTTP API 的请求处理逻辑，包括：
+// - Agent 对话运行（SSE 流式响应）
+// - 工作流执行
+// - 知识库管理
+// - 插件开发
+// - 消息管理
 package coze
 
 import (
@@ -36,7 +44,9 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
-// AgentRun .
+// AgentRun Agent 对话运行处理器
+//
+// 处理 Agent 对话请求，返回 SSE 流式响应
 // @router /api/conversation/chat [POST]
 func AgentRun(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -71,6 +81,7 @@ func AgentRun(ctx context.Context, c *app.RequestContext) {
 	}
 }
 
+// checkParams 校验 Agent 运行请求参数
 func checkParams(_ context.Context, ar *run.AgentRunRequest) error {
 	if ar.BotID == 0 {
 		return errorx.New(errno.ErrConversationInvalidParamCode, errorx.KV("msg", "bot id is required"))

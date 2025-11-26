@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// repository.go 知识库仓储接口定义
+//
+// 本文件定义了知识库领域的仓储接口：
+//   - KnowledgeRepo: 知识库仓储
+//   - KnowledgeDocumentRepo: 文档仓储
+//   - KnowledgeDocumentReviewRepo: 文档审核仓储
+//   - KnowledgeDocumentSliceRepo: 文档分片仓储
+
 package repository
 
 import (
@@ -27,22 +35,29 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/knowledge/internal/dal/query"
 )
 
+// NewKnowledgeDAO 创建知识库 DAO 实例
 func NewKnowledgeDAO(db *gorm.DB) KnowledgeRepo {
 	return &dao.KnowledgeDAO{DB: db, Query: query.Use(db)}
 }
 
+// NewKnowledgeDocumentDAO 创建文档 DAO 实例
 func NewKnowledgeDocumentDAO(db *gorm.DB) KnowledgeDocumentRepo {
 	return &dao.KnowledgeDocumentDAO{DB: db, Query: query.Use(db)}
 }
 
+// NewKnowledgeDocumentReviewDAO 创建文档审核 DAO 实例
 func NewKnowledgeDocumentReviewDAO(db *gorm.DB) KnowledgeDocumentReviewRepo {
 	return &dao.KnowledgeDocumentReviewDAO{DB: db, Query: query.Use(db)}
 }
 
+// NewKnowledgeDocumentSliceDAO 创建文档分片 DAO 实例
 func NewKnowledgeDocumentSliceDAO(db *gorm.DB) KnowledgeDocumentSliceRepo {
 	return &dao.KnowledgeDocumentSliceDAO{DB: db, Query: query.Use(db)}
 }
 
+// KnowledgeRepo 知识库仓储接口
+// 提供知识库的 CRUD 操作
+//
 //go:generate mockgen -destination ../internal/mock/dal/dao/knowledge.go --package dao -source knowledge.go
 type KnowledgeRepo interface {
 	Create(ctx context.Context, knowledge *model.Knowledge) error
@@ -57,6 +72,9 @@ type KnowledgeRepo interface {
 	FindKnowledgeByCondition(ctx context.Context, opts *entity.WhereKnowledgeOption) ([]*model.Knowledge, int64, error)
 }
 
+// KnowledgeDocumentRepo 知识库文档仓储接口
+// 提供文档的 CRUD 和状态管理操作
+//
 //go:generate mockgen -destination ../internal/mock/dal/dao/knowledge_document.go --package dao -source knowledge_document.go
 type KnowledgeDocumentRepo interface {
 	Create(ctx context.Context, document *model.KnowledgeDocument) error
@@ -72,6 +90,7 @@ type KnowledgeDocumentRepo interface {
 	UpdateDocumentSliceInfo(ctx context.Context, documentID int64) error
 }
 
+// KnowledgeDocumentReviewRepo 文档审核仓储接口
 type KnowledgeDocumentReviewRepo interface {
 	CreateInBatches(ctx context.Context, reviews []*model.KnowledgeDocumentReview) error
 	MGetByIDs(ctx context.Context, reviewIDs []int64) ([]*model.KnowledgeDocumentReview, error)

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file process progress item 模块导出
+ */
 export { ProcessProgressItem } from './process-progress-item';

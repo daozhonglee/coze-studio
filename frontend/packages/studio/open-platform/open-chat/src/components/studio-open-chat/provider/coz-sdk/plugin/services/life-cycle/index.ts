@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file services 生命周期导出
+ */
 import { type WriteableLifeCycleServiceGenerator } from '@coze-common/chat-area';
 
 import { type PluginBizContext } from '../../types/biz-context';

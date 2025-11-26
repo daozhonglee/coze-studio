@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file personal header 模块导出
+ */
 export { TopBar } from './top-bar';
 export { SpaceAppList } from './space-app-list';

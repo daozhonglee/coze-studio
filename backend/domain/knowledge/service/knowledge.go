@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// knowledge.go 知识库服务实现
+//
+// 本文件实现了知识库服务的核心业务逻辑：
+//   - 知识库的创建、更新、删除、复制
+//   - 文档的管理和分片处理
+//   - 分片的增删改查
+//   - 事件处理和消息消费
+
 package service
 
 import (
@@ -63,6 +71,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// NewKnowledgeSVC 创建知识库服务实例
 func NewKnowledgeSVC(config *KnowledgeSVCConfig) (Knowledge, eventbus.ConsumerHandler) {
 	svc := &knowledgeSVC{
 		knowledgeRepo:       repository.NewKnowledgeDAO(config.DB),

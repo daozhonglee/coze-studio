@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * @file Bot Hooks 模块导出
+ * @description 提供 Bot 相关的 React Hooks 集合
+ */
+
+/** 响应式 Hooks */
 export {
   useSetResponsiveBodyStyle,
   useIsResponsive,
 } from '@coze-arch/bot-hooks-adapter';
+/** 路由和登录 Hooks */
 export {
   useRouteConfig,
   TRouteConfigGlobal,

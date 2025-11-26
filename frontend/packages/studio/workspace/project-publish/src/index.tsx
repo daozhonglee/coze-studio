@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file workspace/project-publish 模块导出
+ * @description 提供 workspace/project-publish 相关功能
+ */
+
+
 export { ProjectPublish } from './publish-main';
 
 export { useBizConnectorAnchor } from './hooks/use-biz-connector-anchor';

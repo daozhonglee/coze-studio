@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file onboarding 模块导出
+ */
 import { createContext, useContext } from 'react';
 
 import { type IEventCallbacks } from '@coze-common/chat-uikit-shared';

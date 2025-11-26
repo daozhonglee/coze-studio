@@ -14,6 +14,20 @@
  * limitations under the License.
  */
 
+// Package nodes 定义了工作流节点的核心接口和适配器
+//
+// 本包提供了工作流中各类节点的统一抽象，包括：
+// - 节点执行接口：定义了不同输入输出模式的节点行为（同步/流式）
+// - 节点适配器：负责将前端节点配置转换为后端可执行的 NodeSchema
+// - 回调转换器：用于将节点输入输出转换为适合 UI 展示的格式
+//
+// 节点执行模式分类：
+// 1. Invokable: 同步输入 → 同步输出（最常见，如插件调用）
+// 2. Streamable: 同步输入 → 流式输出（如 LLM 流式响应）
+// 3. Collectable: 流式输入 → 同步输出（如聚合节点）
+// 4. Transformable: 流式输入 → 流式输出（如变量聚合器）
+//
+// 每种模式都有带选项（WOpt）和不带选项两个版本，以支持不同复杂度的节点。
 package nodes
 
 import (
@@ -32,7 +46,14 @@ import (
 // Invoke accepts non-streaming input and returns non-streaming output.
 // It does not accept any options.
 // Most nodes implement this, such as NodeTypePlugin.
+//
+// InvokableNode 是基础的可调用工作流节点接口
+// 接受同步输入并返回同步输出，不支持额外选项
+// 大多数节点都实现此接口，如插件调用节点 NodeTypePlugin
 type InvokableNode interface {
+	// Invoke 执行节点逻辑
+	// 参数 input: 节点输入数据，key-value 格式
+	// 返回 output: 节点输出数据
 	Invoke(ctx context.Context, input map[string]any) (
 		output map[string]any, err error)
 }
@@ -149,13 +170,25 @@ func GetAdaptOptions(opts ...AdaptOption) *AdaptOptions {
 }
 
 // NodeAdaptor provides conversion from frontend Node to backend NodeSchema.
+//
+// NodeAdaptor 节点适配器接口，负责将前端节点配置转换为后端可执行的 NodeSchema
+// 每种节点类型都需要实现自己的适配器，以处理特定的配置转换逻辑
 type NodeAdaptor interface {
+	// Adapt 将前端节点 vo.Node 转换为后端 schema.NodeSchema
+	// 参数 n: 前端节点配置
+	// 参数 opts: 可选的适配选项，如画布信息
+	// 返回: 转换后的节点 Schema
 	Adapt(ctx context.Context, n *vo.Node, opts ...AdaptOption) (
 		*schema.NodeSchema, error)
 }
 
 // BranchAdaptor provides validation and conversion from frontend port to backend port.
+//
+// BranchAdaptor 分支适配器接口，用于验证和获取节点的预期输出端口
+// 主要用于条件分支、选择器等有多个输出端口的节点
 type BranchAdaptor interface {
+	// ExpectPorts 返回节点预期的输出端口列表
+	// 用于验证前端配置的端口是否与后端预期一致
 	ExpectPorts(ctx context.Context, n *vo.Node) []string
 }
 

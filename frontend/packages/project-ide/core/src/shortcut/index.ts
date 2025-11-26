@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 快捷键导出
+ */
 export { ShortcutsContainerModule } from './shortcuts-container-module';
 export {
   createShortcutsPlugin,

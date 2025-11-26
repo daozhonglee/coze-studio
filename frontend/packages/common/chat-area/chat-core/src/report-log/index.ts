@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 日志上报导出
+ */
 import {
   logger,
   reporter,

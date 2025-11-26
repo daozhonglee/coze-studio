@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file delete conversation 模块导出
+ */
 /** Delete session node */
 
 export { DELETE_CONVERSATION_NODE_REGISTRY } from './node-registry';

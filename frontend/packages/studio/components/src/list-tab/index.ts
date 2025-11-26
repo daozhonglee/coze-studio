@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file list tab 模块导出
+ */
 export { ListTab, type BotListHeaderProps } from './list-tab';

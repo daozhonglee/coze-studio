@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
+// Package modelmgr 定义了模型管理(ModelMgr)应用层服务
+//
+// 本包提供模型管理相关的应用层业务逻辑，包括：
+// - 模型列表查询
+// - 模型图标获取
+// - 模型启用/禁用配置
 package modelmgr
 
 import (
 	"github.com/coze-dev/coze-studio/backend/infra/storage"
 )
 
+// InitService 初始化模型管理应用服务
 func InitService(tosClient storage.Storage) *ModelmgrApplicationService {
 	ModelmgrApplicationSVC = &ModelmgrApplicationService{tosClient}
 	return ModelmgrApplicationSVC

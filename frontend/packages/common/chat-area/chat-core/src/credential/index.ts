@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 凭证导出
+ */
 import TokenManager from './token-manager';
 
 export { TokenManager };

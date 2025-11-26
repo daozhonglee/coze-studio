@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 组件导出
+ */
 export { ProjectIDEClient } from './ide-client';
 export * from './resource-folder';

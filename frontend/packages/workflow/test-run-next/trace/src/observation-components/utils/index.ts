@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file observation-components 工具函数导出
+ */
 import JSONBig from 'json-bigint';
 import dayjs from 'dayjs';
 

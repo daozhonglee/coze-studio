@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 命令导出
+ */
 export {
   Command,
   CommandService,

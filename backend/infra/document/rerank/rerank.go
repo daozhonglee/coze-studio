@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+// Package rerank 提供文档重排序接口
+//
+// 本包定义文档重排序服务的接口，用于知识库检索结果的优化：
+// - 根据查询相关性对文档重新排序
+// - 支持多种重排序算法（RRF、VikingDB）
 package rerank
 
 import (
@@ -22,21 +27,25 @@ import (
 	"github.com/cloudwego/eino/schema"
 )
 
+// Reranker 文档重排序器接口
 type Reranker interface {
 	Rerank(ctx context.Context, req *Request) (*Response, error)
 }
 
+// Request 重排序请求
 type Request struct {
 	Query string
 	Data  [][]*Data
 	TopN  *int64
 }
 
+// Response 重排序响应
 type Response struct {
 	SortedData []*Data // High score
 	TokenUsage *int64
 }
 
+// Data 文档数据及评分
 type Data struct {
 	Document *schema.Document
 	Score    float64

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file workspace/project-entity-adapter 模块导出
+ * @description 提供 workspace/project-entity-adapter 相关功能
+ */
+
+
 export {
   useDeleteIntelligence,
   type ProjectFormValues,

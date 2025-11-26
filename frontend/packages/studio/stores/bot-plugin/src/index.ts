@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file stores/bot-plugin 模块导出
+ * @description 提供 stores/bot-plugin 相关功能
+ */
+
+
 export {
   BotPluginStoreProvider,
   usePluginStore,

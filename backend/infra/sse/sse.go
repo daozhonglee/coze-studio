@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+// Package sse 提供 Server-Sent Events 接口
+//
+// 本包定义 SSE 服务的接口，用于向客户端推送实时事件：
+// - 工作流执行进度
+// - 对话消息流
+// - 实时通知
 package sse
 
 import (
@@ -22,6 +28,7 @@ import (
 	"github.com/hertz-contrib/sse"
 )
 
+// SSender SSE 发送器接口
 type SSender interface {
 	Send(ctx context.Context, s *sse.Stream, event *sse.Event) error
 }

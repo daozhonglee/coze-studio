@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin 工具函数导出
+ */
 export { isApiOutputsChanged } from './api-node-checker';
 export { getApiNodeIdentifier } from './get-api-node-identifier';
 export { extractApiNodeData } from './extract-api-node-data';

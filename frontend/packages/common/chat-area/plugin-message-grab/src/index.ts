@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/plugin-message-grab 模块导出
+ * @description 提供 chat-area/plugin-message-grab 相关功能
+ */
+
+
 import { type ComponentType } from 'react';
 
 import {

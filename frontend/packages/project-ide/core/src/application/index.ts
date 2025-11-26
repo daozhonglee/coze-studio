@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 应用导出
+ */
 export { Application } from './application';
 export { IDEContainerModule } from './container-module';

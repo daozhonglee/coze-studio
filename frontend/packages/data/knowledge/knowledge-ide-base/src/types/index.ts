@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 类型定义导出
+ */
 import { type DocumentStatus } from '@coze-arch/bot-api/knowledge';
 
 export interface ProgressItem {

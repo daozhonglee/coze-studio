@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file stores 模块导出
+ */
 export { usePrimarySidebarStore } from './primary-sidebar-store';

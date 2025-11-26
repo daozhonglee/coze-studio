@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin-tool-columns-adapter 模块导出
+ * @description 提供 plugin-tool-columns-adapter 相关功能
+ */
+
+
 export {
   useGetToolColumnsAdapter,
   type UseGetToolColumnsAdapterProps,

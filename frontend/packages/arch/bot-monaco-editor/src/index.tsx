@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file Monaco 编辑器模块导出
+ * @description 提供基于 Monaco Editor 的代码编辑器组件
+ */
+
 import { Suspense, lazy } from 'react';
 
 import { type EditorProps, type DiffEditorProps } from '@monaco-editor/react';

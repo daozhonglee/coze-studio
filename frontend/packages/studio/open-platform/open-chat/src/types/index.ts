@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 类型定义导出
+ */
 import { type ContentType, type Message } from '@coze-common/chat-core';
 export { type ImageMessageContent } from '@coze-common/chat-core';
 export { type OnboardingSuggestionItem } from '@coze-common/chat-area';

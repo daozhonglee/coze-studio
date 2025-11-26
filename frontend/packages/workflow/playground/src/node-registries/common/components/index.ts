@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file common 组件导出
+ */
 export { NodeConfigForm } from './node-config-form';
 export { DataTypeTag } from './data-type-tag';
 export { InputParameters } from './input-parameters';

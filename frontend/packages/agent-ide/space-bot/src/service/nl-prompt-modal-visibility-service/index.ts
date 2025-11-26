@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file nl prompt modal visibility service 模块导出
+ */
 import mitt, { type Emitter } from 'mitt';
 import { EVENT_NAMES } from '@coze-arch/bot-tea';
 import {

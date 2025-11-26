@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 import dayjs from 'dayjs';
 
 export const formatDate = (v: number, template = 'YYYY/MM/DD HH:mm:ss') =>

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file close confirm plugin 模块导出
+ */
 import {
   bindContributions,
   definePluginCreator,

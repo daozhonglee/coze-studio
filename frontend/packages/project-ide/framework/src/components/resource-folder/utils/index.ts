@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file resource-folder 工具函数导出
+ */
 import {
   type IdType,
   type ResourceType,

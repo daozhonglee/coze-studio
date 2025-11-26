@@ -15,6 +15,9 @@
  */
 
 /**
+ * @file chat sdk 模块导出
+ */
+/**
  * @module @coze-common/chat-core
  * Expose all external interfaces
  */

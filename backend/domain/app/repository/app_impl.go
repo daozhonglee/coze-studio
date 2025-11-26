@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Package repository 定义了应用(APP)领域的仓储接口（实现）
+
 package repository
 
 import (
@@ -37,6 +39,14 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/taskgroup"
 )
 
+// appRepoImpl 应用仓储实现
+//
+// 实现 AppRepository 接口，提供应用数据的持久化操作。
+// 内部使用多个 DAO 对象分别处理不同类型的数据：
+// - appDraftDAO: 草稿应用数据访问
+// - appReleaseRecordDAO: 发布记录数据访问
+// - appConnectorRefDAO: 连接器关联数据访问
+// - cacheCli: 缓存客户端，用于资源复制任务状态缓存
 type appRepoImpl struct {
 	idGen idgen.IDGenerator
 	query *query.Query
@@ -47,12 +57,19 @@ type appRepoImpl struct {
 	cacheCli            *dal.AppCache
 }
 
+// APPRepoComponents 应用仓储依赖组件
+//
+// 用于初始化应用仓储的依赖注入
 type APPRepoComponents struct {
-	IDGen    idgen.IDGenerator
-	DB       *gorm.DB
+	// IDGen ID生成器
+	IDGen idgen.IDGenerator
+	// DB 数据库连接
+	DB *gorm.DB
+	// CacheCli 缓存客户端
 	CacheCli cache.Cmdable
 }
 
+// NewAPPRepo 创建应用仓储实例
 func NewAPPRepo(components *APPRepoComponents) AppRepository {
 	return &appRepoImpl{
 		idGen:               components.IDGen,
@@ -64,6 +81,7 @@ func NewAPPRepo(components *APPRepoComponents) AppRepository {
 	}
 }
 
+// CreateDraftAPP 创建草稿应用
 func (a *appRepoImpl) CreateDraftAPP(ctx context.Context, app *entity.APP) (appID int64, err error) {
 	appID, err = a.appDraftDAO.Create(ctx, app)
 	if err != nil {
@@ -73,14 +91,17 @@ func (a *appRepoImpl) CreateDraftAPP(ctx context.Context, app *entity.APP) (appI
 	return appID, nil
 }
 
+// GetDraftAPP 获取草稿应用
 func (a *appRepoImpl) GetDraftAPP(ctx context.Context, appID int64) (app *entity.APP, exist bool, err error) {
 	return a.appDraftDAO.Get(ctx, appID)
 }
 
+// CheckDraftAPPExist 检查草稿应用是否存在
 func (a *appRepoImpl) CheckDraftAPPExist(ctx context.Context, appID int64) (exist bool, err error) {
 	return a.appDraftDAO.CheckExist(ctx, appID)
 }
 
+// DeleteDraftAPP 删除草稿应用
 func (a *appRepoImpl) DeleteDraftAPP(ctx context.Context, appID int64) (err error) {
 	table := a.query.AppDraft
 
@@ -94,10 +115,17 @@ func (a *appRepoImpl) DeleteDraftAPP(ctx context.Context, appID int64) (err erro
 	return nil
 }
 
+// UpdateDraftAPP 更新草稿应用
 func (a *appRepoImpl) UpdateDraftAPP(ctx context.Context, app *entity.APP) (err error) {
 	return a.appDraftDAO.Update(ctx, app)
 }
 
+// GetPublishRecord 获取发布记录
+//
+// 根据请求参数获取发布记录：
+// - 如果指定 RecordID，则获取指定的发布记录
+// - 如果 OldestSuccess 为 true，则获取最早的成功发布记录
+// - 否则获取最新的发布记录
 func (a *appRepoImpl) GetPublishRecord(ctx context.Context, req *GetPublishRecordRequest) (record *entity.PublishRecord, exist bool, err error) {
 	var app *entity.APP
 	if req.RecordID != nil {
@@ -127,11 +155,15 @@ func (a *appRepoImpl) GetPublishRecord(ctx context.Context, req *GetPublishRecor
 	return record, true, nil
 }
 
+// CheckAPPVersionExist 检查应用版本是否已存在
 func (a *appRepoImpl) CheckAPPVersionExist(ctx context.Context, appID int64, version string) (exist bool, err error) {
 	_, exist, err = a.appReleaseRecordDAO.GetReleaseRecordWithVersion(ctx, appID, version)
 	return exist, err
 }
 
+// CreateAPPPublishRecord 创建应用发布记录
+//
+// 使用事务创建发布记录和关联的连接器发布记录，确保数据一致性
 func (a *appRepoImpl) CreateAPPPublishRecord(ctx context.Context, record *entity.PublishRecord) (recordID int64, err error) {
 	tx := a.query.Begin()
 	if tx.Error != nil {
@@ -171,14 +203,19 @@ func (a *appRepoImpl) CreateAPPPublishRecord(ctx context.Context, record *entity
 	return recordID, nil
 }
 
+// UpdateAPPPublishStatus 更新应用发布状态
 func (a *appRepoImpl) UpdateAPPPublishStatus(ctx context.Context, req *UpdateAPPPublishStatusRequest) (err error) {
 	return a.appReleaseRecordDAO.UpdatePublishStatus(ctx, req.RecordID, req.PublishStatus, req.PublishRecordExtraInfo)
 }
 
+// UpdateConnectorPublishStatus 更新连接器发布状态
 func (a *appRepoImpl) UpdateConnectorPublishStatus(ctx context.Context, recordID int64, status entity.ConnectorPublishStatus) (err error) {
 	return a.appConnectorRefDAO.UpdatePublishStatus(ctx, recordID, status)
 }
 
+// GetAPPAllPublishRecords 获取应用的所有发布记录
+//
+// 并发获取各发布记录关联的连接器发布记录，提高查询效率
 func (a *appRepoImpl) GetAPPAllPublishRecords(ctx context.Context, appID int64, opts ...APPSelectedOptions) (records []*entity.PublishRecord, err error) {
 	var opt *dal.APPSelectedOption
 	if len(opts) > 0 {
@@ -221,6 +258,9 @@ func (a *appRepoImpl) GetAPPAllPublishRecords(ctx context.Context, appID int64, 
 	return records, nil
 }
 
+// InitResourceCopyTask 初始化资源复制任务
+//
+// 创建一个新的资源复制任务，将初始状态存入缓存，返回任务ID
 func (a *appRepoImpl) InitResourceCopyTask(ctx context.Context, result *entity.ResourceCopyResult) (taskID string, err error) {
 	id, err := a.idGen.GenID(ctx)
 	if err != nil {
@@ -243,6 +283,7 @@ func (a *appRepoImpl) InitResourceCopyTask(ctx context.Context, result *entity.R
 	return taskID, nil
 }
 
+// SaveResourceCopyTaskResult 保存资源复制任务结果
 func (a *appRepoImpl) SaveResourceCopyTaskResult(ctx context.Context, taskID string, result *entity.ResourceCopyResult) (err error) {
 	b, err := json.Marshal(result)
 	if err != nil {
@@ -258,6 +299,7 @@ func (a *appRepoImpl) SaveResourceCopyTaskResult(ctx context.Context, taskID str
 	return nil
 }
 
+// GetResourceCopyTaskResult 获取资源复制任务结果
 func (a *appRepoImpl) GetResourceCopyTaskResult(ctx context.Context, taskID string) (result *entity.ResourceCopyResult, exist bool, err error) {
 	key := a.makeResourceCopyTaskResultKey(taskID)
 
@@ -278,6 +320,7 @@ func (a *appRepoImpl) GetResourceCopyTaskResult(ctx context.Context, taskID stri
 	return result, true, nil
 }
 
+// makeResourceCopyTaskResultKey 生成资源复制任务结果的缓存键
 func (a *appRepoImpl) makeResourceCopyTaskResultKey(taskID string) string {
 	return fmt.Sprintf("resource_copy_task_result_%s", taskID)
 }

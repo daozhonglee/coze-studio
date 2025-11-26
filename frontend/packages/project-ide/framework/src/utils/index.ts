@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 export { customLayout } from './custom-layout';
 export { withLazyLoad } from './with-lazy-load';
 export {

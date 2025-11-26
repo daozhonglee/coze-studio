@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
+/**
+ * @file Slardar 接口模块导出
+ * @description 提供 Slardar 监控的类型定义
+ */
+
+/** Slardar 配置接口 */
 export interface SlardarConfig {
   sessionId?: string;
   [key: string]: unknown;
 }
 
+/** Slardar 事件类型 */
 export type SlardarEvents =
   | 'captureException'
   | 'sendEvent'

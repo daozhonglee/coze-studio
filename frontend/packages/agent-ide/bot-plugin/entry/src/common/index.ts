@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 通用功能导出
+ */
 import { I18n } from '@coze-arch/i18n';
 import { type TagColor } from '@coze-arch/bot-semi/Tag';
 import { PluginType } from '@coze-arch/bot-api/plugin_develop';

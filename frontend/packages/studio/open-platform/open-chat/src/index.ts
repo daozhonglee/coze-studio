@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-// 应用的chat组件导出
+/**
+ * @file 开放平台聊天模块导出
+ * @description 提供应用聊天组件、WebSDK 聊天组件和相关工具
+ */
+
+// 应用的 chat 组件导出
 export {
   BuilderChat,
   type BuilderChatRef,

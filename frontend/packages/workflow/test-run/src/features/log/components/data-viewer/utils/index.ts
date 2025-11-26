@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file data-viewer 工具函数导出
+ */
 export { generateFields } from './generate-field';

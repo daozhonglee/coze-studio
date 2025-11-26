@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file common/feature-register 模块导出
+ * @description 提供 common/feature-register 相关功能
+ */
+
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { SetRequired } from 'type-fest';
 import type { Draft } from 'immer';

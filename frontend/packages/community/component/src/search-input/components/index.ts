@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file search-input 组件导出
+ */
 export { RecommendPopover } from './recommend-popover';

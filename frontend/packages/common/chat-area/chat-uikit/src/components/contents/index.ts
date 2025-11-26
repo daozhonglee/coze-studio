@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file contents 模块导出
+ */
 export * from './file-content';
 export * from './image-content';
 export * from './plain-text-content';

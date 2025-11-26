@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// plugin_release.go 插件发布服务
+//
+// 本文件提供插件发布相关功能：
+//   - 版本号计算
+//   - 插件发布流程
+//   - 应用插件批量发布
+
 package service
 
 import (
@@ -35,6 +42,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// GetPluginNextVersion 获取插件下一个版本号
 func (p *pluginServiceImpl) GetPluginNextVersion(ctx context.Context, pluginID int64) (version string, err error) {
 	const defaultVersion = "v1.0.0"
 

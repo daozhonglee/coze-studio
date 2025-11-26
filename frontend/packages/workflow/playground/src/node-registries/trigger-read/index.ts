@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file trigger read 模块导出
+ */
 export { TRIGGER_READ_NODE_REGISTRY } from './node-registry';
 export { TriggerReadContent } from './node-content';

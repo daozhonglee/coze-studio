@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// Package search 定义了搜索(Search)应用层服务
+//
+// 本包提供搜索相关的应用层业务逻辑，包括：
+// - 项目/智能体搜索
+// - 资源搜索（工作流、知识库、插件、数据库）
+// - 搜索索引管理
+// - 事件总线消费处理
+//
+// 搜索功能基于 Elasticsearch 实现全文检索。
 package search
 
 import (
@@ -41,24 +50,43 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/consts"
 )
 
+// ServiceComponents 搜索应用服务依赖组件
 type ServiceComponents struct {
-	DB                   *gorm.DB
-	Cache                cache.Cmdable
-	TOS                  storage.Storage
-	ESClient             es.Client
-	ProjectEventBus      ProjectEventBus
-	ResourceEventBus     ResourceEventBus
+	// DB 数据库连接
+	DB *gorm.DB
+	// Cache 缓存客户端
+	Cache cache.Cmdable
+	// TOS 对象存储服务
+	TOS storage.Storage
+	// ESClient Elasticsearch 客户端
+	ESClient es.Client
+	// ProjectEventBus 项目事件总线
+	ProjectEventBus ProjectEventBus
+	// ResourceEventBus 资源事件总线
+	ResourceEventBus ResourceEventBus
+	// SingleAgentDomainSVC 单 Agent 领域服务
 	SingleAgentDomainSVC singleagent.SingleAgent
-	APPDomainSVC         app.AppService
-	KnowledgeDomainSVC   knowledge.Knowledge
-	PluginDomainSVC      service.PluginService
-	WorkflowDomainSVC    workflow.Service
-	UserDomainSVC        user.User
-	ConnectorDomainSVC   connector.Connector
-	PromptDomainSVC      prompt.Prompt
-	DatabaseDomainSVC    database.Database
+	// APPDomainSVC 应用领域服务
+	APPDomainSVC app.AppService
+	// KnowledgeDomainSVC 知识库领域服务
+	KnowledgeDomainSVC knowledge.Knowledge
+	// PluginDomainSVC 插件领域服务
+	PluginDomainSVC service.PluginService
+	// WorkflowDomainSVC 工作流领域服务
+	WorkflowDomainSVC workflow.Service
+	// UserDomainSVC 用户领域服务
+	UserDomainSVC user.User
+	// ConnectorDomainSVC 连接器领域服务
+	ConnectorDomainSVC connector.Connector
+	// PromptDomainSVC 提示词领域服务
+	PromptDomainSVC prompt.Prompt
+	// DatabaseDomainSVC 数据库领域服务
+	DatabaseDomainSVC database.Database
 }
 
+// InitService 初始化搜索应用服务
+//
+// 创建领域服务并注册事件消费者
 func InitService(ctx context.Context, s *ServiceComponents) (*SearchApplicationService, error) {
 	searchDomainSVC := search.NewDomainService(ctx, s.ESClient)
 
@@ -86,15 +114,20 @@ func InitService(ctx context.Context, s *ServiceComponents) (*SearchApplicationS
 	return SearchSVC, nil
 }
 
+// 事件总线类型别名
 type (
+	// ResourceEventBus 资源事件总线类型别名
 	ResourceEventBus = search.ResourceEventBus
-	ProjectEventBus  = search.ProjectEventBus
+	// ProjectEventBus 项目事件总线类型别名
+	ProjectEventBus = search.ProjectEventBus
 )
 
+// NewResourceEventBus 创建资源事件总线
 func NewResourceEventBus(p eventbus.Producer) search.ResourceEventBus {
 	return search.NewResourceEventBus(p)
 }
 
+// NewProjectEventBus 创建项目事件总线
 func NewProjectEventBus(p eventbus.Producer) search.ProjectEventBus {
 	return search.NewProjectEventBus(p)
 }

@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
+/**
+ * @file 浮动布局组件导出
+ * @description 提供浮动面板布局功能
+ */
+
+/** 浮动布局组件及其属性类型 */
 export { FloatLayout, FloatLayoutProps } from './float-layout';
+/** 面板包装组件 */
 export { PanelWrap } from './panel-wrap';
 
+/** 面板内边距常量 */
 export const PANEL_PADDING = 8;

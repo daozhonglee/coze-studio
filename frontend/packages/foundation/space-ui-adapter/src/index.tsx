@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file space-ui-adapter 模块导出
+ * @description 提供 space-ui-adapter 相关功能
+ */
+
+
 export { WorkspaceSubMenu } from './components/workspace-sub-menu';
 export { SpaceSubModuleEnum } from './const';
 export { SpaceLayout } from './components/space-layout';

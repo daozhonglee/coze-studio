@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file premium/premium-store-adapter 模块导出
+ * @description 提供 premium/premium-store-adapter 相关功能
+ */
+
+
 export {
   usePremiumStore,
   PremiumPlanLevel,

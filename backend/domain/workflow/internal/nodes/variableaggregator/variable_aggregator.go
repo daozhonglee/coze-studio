@@ -14,6 +14,26 @@
  * limitations under the License.
  */
 
+// Package variableaggregator 实现变量聚合器节点
+//
+// 变量聚合器用于从多个可能的来源中选择一个值，常用于条件分支后的结果合并。
+// 核心功能：
+//
+// 1. 多源选择
+//   - 支持配置多个变量分组，每组可包含多个候选值
+//   - 采用"第一个非空值"策略选择结果
+//
+// 2. 流式处理
+//   - 支持流式输入，可以处理来自流式节点（如 LLM）的输出
+//   - 实现 TransformableNode 接口
+//
+// 3. 典型场景
+//   - 条件分支后合并不同路径的输出
+//   - 选择第一个成功返回的结果
+//   - 处理可选字段的默认值
+//
+// 合并策略：
+// - FirstNotNullValue：选择第一个非空值（目前唯一支持的策略）
 package variableaggregator
 
 import (
@@ -43,16 +63,22 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/safego"
 )
 
+// MergeStrategy 合并策略类型
 type MergeStrategy uint
 
 const (
+	// FirstNotNullValue 选择第一个非空值的策略
 	FirstNotNullValue MergeStrategy = 1
 )
 
+// Config 变量聚合器配置
 type Config struct {
+	// MergeStrategy 合并策略
 	MergeStrategy MergeStrategy
-	GroupLen      map[string]int
-	GroupOrder    []string // the order the groups are declared in frontend canvas
+	// GroupLen 每个分组的元素数量
+	GroupLen map[string]int
+	// GroupOrder 分组在画布上的声明顺序
+	GroupOrder []string
 }
 
 func (c *Config) Adapt(_ context.Context, n *vo.Node, _ ...nodes.AdaptOption) (*schema2.NodeSchema, error) {

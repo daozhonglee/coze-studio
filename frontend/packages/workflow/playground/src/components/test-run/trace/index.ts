@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file trace 模块导出
+ */
 export { TraceListPanel, TraceListPanelProps } from './trace-list-panel';
 export {
   TraceDetailPanel,

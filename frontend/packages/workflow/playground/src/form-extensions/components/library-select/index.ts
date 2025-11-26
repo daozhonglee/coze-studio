@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file library select 模块导出
+ */
 export { LibrarySelect } from './library-select';
 export { type Library } from './types';

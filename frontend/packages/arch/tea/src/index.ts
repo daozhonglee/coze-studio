@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file Tea 埋点模块导出
+ * @description 提供 Tea 埋点事件和工具函数
+ */
+
 import Tea from '@coze-studio/tea-adapter';
 
+/** 埋点事件类型和常量 */
 export {
   EVENT_NAMES,
   AddPluginToStoreEntry,

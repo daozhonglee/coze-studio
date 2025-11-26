@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// state.go 工作流状态管理
+//
+// 本文件定义了工作流执行过程中的状态结构和状态处理器。
+// 主要功能：
+//   - 定义 State 结构存储执行状态
+//   - 注册可序列化类型以支持检查点
+//   - 提供状态前置/后置处理器
+//   - 支持变量系统的状态集成
+
 package compose
 
 import (
@@ -36,6 +45,15 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/workflow/variable"
 )
 
+// State 工作流执行状态
+//
+// 在工作流执行过程中维护的状态信息，用于：
+//   - 存储各节点的执行上下文
+//   - 跟踪已执行的节点
+//   - 管理嵌套工作流状态
+//   - 支持中断恢复
+//
+// 该结构体实现了 Eino 框架的状态接口，支持序列化以进行检查点保存。
 type State struct {
 	NodeExeContexts      map[vo.NodeKey]*execute.Context               `json:"-"`
 	WorkflowExeContext   *execute.Context                              `json:"-"`

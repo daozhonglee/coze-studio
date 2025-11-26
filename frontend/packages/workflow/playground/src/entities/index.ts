@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 实体定义导出
+ */
 export {
   WorkflowExecStateEntity,
   type WorkflowExecState,

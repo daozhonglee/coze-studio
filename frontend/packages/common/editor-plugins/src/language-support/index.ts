@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file language support 模块导出
+ */
 import { useLayoutEffect } from 'react';
 
 import { useInjector } from '@coze-editor/editor/react';

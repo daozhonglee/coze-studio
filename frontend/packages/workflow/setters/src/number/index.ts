@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file number 模块导出
+ */
 export { Number } from './number';
 export type { NumberOptions } from './number';

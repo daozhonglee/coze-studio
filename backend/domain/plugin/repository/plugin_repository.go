@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+// plugin_repository.go 插件仓储接口定义
+//
+// 本文件定义了插件数据访问的仓储接口 PluginRepository。
+// 提供插件的增删改查、发布、复制等数据操作能力。
+
 package repository
 
 import (
@@ -24,6 +29,13 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/plugin/entity"
 )
 
+// PluginRepository 插件仓储接口
+//
+// 提供插件数据的持久化操作：
+//   - 草稿插件的增删改查
+//   - 在线插件的查询
+//   - 版本插件的管理
+//   - 插件发布和复制
 type PluginRepository interface {
 	CreateDraftPlugin(ctx context.Context, plugin *entity.PluginInfo) (pluginID int64, err error)
 	CreateDraftPluginWithCode(ctx context.Context, req *CreateDraftPluginWithCodeRequest) (resp *CreateDraftPluginWithCodeResponse, err error)

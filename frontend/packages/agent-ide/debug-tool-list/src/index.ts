@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file debug-tool-list 模块导出
+ * @description 提供 debug-tool-list 相关功能
+ */
+
+
 export {
   ModalTypeEnum,
   OperateTypeEnum,

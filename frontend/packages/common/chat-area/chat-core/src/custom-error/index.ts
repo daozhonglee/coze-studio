@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file custom error 模块导出
+ */
 export interface ExtErrorInfo {
   code?: number;
   local_message_id?: string;

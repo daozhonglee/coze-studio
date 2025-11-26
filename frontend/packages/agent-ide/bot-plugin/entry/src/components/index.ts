@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 组件导出
+ */
 export {
   CreateCodePluginModal,
   CreateFormPluginModal,

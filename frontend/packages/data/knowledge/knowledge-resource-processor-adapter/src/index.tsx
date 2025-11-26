@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/knowledge-resource-processor-adapter 模块导出
+ * @description 提供 knowledge/knowledge-resource-processor-adapter 相关功能
+ */
+
+
 export { getUploadConfig } from './scenes/base/config';
 export {
   KnowledgeResourceProcessor,

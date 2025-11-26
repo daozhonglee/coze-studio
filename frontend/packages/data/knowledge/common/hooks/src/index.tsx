@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file knowledge/common/hooks 模块导出
+ * @description 提供 knowledge/common/hooks 相关功能
+ */
+
+
 export { useKnowledgeNavigate } from './use-case/use-knowledge-navigate';
 export { useGetKnowledgeListInfo } from './use-case/use-get-knowledge-list-info';
 export { useTosContent } from './use-case/use-tos-content';

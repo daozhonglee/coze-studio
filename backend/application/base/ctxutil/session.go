@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// Package ctxutil 提供上下文工具函数
+//
+// 本包提供从上下文中获取用户会话、API 认证信息等的工具函数
 package ctxutil
 
 import (
@@ -24,6 +27,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/consts"
 )
 
+// GetUserSessionFromCtx 从上下文获取用户会话信息
 func GetUserSessionFromCtx(ctx context.Context) *entity.Session {
 	data, ok := ctxcache.Get[*entity.Session](ctx, consts.SessionDataKeyInCtx)
 	if !ok {
@@ -33,6 +37,7 @@ func GetUserSessionFromCtx(ctx context.Context) *entity.Session {
 	return data
 }
 
+// MustGetUIDFromCtx 从上下文获取用户 ID，如果不存在则 panic
 func MustGetUIDFromCtx(ctx context.Context) int64 {
 	sessionData := GetUserSessionFromCtx(ctx)
 	if sessionData == nil {
@@ -42,6 +47,7 @@ func MustGetUIDFromCtx(ctx context.Context) int64 {
 	return sessionData.UserID
 }
 
+// GetUIDFromCtx 从上下文获取用户 ID，如果不存在返回 nil
 func GetUIDFromCtx(ctx context.Context) *int64 {
 	sessionData := GetUserSessionFromCtx(ctx)
 	if sessionData == nil {

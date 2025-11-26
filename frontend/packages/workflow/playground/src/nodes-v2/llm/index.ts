@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file LLM 节点注册导出
+ * @description 大语言模型节点，支持调用各种 LLM 进行文本生成
+ */
+
+/** LLM 节点注册配置 */
 export { LLM_NODE_REGISTRY } from './llm-node-registry';

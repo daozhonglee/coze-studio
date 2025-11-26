@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 组件导出
+ */
 export { ModeTab } from './mode-tab';
 export { LeftContentButtons } from './left-content-buttons';
 export { SecondarySidebar } from './secondary-sidebar';

@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-answer-action-adapter 模块导出
+ * @description 提供 chat-answer-action-adapter 相关功能
+ */
+
+
 export { MessageBoxActionBarAdapter } from './components/message-box-action-bar';

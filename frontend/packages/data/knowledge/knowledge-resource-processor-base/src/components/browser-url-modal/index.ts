@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file browser url modal 模块导出
+ */
 export { useBrowseUrlModal } from './browser-url-modal';

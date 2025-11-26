@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file workflow-item 模块导出
+ * @description 提供 workflow-item 相关功能
+ */
+
+
 export {
   WorkFlowItemCozeDesign,
   type WorkflowItemProps,

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file preview 模块导出
+ */
 export { TablePreview } from './preview';

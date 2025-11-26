@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
+// const.go 知识库常量定义
+//
+// 本文件定义了知识库领域的常量类型：
+//   - DocumentStatus: 文档状态
+//   - DocumentSource: 文档来源
+
 package entity
 
+// DocumentStatus 文档状态
 type DocumentStatus int64
 
+// 文档状态常量
 const (
-	DocumentStatusInit      DocumentStatus = -1 // initialization
-	DocumentStatusUploading DocumentStatus = 0  // Uploading
-	DocumentStatusEnable    DocumentStatus = 1  // take effect
-	DocumentStatusDisable   DocumentStatus = 2  // failure
-	DocumentStatusDeleted   DocumentStatus = 3  // deleted
-	DocumentStatusChunking  DocumentStatus = 4  // Slicing
-	// DocumentStatusRefreshing DocumentStatus = 5//Refreshing
-	DocumentStatusFailed DocumentStatus = 9 // fail
+	DocumentStatusInit      DocumentStatus = -1 // 初始化
+	DocumentStatusUploading DocumentStatus = 0  // 上传中
+	DocumentStatusEnable    DocumentStatus = 1  // 生效
+	DocumentStatusDisable   DocumentStatus = 2  // 失效
+	DocumentStatusDeleted   DocumentStatus = 3  // 已删除
+	DocumentStatusChunking  DocumentStatus = 4  // 切片中
+	DocumentStatusFailed    DocumentStatus = 9  // 失败
 )
 
 func (s DocumentStatus) String() string {
@@ -52,9 +59,11 @@ func (s DocumentStatus) String() string {
 	}
 }
 
+// DocumentSource 文档来源
 type DocumentSource int64
 
+// 文档来源常量
 const (
-	DocumentSourceLocal  DocumentSource = 0 // local file upload
-	DocumentSourceCustom DocumentSource = 2 // custom text
+	DocumentSourceLocal  DocumentSource = 0 // 本地文件上传
+	DocumentSourceCustom DocumentSource = 2 // 自定义文本
 )

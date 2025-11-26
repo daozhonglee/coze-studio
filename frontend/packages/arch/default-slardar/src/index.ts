@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file 默认 Slardar 模块导出
+ * @description 提供 Slardar 监控的默认实现（Mock 版本）
+ */
+
 import { type SlardarInstance } from '@coze-studio/slardar-interface';
 
+/** 空操作函数 */
 const noop = () => {
   // do nothing
 };

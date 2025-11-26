@@ -32,6 +32,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// sysVariableConf 中文系统变量配置
 var sysVariableConf []*kvmemory.VariableInfo = []*kvmemory.VariableInfo{
 	{
 		Key:                  "sys_uuid",
@@ -49,6 +50,7 @@ var sysVariableConf []*kvmemory.VariableInfo = []*kvmemory.VariableInfo{
 	},
 }
 
+// sysVariableConfEN 英文系统变量配置
 var sysVariableConfEN []*kvmemory.VariableInfo = []*kvmemory.VariableInfo{
 	{
 		Key:                  "sys_uuid",
@@ -66,16 +68,22 @@ var sysVariableConfEN []*kvmemory.VariableInfo = []*kvmemory.VariableInfo{
 	},
 }
 
+// variablesImpl 变量服务实现
 type variablesImpl struct {
+	// Repo 变量仓储
 	Repo repository.VariableRepository
 }
 
+// NewService 创建变量服务实例
 func NewService(repo repository.VariableRepository) Variables {
 	return &variablesImpl{
 		Repo: repo,
 	}
 }
 
+// GetSysVariableConf 获取系统预定义变量配置
+//
+// 根据请求上下文的语言设置返回对应语言的系统变量配置。
 func (v *variablesImpl) GetSysVariableConf(ctx context.Context) entity.SysConfVariables {
 	if i18n.GetLocale(ctx) == i18n.LocaleEN {
 		return sysVariableConfEN
@@ -83,23 +91,30 @@ func (v *variablesImpl) GetSysVariableConf(ctx context.Context) entity.SysConfVa
 	return sysVariableConf
 }
 
+// GetProjectVariablesMeta 获取 Project 的变量元数据
 func (v *variablesImpl) GetProjectVariablesMeta(ctx context.Context, projectID, version string) (*entity.VariablesMeta, error) {
 	return v.GetVariableMeta(ctx, projectID, project_memory.VariableConnector_Project, version)
 }
 
+// UpsertProjectMeta 创建或更新 Project 的变量元数据
 func (v *variablesImpl) UpsertProjectMeta(ctx context.Context, projectID, version string, userID int64, e *entity.VariablesMeta) (int64, error) {
 	return v.upsertVariableMeta(ctx, projectID, project_memory.VariableConnector_Project, version, userID, e)
 }
 
+// UpsertMeta 创建或更新变量元数据
 func (v *variablesImpl) UpsertMeta(ctx context.Context, e *entity.VariablesMeta) (int64, error) {
 	return v.upsertVariableMeta(ctx, e.BizID, e.BizType, e.Version, e.CreatorID, e)
 }
 
+// UpsertBotMeta 创建或更新 Agent 的变量元数据
 func (v *variablesImpl) UpsertBotMeta(ctx context.Context, agentID int64, version string, userID int64, e *entity.VariablesMeta) (int64, error) {
 	bizID := fmt.Sprintf("%d", agentID)
 	return v.upsertVariableMeta(ctx, bizID, project_memory.VariableConnector_Bot, version, userID, e)
 }
 
+// upsertVariableMeta 创建或更新变量元数据的内部实现
+//
+// 如果元数据不存在则创建，存在则更新。
 func (v *variablesImpl) upsertVariableMeta(ctx context.Context, bizID string, bizType project_memory.VariableConnector, version string, userID int64, e *entity.VariablesMeta) (int64, error) {
 	meta, err := v.Repo.GetVariableMeta(ctx, bizID, bizType, version)
 	if err != nil {
@@ -127,6 +142,10 @@ func (v *variablesImpl) upsertVariableMeta(ctx context.Context, bizID string, bi
 	return meta.ID, nil
 }
 
+// mergeVariableList 合并系统变量和用户变量列表
+//
+// 用户变量可以覆盖同名的系统变量。
+// 返回结果按原始顺序排序，系统变量排在最后。
 func (*variablesImpl) mergeVariableList(_ context.Context, sysVarsList, variablesList []*entity.VariableMeta) *entity.VariablesMeta {
 	mergedMap := make(map[string]*entity.VariableMeta)
 	for _, sysVar := range sysVarsList {
@@ -178,11 +197,13 @@ func (*variablesImpl) mergeVariableList(_ context.Context, sysVarsList, variable
 	}
 }
 
+// GetAgentVariableMeta 获取 Agent 的变量元数据
 func (v *variablesImpl) GetAgentVariableMeta(ctx context.Context, agentID int64, version string) (*entity.VariablesMeta, error) {
 	bizID := fmt.Sprintf("%d", agentID)
 	return v.GetVariableMeta(ctx, bizID, project_memory.VariableConnector_Bot, version)
 }
 
+// GetVariableMetaByID 根据 ID 获取变量元数据
 func (v *variablesImpl) GetVariableMetaByID(ctx context.Context, id int64) (*entity.VariablesMeta, error) {
 	do, err := v.Repo.GetVariableMetaByID(ctx, id)
 	if err != nil {
@@ -196,6 +217,9 @@ func (v *variablesImpl) GetVariableMetaByID(ctx context.Context, id int64) (*ent
 	return do, nil
 }
 
+// GetVariableMeta 获取变量元数据
+//
+// 合并系统变量和用户定义的变量，设置默认 Schema 和只读属性。
 func (v *variablesImpl) GetVariableMeta(ctx context.Context, bizID string, bizType project_memory.VariableConnector, version string) (*entity.VariablesMeta, error) {
 	data, err := v.Repo.GetVariableMeta(ctx, bizID, bizType, version)
 	if err != nil {
@@ -220,10 +244,14 @@ func (v *variablesImpl) GetVariableMeta(ctx context.Context, bizID string, bizTy
 	return resVarMetaList, nil
 }
 
+// DeleteAllVariable 删除业务对象下的所有变量数据
 func (v *variablesImpl) DeleteAllVariable(ctx context.Context, bizType project_memory.VariableConnector, bizID string) (err error) {
 	return v.Repo.DeleteAllVariableData(ctx, bizType, bizID)
 }
 
+// DeleteVariableInstance 删除用户的变量值
+//
+// 系统变量不允许删除，会自动从 keywords 中过滤掉。
 func (v *variablesImpl) DeleteVariableInstance(ctx context.Context, e *entity.UserVariableMeta, keywords []string) (err error) {
 	// if e.BizType == int32(project_memory.VariableConnector_Project) {
 	// 	keywords = v.removeProjectSysVariable(ctx, keywords)
@@ -243,6 +271,7 @@ func (v *variablesImpl) DeleteVariableInstance(ctx context.Context, e *entity.Us
 	return v.Repo.DeleteVariableInstance(ctx, e, keywords)
 }
 
+// removeAgentSysVariable 从关键字列表中移除 Agent 的系统变量
 func (v *variablesImpl) removeAgentSysVariable(ctx context.Context, keywords []string, biz_id string) ([]string, error) {
 	vars, err := v.GetVariableMeta(ctx, biz_id, project_memory.VariableConnector_Bot, "")
 	if err != nil {
@@ -271,6 +300,7 @@ func (v *variablesImpl) removeAgentSysVariable(ctx context.Context, keywords []s
 	return filteredKeywords, nil
 }
 
+// removeSysVariable 从关键字列表中移除系统变量
 func (v *variablesImpl) removeSysVariable(ctx context.Context, keywords []string) []string {
 	sysConf := v.GetSysVariableConf(ctx)
 	sysVarsMap := make(map[string]bool)
@@ -290,10 +320,15 @@ func (v *variablesImpl) removeSysVariable(ctx context.Context, keywords []string
 	return filteredKeywords
 }
 
+// GetVariableInstance 获取用户的变量值
 func (v *variablesImpl) GetVariableInstance(ctx context.Context, e *entity.UserVariableMeta, keywords []string) ([]*kvmemory.KVItem, error) {
 	return v.GetVariableChannelInstance(ctx, e, keywords, nil)
 }
 
+// GetVariableChannelInstance 获取指定渠道的用户变量值
+//
+// 根据元数据和实例数据合并变量值，系统变量值动态生成。
+// 如果变量没有实例值，则使用默认值。
 func (v *variablesImpl) GetVariableChannelInstance(ctx context.Context, e *entity.UserVariableMeta, keywords []string, varChannel *project_memory.VariableChannel) ([]*kvmemory.KVItem, error) {
 	meta, err := v.GetVariableMeta(ctx, e.BizID, project_memory.VariableConnector(e.BizType), e.Version)
 	if err != nil {
@@ -362,6 +397,7 @@ func (v *variablesImpl) GetVariableChannelInstance(ctx context.Context, e *entit
 	return res, nil
 }
 
+// getAppKVItems 获取 APP 渠道的变量键值对
 func (v *variablesImpl) getAppKVItems(_ context.Context, meta *entity.VariablesMeta) ([]*kvmemory.KVItem, error) {
 	resMemory := []*kvmemory.KVItem{}
 
@@ -378,6 +414,9 @@ func (v *variablesImpl) getAppKVItems(_ context.Context, meta *entity.VariablesM
 	return resMemory, nil
 }
 
+// getSysKVItems 获取系统变量的键值对
+//
+// 系统变量值是动态生成的，如 sys_uuid 会根据用户信息生成唯一标识。
 func (v *variablesImpl) getSysKVItems(ctx context.Context, meta *entity.VariablesMeta, e *entity.UserVariableMeta) ([]*kvmemory.KVItem, error) {
 	sysKVItems := []*kvmemory.KVItem{}
 
@@ -397,6 +436,9 @@ func (v *variablesImpl) getSysKVItems(ctx context.Context, meta *entity.Variable
 	return sysKVItems, nil
 }
 
+// mergeKVItem 合并用户变量和系统变量的键值对
+//
+// 系统变量优先级更高，同名的用户变量会被忽略。
 func (v *variablesImpl) mergeKVItem(user []*kvmemory.KVItem, sys []*kvmemory.KVItem) []*kvmemory.KVItem {
 	res := make([]*kvmemory.KVItem, 0, len(user))
 	sysMap := make(map[string]bool)
@@ -415,6 +457,9 @@ func (v *variablesImpl) mergeKVItem(user []*kvmemory.KVItem, sys []*kvmemory.KVI
 	return res
 }
 
+// sortKVItem 对变量键值对排序
+//
+// 按元数据中定义的顺序排序，系统变量排在最后。
 func (v *variablesImpl) sortKVItem(items []*kvmemory.KVItem, meta *entity.VariablesMeta) []*kvmemory.KVItem {
 	sort.Slice(items, func(ii, jj int) bool {
 		i := items[ii]
@@ -446,6 +491,10 @@ func (v *variablesImpl) sortKVItem(items []*kvmemory.KVItem, meta *entity.Variab
 	return items
 }
 
+// SetVariableInstance 设置用户的变量值
+//
+// 系统变量不允许设置。已存在的变量实例执行更新，不存在的执行插入。
+// 返回更新的变量关键字列表。
 func (v *variablesImpl) SetVariableInstance(ctx context.Context, e *entity.UserVariableMeta, items []*kvmemory.KVItem) ([]string, error) {
 	meta, err := v.GetVariableMeta(ctx, e.BizID, project_memory.VariableConnector(e.BizType), e.Version)
 	if err != nil {
@@ -507,6 +556,9 @@ func (v *variablesImpl) SetVariableInstance(ctx context.Context, e *entity.UserV
 	return needUpdateKeywords, nil
 }
 
+// filterKVItem 过滤变量键值对
+//
+// 只保留元数据中定义的非系统变量。
 func (v *variablesImpl) filterKVItem(items []*kvmemory.KVItem, meta *entity.VariablesMeta) []*kvmemory.KVItem {
 	metaKey2Variable := map[string]*entity.VariableMeta{}
 	for _, variable := range meta.Variables {
@@ -524,6 +576,9 @@ func (v *variablesImpl) filterKVItem(items []*kvmemory.KVItem, meta *entity.Vari
 	return res
 }
 
+// PublishMeta 发布变量元数据到指定版本
+//
+// 复制元数据并设置新版本号，用于 Agent 发布时的变量同步。
 func (v *variablesImpl) PublishMeta(ctx context.Context, variableMetaID int64, version string) (int64, error) {
 	e, err := v.Repo.GetVariableMetaByID(ctx, variableMetaID)
 	if err != nil {
@@ -537,6 +592,9 @@ func (v *variablesImpl) PublishMeta(ctx context.Context, variableMetaID int64, v
 	return v.Repo.CreateVariableMeta(ctx, e, project_memory.VariableConnector(e.BizType))
 }
 
+// DecryptSysUUIDKey 解密系统用户唯一标识
+//
+// 从加密的 sys_uuid 值中解析出原始的用户信息。
 func (v *variablesImpl) DecryptSysUUIDKey(ctx context.Context, encryptSysUUIDKey string) *entity.VariableInstance {
 	meta := &entity.UserVariableMeta{}
 	return meta.DecryptSysUUIDKey(ctx, encryptSysUUIDKey)

@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file 上报事件模块导出
+ * @description 提供事件上报的类型定义和工具函数
+ */
+
+/** 事件名称和常量 */
 export { type EventNames, REPORT_EVENTS } from './events';
+/** 上报事件创建工具 */
 export {
   type DurationPoint,
   type ReportEvent,

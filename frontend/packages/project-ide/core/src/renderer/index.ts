@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 渲染器导出
+ */
 export { useIDEService } from './use-ide-service';
 export { useRefresh } from './use-refresh';
 export { useIDEContainer } from './use-ide-container';

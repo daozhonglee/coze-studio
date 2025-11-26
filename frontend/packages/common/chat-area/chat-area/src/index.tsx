@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/chat-area 模块导出
+ * @description 提供 chat-area/chat-area 相关功能
+ */
+
+
 export { ChatArea } from './chat-area-main';
 export { ChatAreaProviderMethod } from './context/chat-area-context/type';
 export { ChatAreaProvider } from './context/chat-area-context/provider';

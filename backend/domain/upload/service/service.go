@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Package service 定义了上传(Upload)领域的服务层实现
+
 package service
 
 import (
@@ -28,16 +30,21 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// uploadSVC 上传服务实现
 type uploadSVC struct {
 	fileRepo repository.FilesRepo
 	idgen    idgen.IDGenerator
 	oss      storage.Storage
 }
 
+// NewUploadSVC 创建上传服务实例
 func NewUploadSVC(db *gorm.DB, idgen idgen.IDGenerator, oss storage.Storage) UploadService {
 	return &uploadSVC{fileRepo: repository.NewFilesRepo(db), idgen: idgen, oss: oss}
 }
 
+// UploadFile 上传单个文件
+//
+// 如果文件 ID 为空，会自动生成新的 ID
 func (u *uploadSVC) UploadFile(ctx context.Context, req *UploadFileRequest) (resp *UploadFileResponse, err error) {
 	resp = &UploadFileResponse{}
 	if req.File.ID == 0 {
@@ -54,6 +61,9 @@ func (u *uploadSVC) UploadFile(ctx context.Context, req *UploadFileRequest) (res
 	return
 }
 
+// UploadFiles 批量上传文件
+//
+// 为没有 ID 的文件自动生成 ID
 func (u *uploadSVC) UploadFiles(ctx context.Context, req *UploadFilesRequest) (resp *UploadFilesResponse, err error) {
 	resp = &UploadFilesResponse{}
 	for _, file := range req.Files {
@@ -72,6 +82,7 @@ func (u *uploadSVC) UploadFiles(ctx context.Context, req *UploadFilesRequest) (r
 	return
 }
 
+// GetFiles 批量获取文件
 func (u *uploadSVC) GetFiles(ctx context.Context, req *GetFilesRequest) (resp *GetFilesResponse, err error) {
 	resp = &GetFilesResponse{}
 	resp.Files, err = u.fileRepo.MGetByIDs(ctx, req.IDs)
@@ -81,6 +92,9 @@ func (u *uploadSVC) GetFiles(ctx context.Context, req *GetFilesRequest) (resp *G
 	return
 }
 
+// GetFile 获取单个文件
+//
+// 返回的文件信息包含访问 URL
 func (u *uploadSVC) GetFile(ctx context.Context, req *GetFileRequest) (resp *GetFileResponse, err error) {
 	resp = &GetFileResponse{}
 	resp.File, err = u.fileRepo.GetByID(ctx, req.ID)

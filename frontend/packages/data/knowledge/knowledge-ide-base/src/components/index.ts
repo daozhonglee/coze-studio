@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 组件导出
+ */
 export { HeaderTags } from './header-tags';
 export { RelatedBotsList } from './related-bots-list';
 export { FailedTag } from './tag';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file auto-save 多智能体导出
+ */
 import { useSpaceStore } from '@coze-arch/bot-studio-store';
 import { PlaygroundApi } from '@coze-arch/bot-api';
 import { AutosaveManager, type SaveRequest } from '@coze-studio/autosave';

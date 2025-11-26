@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file common 字段定义导出
+ */
 export { SelectAndSetFieldsField } from './select-and-set-fields-field';
 export { DatabaseSelectField } from './database-select';
 export { OutputsField } from './outputs';

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin-publish-ui-adapter 模块导出
+ * @description 提供 plugin-publish-ui-adapter 相关功能
+ */
+
+
 export {
   BizPluginPublishPopover,
   type BizPluginPublishPopoverProps,

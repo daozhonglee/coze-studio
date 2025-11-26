@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 表单验证器导出
+ * @description 提供表单字段的验证器
+ */
+
+/** 值表达式验证器 - 验证变量引用表达式的有效性 */
 export {
   type ValueExpressionValidatorProps,
   valueExpressionValidator,

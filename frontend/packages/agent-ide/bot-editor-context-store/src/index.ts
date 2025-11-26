@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+
+/**
+ * @file bot-editor-context-store 模块导出
+ * @description 提供 bot-editor-context-store 相关功能
+ */
 export { useBotEditor } from './context/bot-editor-context/index';
 export { BotEditorContextProvider } from './context/bot-editor-context/context';
 export {

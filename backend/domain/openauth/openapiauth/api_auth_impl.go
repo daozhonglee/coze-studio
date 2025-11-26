@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Package openapiauth 定义了 OpenAPI 认证领域的服务层实现
+
 package openapiauth
 
 import (
@@ -30,17 +32,22 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/logs"
 )
 
+// apiAuthImpl API 认证服务实现
 type apiAuthImpl struct {
 	IDGen idgen.IDGenerator
 	DB    *gorm.DB
 	dao   *dal.ApiKeyDAO
 }
 
+// Components API 认证服务依赖组件
 type Components struct {
+	// IDGen ID 生成器
 	IDGen idgen.IDGenerator
-	DB    *gorm.DB
+	// DB 数据库连接
+	DB *gorm.DB
 }
 
+// NewService 创建 API 认证服务实例
 func NewService(c *Components) APIAuth {
 	return &apiAuthImpl{
 		IDGen: c.IDGen,
@@ -49,6 +56,7 @@ func NewService(c *Components) APIAuth {
 	}
 }
 
+// Create 创建 API 密钥
 func (a *apiAuthImpl) Create(ctx context.Context, req *entity.CreateApiKey) (*entity.ApiKey, error) {
 	apiKeyData, err := a.dao.Create(ctx, req)
 	if err != nil {
@@ -57,13 +65,13 @@ func (a *apiAuthImpl) Create(ctx context.Context, req *entity.CreateApiKey) (*en
 	return apiKeyData, nil
 }
 
+// Delete 删除 API 密钥
 func (a *apiAuthImpl) Delete(ctx context.Context, req *entity.DeleteApiKey) error {
-
 	return a.dao.Delete(ctx, req.ID, req.UserID)
-
 }
-func (a *apiAuthImpl) Get(ctx context.Context, req *entity.GetApiKey) (*entity.ApiKey, error) {
 
+// Get 获取 API 密钥
+func (a *apiAuthImpl) Get(ctx context.Context, req *entity.GetApiKey) (*entity.ApiKey, error) {
 	apiKey, err := a.dao.Get(ctx, req.ID)
 	logs.CtxInfof(ctx, "apiKey=%v, err:%v", apiKey, err)
 	if err != nil {
@@ -75,8 +83,8 @@ func (a *apiAuthImpl) Get(ctx context.Context, req *entity.GetApiKey) (*entity.A
 	return a.buildPoData2ApiKey([]*model.APIKey{apiKey})[0], nil
 }
 
+// buildPoData2ApiKey 将数据库模型转换为领域实体
 func (a *apiAuthImpl) buildPoData2ApiKey(apiKey []*model.APIKey) []*entity.ApiKey {
-
 	apiKeyData := slices.Transform(apiKey, func(a *model.APIKey) *entity.ApiKey {
 		return &entity.ApiKey{
 			ID:         a.ID,
@@ -92,6 +100,7 @@ func (a *apiAuthImpl) buildPoData2ApiKey(apiKey []*model.APIKey) []*entity.ApiKe
 	return apiKeyData
 }
 
+// List 列出用户的 API 密钥
 func (a *apiAuthImpl) List(ctx context.Context, req *entity.ListApiKey) (*entity.ListApiKeyResp, error) {
 	resp := &entity.ListApiKeyResp{
 		ApiKeys: make([]*entity.ApiKey, 0),
@@ -106,8 +115,9 @@ func (a *apiAuthImpl) List(ctx context.Context, req *entity.ListApiKey) (*entity
 
 	return resp, nil
 }
-func (a *apiAuthImpl) CheckPermission(ctx context.Context, req *entity.CheckPermission) (*entity.ApiKey, error) {
 
+// CheckPermission 验证 API 密钥权限
+func (a *apiAuthImpl) CheckPermission(ctx context.Context, req *entity.CheckPermission) (*entity.ApiKey, error) {
 	apiKey, err := a.dao.FindByKey(ctx, req.ApiKey)
 	if err != nil {
 		return nil, err
@@ -125,8 +135,8 @@ func (a *apiAuthImpl) CheckPermission(ctx context.Context, req *entity.CheckPerm
 	return apiKeyDo, nil
 }
 
+// Save 更新 API 密钥元数据
 func (a *apiAuthImpl) Save(ctx context.Context, sm *entity.SaveMeta) error {
-
 	updateColumn := make(map[string]any)
 	if sm.Name != nil {
 		updateColumn["name"] = sm.Name

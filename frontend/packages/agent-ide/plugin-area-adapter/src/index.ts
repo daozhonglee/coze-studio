@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin-area-adapter 模块导出
+ * @description 提供 plugin-area-adapter 相关功能
+ */
+
+
 export {
   PluginApisArea,
   type IPluginApisAreaProps,

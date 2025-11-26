@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 类型定义导出
+ */
 import { type GetPluginInfoResponse } from '@coze-arch/bot-api/plugin_develop';
 
 export type PluginInfoProps = GetPluginInfoResponse & { plugin_id?: string };

@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file trigger delete 模块导出
+ */
 export { TRIGGER_DELETE_NODE_REGISTRY } from './node-registry';
 export { TriggerDeleteContent } from './node-content';

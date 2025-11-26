@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file 代码编辑器组件导出
+ * @description 提供代码编辑器相关组件，包括代码编辑器和文本编辑器
+ */
+
+/** 编辑器上下文提供者 */
 export { EditorProvider } from '@coze-editor/editor/react';
+/** 代码编辑器组件 - 支持语法高亮和代码补全 */
 export { CodeEditor } from './code-editor';
+/** 文本编辑器组件 - 基础文本编辑功能 */
 export { TextEditor } from './text-editor';

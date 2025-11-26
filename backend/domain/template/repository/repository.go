@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// Package repository 定义了模板(Template)领域的仓储接口
+//
+// 本包提供模板数据的持久化操作抽象
 package repository
 
 import (
@@ -29,15 +32,18 @@ import (
 	"github.com/coze-dev/coze-studio/backend/domain/template/internal/dal/model"
 )
 
+// NewTemplateDAO 创建模板仓储实例
 func NewTemplateDAO(db *gorm.DB, idGen idgen.IDGenerator) TemplateRepository {
 	return dal.NewTemplateDAO(db, idGen)
 }
 
-// TemplateRepository defines the interface for template operations
+// TemplateRepository 模板仓储接口
+//
+// 定义模板的数据访问方法
 type TemplateRepository interface {
-	// Create creates a new template
+	// Create 创建模板
 	Create(ctx context.Context, template *model.Template) (int64, error)
 
-	// List lists templates with filters
+	// List 列出模板（带过滤和分页）
 	List(ctx context.Context, filter *entity.TemplateFilter, page *entity.Pagination, orderByField string) ([]*model.Template, int64, error)
 }

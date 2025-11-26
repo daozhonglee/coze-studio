@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file api 模块导出
+ */
 import { workflowApi as archWorkflowApi } from '@coze-arch/bot-api';
 
 // eslint-disable-next-line @coze-arch/no-batch-import-or-export

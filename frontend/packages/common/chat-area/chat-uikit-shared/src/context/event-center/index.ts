@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file event center 模块导出
+ */
 import { useContext } from 'react';
 
 import { UIKitEventContext } from './context';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file query trace 模块导出
+ */
 export { default as TraceFlamethread } from './components/trace-flamethread';
 export { default as TraceTree } from './components/trace-tree';
 export { default as TopologyFlow } from './components/topology-flow';

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area-provider 模块导出
+ * @description 提供 chat-area-provider 相关功能
+ */
+
+
 export {
   BotDebugChatAreaProvider,
   type BotDebugChatAreaProviderProps,

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/chat-area-plugin-reasoning 模块导出
+ * @description 提供 chat-area/chat-area-plugin-reasoning 相关功能
+ */
+
+
 import { type PluginRegistryEntry } from '@coze-common/chat-area';
 
 import { type PluginBizContext } from './types/biz-context';

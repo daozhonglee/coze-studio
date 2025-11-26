@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file import knowledge source 模块导出
+ */
 export { TableCustom } from './table-custom';
 export { TableLocal } from './table-local';
 export { TextCustom } from './text-custom';

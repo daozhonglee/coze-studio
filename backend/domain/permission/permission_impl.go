@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
+// Package permission 定义了权限(Permission)领域的服务层实现
+//
+// 注意：当前实现为开放模式，默认允许所有操作。
+// 在生产环境中应根据实际需求实现权限校验逻辑。
 package permission
 
 import (
 	"context"
 )
 
+// permissionImpl 权限服务实现
 type permissionImpl struct{}
 
+// NewService 创建权限服务实例
 func NewService() Permission {
 	return &permissionImpl{}
 }

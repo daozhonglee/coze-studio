@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/chat-uikit 模块导出
+ * @description 提供 chat-area/chat-uikit 相关功能
+ */
+
+
 export * from './components';
 export * from './utils';
 export { FullWidthAligner } from './components/common/full-width-aligner';

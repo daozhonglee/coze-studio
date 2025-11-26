@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file schema extractor 模块导出
+ */
 import { get, cloneDeep } from 'lodash-es';
 import type { WorkflowEdgeJSON } from '@flowgram-adapter/free-layout-editor';
 

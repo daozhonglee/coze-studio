@@ -16,18 +16,34 @@
 
 package entity
 
+// SingleAgentPublish Agent 发布记录
+//
+// 记录 Agent 的每次发布历史，包括发布的渠道、版本、状态等。
 type SingleAgentPublish struct {
-	ID            int64
-	AgentID       int64
-	PublishID     string
-	ConnectorIds  []int64
-	Version       string
+	// ID 发布记录 ID
+	ID int64
+	// AgentID Agent ID
+	AgentID int64
+	// PublishID 发布 ID（唯一标识本次发布）
+	PublishID string
+	// ConnectorIds 发布的渠道 ID 列表
+	ConnectorIds []int64
+	// Version 发布版本号
+	Version string
+	// PublishResult 发布结果
 	PublishResult *string
-	PublishInfo   *string
-	CreatorID     int64
-	PublishTime   int64
-	CreatedAt     int64
-	UpdatedAt     int64
-	Status        int32
-	Extra         *string
+	// PublishInfo 发布详情
+	PublishInfo *string
+	// CreatorID 发布者用户 ID
+	CreatorID int64
+	// PublishTime 发布时间戳
+	PublishTime int64
+	// CreatedAt 创建时间戳
+	CreatedAt int64
+	// UpdatedAt 更新时间戳
+	UpdatedAt int64
+	// Status 发布状态
+	Status int32
+	// Extra 扩展字段
+	Extra *string
 }

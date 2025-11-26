@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file slardar 模块导出
+ */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   createMinimalBrowserClient,

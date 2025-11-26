@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file coze-mitt 模块导出
+ * @description 提供 coze-mitt 相关功能
+ */
+
+
 import mitt from 'mitt';
 
 /**

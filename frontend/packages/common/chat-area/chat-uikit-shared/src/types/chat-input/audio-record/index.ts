@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file audio record 模块导出
+ */
 export interface AudioRecordProps {
   isPointerMoveOut?: boolean;
   isRecording?: boolean;

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file log 工具函数导出
+ */
 export { isOutputLog } from './field';

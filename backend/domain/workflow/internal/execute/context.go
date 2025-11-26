@@ -14,6 +14,28 @@
  * limitations under the License.
  */
 
+// Package execute 提供工作流执行过程中的上下文管理功能
+//
+// 本包负责管理工作流执行的完整上下文信息，包括：
+//
+// 1. 执行上下文层级
+//   - RootCtx: 根工作流执行上下文
+//   - SubWorkflowCtx: 子工作流执行上下文
+//   - NodeCtx: 节点执行上下文
+//   - BatchInfo: 批量/循环执行上下文
+//
+// 2. 上下文传递机制
+//   - 通过 context.Value 传递执行上下文
+//   - 支持上下文的嵌套和继承
+//   - 提供检查点 ID 用于中断恢复
+//
+// 3. Token 收集
+//   - 追踪 LLM 调用的 Token 使用量
+//   - 支持层级聚合（节点 → 子工作流 → 根工作流）
+//
+// 4. 应用级变量存储
+//   - 在整个工作流执行过程中共享的变量
+//   - 线程安全的读写操作
 package execute
 
 import (
@@ -36,55 +58,82 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/logs"
 )
 
+// Context 工作流执行上下文
+// 包含执行过程中需要的所有上下文信息，支持嵌套执行和中断恢复
 type Context struct {
+	// RootCtx 根工作流上下文（嵌入）
 	RootCtx
-
+	// SubWorkflowCtx 子工作流上下文（可选）
 	*SubWorkflowCtx
-
+	// NodeCtx 当前执行节点上下文（可选）
 	*NodeCtx
-
+	// BatchInfo 批量/循环执行信息（可选）
 	*BatchInfo
-
+	// TokenCollector Token 使用量收集器
 	TokenCollector *TokenCollector
-
-	StartTime int64 // UnixMilli
-
+	// StartTime 执行开始时间（UnixMilli 时间戳）
+	StartTime int64
+	// CheckPointID 检查点 ID，用于中断恢复
 	CheckPointID string
-
+	// AppVarStore 应用级变量存储，在整个执行过程中共享
 	AppVarStore *AppVariables
-
+	// executed 已执行节点计数（原子操作）
 	executed *atomic.Int64
 }
 
+// RootCtx 根工作流执行上下文
+// 保存最顶层工作流的执行信息，在整个执行树中共享
 type RootCtx struct {
+	// RootWorkflowBasic 根工作流基本信息
 	RootWorkflowBasic *entity.WorkflowBasic
-	RootExecuteID     int64
-	ResumeEvent       *entity.InterruptEvent
-	ExeCfg            workflowModel.ExecuteConfig
+	// RootExecuteID 根执行 ID，唯一标识此次执行
+	RootExecuteID int64
+	// ResumeEvent 恢复事件，用于中断后恢复执行
+	ResumeEvent *entity.InterruptEvent
+	// ExeCfg 执行配置，包含运行模式、操作者等信息
+	ExeCfg workflowModel.ExecuteConfig
 }
 
+// SubWorkflowCtx 子工作流执行上下文
+// 当执行进入子工作流节点时创建
 type SubWorkflowCtx struct {
+	// SubWorkflowBasic 子工作流基本信息
 	SubWorkflowBasic *entity.WorkflowBasic
-	SubExecuteID     int64
+	// SubExecuteID 子工作流执行 ID
+	SubExecuteID int64
 }
 
+// NodeCtx 节点执行上下文
+// 每个节点执行时都会创建独立的节点上下文
 type NodeCtx struct {
-	NodeKey       vo.NodeKey
+	// NodeKey 节点唯一标识
+	NodeKey vo.NodeKey
+	// NodeExecuteID 节点执行 ID
 	NodeExecuteID int64
-	NodeName      string
-	NodeType      entity.NodeType
-	NodePath      []string
+	// NodeName 节点名称（用于显示）
+	NodeName string
+	// NodeType 节点类型
+	NodeType entity.NodeType
+	// NodePath 节点路径，记录从根到当前节点的完整路径
+	NodePath []string
+	// TerminatePlan 终止计划，用于出口节点
 	TerminatePlan *vo.TerminatePlan
-
-	ResumingEvent    *entity.InterruptEvent
-	SubWorkflowExeID int64 // if this node is subworkflow node, the execute id of the sub workflow
-
+	// ResumingEvent 正在恢复的中断事件
+	ResumingEvent *entity.InterruptEvent
+	// SubWorkflowExeID 如果此节点是子工作流节点，记录子工作流的执行 ID
+	SubWorkflowExeID int64
+	// CurrentRetryCount 当前重试次数
 	CurrentRetryCount int
 }
 
+// BatchInfo 批量/循环执行信息
+// 在 Batch 或 Loop 节点执行时创建，记录当前迭代的信息
 type BatchInfo struct {
-	Index            int
-	Items            map[string]any
+	// Index 当前迭代索引
+	Index int
+	// Items 当前迭代的数据项
+	Items map[string]any
+	// CompositeNodeKey 复合节点（Batch/Loop）的 Key
 	CompositeNodeKey vo.NodeKey
 }
 

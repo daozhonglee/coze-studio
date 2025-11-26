@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file Fetch Stream 模块导出
+ * @description 提供流式请求功能，支持 SSE 和流式响应处理
+ */
+
 import { isFetchStreamErrorInfo } from './utils';
 import {
   FetchStreamErrorCode,
@@ -22,6 +27,7 @@ import {
 } from './type';
 import { fetchStream } from './fetch-stream';
 
+/** 流式请求相关导出 */
 export {
   isFetchStreamErrorInfo,
   fetchStream,

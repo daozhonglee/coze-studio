@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file file-input 组件导出
+ */
 export { MultipleInputNew } from './multi-input';
 export { SingleInput, SingleInputNew } from './single-input';

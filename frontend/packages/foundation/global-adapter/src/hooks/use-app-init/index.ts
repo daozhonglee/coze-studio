@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file use app init 模块导出
+ */
 import { useEffect } from 'react';
 
 import { reporter, logger } from '@coze-arch/logger';

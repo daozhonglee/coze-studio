@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file free grab modal hierarchy service 模块导出
+ */
 import { type FreeGrabModalHierarchyAction } from '@coze-agent-ide/bot-editor-context-store';
 
 import { type ModalHierarchyServiceConstructor } from './type';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 常量定义导出
+ */
 export { NODE_WIDTH, NODE_HEIGHT, COLLAPSE_WIDTH } from './node';
 export {
   STROKE_WIDTH,

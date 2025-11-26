@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file data memory 模块导出
+ */
 export { DataMemory } from './data-memory';

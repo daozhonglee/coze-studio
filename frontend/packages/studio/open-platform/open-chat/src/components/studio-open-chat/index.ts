@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file studio open chat 模块导出
+ */
 export { OpenChatProvider } from './provider';
 export { StudioChatArea } from './area';

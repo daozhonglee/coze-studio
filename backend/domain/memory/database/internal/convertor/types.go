@@ -27,9 +27,21 @@ import (
 )
 
 const (
+	// TimeFormat 标准时间格式，用于日期类型字段的格式化
 	TimeFormat = "2006-01-02 15:04:05"
 )
 
+// SwitchToDataType 将业务字段类型转换为数据库数据类型
+//
+// 用于创建物理表时确定列的数据类型。
+//
+// 类型映射：
+//   - Text -> TEXT（长文本）
+//   - Number -> BIGINT（64位整数）
+//   - Date -> TIMESTAMP（时间戳）
+//   - Float -> DOUBLE（双精度浮点）
+//   - Boolean -> BOOLEAN（布尔值）
+//   - 其他 -> VARCHAR（变长字符串）
 func SwitchToDataType(itemType table.FieldItemType) entity.DataType {
 	switch itemType {
 	case table.FieldItemType_Text:
@@ -48,7 +60,18 @@ func SwitchToDataType(itemType table.FieldItemType) entity.DataType {
 	}
 }
 
-// ConvertValueByType converts a string value to the specified type.
+// ConvertValueByType 将字符串值转换为指定的字段类型
+//
+// 用于数据插入/更新时将用户输入的字符串转换为对应的数据库类型。
+// 空字符串返回 nil，表示数据库中的 NULL 值。
+//
+// 参数：
+//   - value: 待转换的字符串值
+//   - fieldType: 目标字段类型
+//
+// 返回值：
+//   - 转换后的值（类型与 fieldType 对应）
+//   - error: 转换失败时的错误信息
 func ConvertValueByType(value string, fieldType table.FieldItemType) (interface{}, error) {
 	if value == "" {
 		return nil, nil
@@ -101,7 +124,17 @@ func ConvertValueByType(value string, fieldType table.FieldItemType) (interface{
 	}
 }
 
-// ConvertDBValueToString converts a database value to a string.
+// ConvertDBValueToString 将数据库值转换为字符串
+//
+// 用于查询结果返回时将数据库中的各种类型值转换为字符串格式。
+// 处理了不同数据库驱动返回的不同类型（如 []uint8 vs string）。
+//
+// 参数：
+//   - value: 数据库返回的原始值
+//   - fieldType: 字段类型（用于确定格式化方式）
+//
+// 返回值：
+//   - 格式化后的字符串
 func ConvertDBValueToString(value interface{}, fieldType table.FieldItemType) string {
 	switch fieldType {
 	case table.FieldItemType_Text:
@@ -151,7 +184,17 @@ func ConvertDBValueToString(value interface{}, fieldType table.FieldItemType) st
 	return fmt.Sprintf("%v", value)
 }
 
-// ConvertSystemFieldToString converts a system field value to a string.
+// ConvertSystemFieldToString 将系统字段值转换为字符串
+//
+// 系统字段包括：_id（主键）、_uid（用户ID）、_cid（连接器ID）、_create_time（创建时间）。
+// 这些字段由系统自动维护，需要特殊的格式化处理。
+//
+// 参数：
+//   - fieldName: 系统字段名
+//   - value: 数据库返回的原始值
+//
+// 返回值：
+//   - 格式化后的字符串
 func ConvertSystemFieldToString(fieldName string, value interface{}) string {
 	switch fieldName {
 	case database.DefaultIDColName:
@@ -175,6 +218,9 @@ func ConvertSystemFieldToString(fieldName string, value interface{}) string {
 	return fmt.Sprintf("%v", value)
 }
 
+// ConvertLogicOperator 将业务逻辑操作符转换为数据库逻辑操作符
+//
+// 用于 WHERE 条件中多个条件的组合（AND/OR）。
 func ConvertLogicOperator(logic database.Logic) entity.LogicalOperator {
 	switch logic {
 	case database.Logic_And:
@@ -186,6 +232,9 @@ func ConvertLogicOperator(logic database.Logic) entity.LogicalOperator {
 	}
 }
 
+// ConvertOperator 将业务比较操作符转换为数据库操作符
+//
+// 支持的操作符包括：等于、不等于、大于、小于、IN、LIKE、IS NULL 等。
 func ConvertOperator(op database.Operation) entity.Operator {
 	switch op {
 	case database.Operation_EQUAL:

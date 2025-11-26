@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file select intelligence modal 模块导出
+ */
 export { SelectIntelligenceModal } from './components';
 export { useModal } from './hooks/use-case/use-modal';

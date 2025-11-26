@@ -14,6 +14,31 @@
  * limitations under the License.
  */
 
+// Package llm 实现大语言模型 (LLM) 节点的核心逻辑
+//
+// LLM 节点是工作流中最重要的节点类型之一，负责调用大语言模型进行文本生成。
+// 本包提供了以下核心功能：
+//
+// 1. 模型调用
+//   - 支持多种输出格式：纯文本、Markdown、JSON
+//   - 支持流式和非流式输出
+//   - 支持备用模型（fallback）机制
+//
+// 2. 对话历史管理
+//   - 可配置历史对话轮数
+//   - 支持跨节点的对话上下文传递
+//
+// 3. 工具调用 (Function Calling)
+//   - 支持插件工具调用
+//   - 支持工作流作为工具调用
+//   - 支持知识库检索增强生成 (RAG)
+//
+// 4. 中断恢复
+//   - 支持工作流执行中断后恢复
+//   - 保存和恢复中间状态
+//
+// 节点配置通过 Config 结构体传入，包括系统提示词、用户提示词、
+// 模型参数、工具配置等。
 package llm
 
 import (
@@ -169,14 +194,25 @@ type KnowledgeRecallConfig struct {
 	SelectedKnowledgeDetails []*knowledge.KnowledgeDetail
 }
 
+// Config LLM 节点配置
+// 包含调用大语言模型所需的所有配置信息
 type Config struct {
-	SystemPrompt                      string
-	UserPrompt                        string
-	OutputFormat                      Format
-	LLMParams                         *vo.LLMParams
-	FCParam                           *vo.FCParam
-	BackupLLMParams                   *vo.LLMParams
-	ChatHistorySetting                *vo.ChatHistorySetting
+	// SystemPrompt 系统提示词，设定 AI 角色和行为规范
+	SystemPrompt string
+	// UserPrompt 用户提示词模板，支持变量插值
+	UserPrompt string
+	// OutputFormat 输出格式：纯文本/Markdown/JSON
+	OutputFormat Format
+	// LLMParams 模型参数，包括温度、最大 token 数等
+	LLMParams *vo.LLMParams
+	// FCParam 工具调用参数，配置可调用的工作流、插件、知识库
+	FCParam *vo.FCParam
+	// BackupLLMParams 备用模型参数，主模型失败时使用
+	BackupLLMParams *vo.LLMParams
+	// ChatHistorySetting 对话历史设置，配置是否启用及轮数
+	ChatHistorySetting *vo.ChatHistorySetting
+	// AssociateStartNodeUserInputFields 关联开始节点用户输入字段
+	// 用于识别哪些输入来自用户原始输入
 	AssociateStartNodeUserInputFields map[string]struct{}
 }
 
@@ -871,14 +907,23 @@ func toRetrievalSearchType(s int64) (knowledge.SearchType, error) {
 	}
 }
 
+// LLM 大语言模型节点执行器
+// 封装了模型调用的核心逻辑，支持同步和流式调用
 type LLM struct {
-	r                  compose.Runnable[map[string]any, map[string]any]
-	outputFormat       Format
-	requireCheckpoint  bool
-	fullSources        map[string]*schema2.SourceInfo
+	// r 可运行的图编排实例，包含模板节点、LLM 节点、输出转换节点
+	r compose.Runnable[map[string]any, map[string]any]
+	// outputFormat 输出格式
+	outputFormat Format
+	// requireCheckpoint 是否需要检查点（用于中断恢复）
+	requireCheckpoint bool
+	// fullSources 完整的输入源信息
+	fullSources map[string]*schema2.SourceInfo
+	// chatHistorySetting 对话历史设置
 	chatHistorySetting *vo.ChatHistorySetting
-	nodeKey            vo.NodeKey
-	outputKey          string
+	// nodeKey 节点唯一标识
+	nodeKey vo.NodeKey
+	// outputKey 输出字段的 key
+	outputKey string
 }
 
 const (
@@ -1142,6 +1187,10 @@ func (l *LLM) handleInterrupt(ctx context.Context, err error, resumingEvent *ent
 	return compose.NewInterruptAndRerunErr(ie)
 }
 
+// Invoke 同步调用 LLM 节点
+// 参数 in: 节点输入，包含提示词模板变量值
+// 参数 opts: 节点选项，可配置工具调用容器等
+// 返回: 模型输出结果，根据 outputFormat 可能是纯文本或结构化 JSON
 func (l *LLM) Invoke(ctx context.Context, in map[string]any, opts ...nodes.NodeOption) (out map[string]any, err error) {
 	composeOpts, resumingEvent, err := l.prepare(ctx, in, opts...)
 	if err != nil {

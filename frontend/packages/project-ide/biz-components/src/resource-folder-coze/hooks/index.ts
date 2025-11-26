@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file resource-folder-coze Hooks 导出
+ */
 export { useDeleteModal } from './use-delete-modal';
 export { useResourceFolderConfig } from './use-resource-folder-config';
 export { useResourceOpen } from './use-resource-open';

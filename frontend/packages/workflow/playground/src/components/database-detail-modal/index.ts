@@ -14,5 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file 数据库详情弹窗组件导出
+ * @description 提供数据库详情查看功能
+ */
+
+/** 数据库详情弹窗组件 */
 export { DatabaseDetailModal } from './database-detail-model';
+/** 打开数据库详情的 Hook */
 export { useOpenDatabaseDetail } from './use-open-database-detail';

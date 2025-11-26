@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @file browser-upgrade-banner 模块导出
+ * @description 提供 browser-upgrade-banner 相关功能
+ */
+
+
 export { BrowserUpgradeWrap } from './components/browser-upgrade-wrap';

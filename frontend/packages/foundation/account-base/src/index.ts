@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file account-base 模块导出
+ * @description 提供 account-base 相关功能
+ */
+
+
 // types
 export type { UserInfo, LoginStatus } from './types';
 export type {

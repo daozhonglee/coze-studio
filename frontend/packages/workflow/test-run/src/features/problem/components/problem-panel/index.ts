@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file problem panel 模块导出
+ */
 export { ProblemPanel } from './problem-panel';

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file search 模块导出
+ */
 export { SearchCard, SearchSkeleton } from './search-card';
 export { ResultWord } from './result-word';
 export { FilterGroupRadio, FilterGroupCheckbox } from './filter-group';

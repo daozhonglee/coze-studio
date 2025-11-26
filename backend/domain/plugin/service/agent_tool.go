@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+// agent_tool.go 代理工具服务
+//
+// 本文件提供代理（Agent）绑定工具的功能：
+//   - 工具绑定和复制
+//   - 代理工具查询
+//   - 默认参数更新
+//   - 代理工具发布
+
 package service
 
 import (
@@ -36,6 +44,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// BindAgentTools 绑定工具到代理
 func (p *pluginServiceImpl) BindAgentTools(ctx context.Context, agentID int64, bindTools []*model.BindToolInfo) (err error) {
 	return p.toolRepo.BindDraftAgentTools(ctx, agentID, bindTools)
 }

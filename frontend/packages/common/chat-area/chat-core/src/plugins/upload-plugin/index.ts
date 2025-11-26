@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file upload plugin 模块导出
+ */
 import { EventEmitter } from 'eventemitter3';
 import {
   getUploader,

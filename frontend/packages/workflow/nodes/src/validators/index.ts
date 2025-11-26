@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 验证器导出
+ */
 export { nodeMetaValidator } from './node-meta-validator';
 export { outputTreeValidator } from './output-tree-validator';
 export { systemVariableValidator } from './system-variable-validator';

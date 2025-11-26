@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
+// knowledge.go 知识库实体定义
+//
+// 本文件定义了知识库领域的核心实体 Knowledge 及其查询选项。
+
 package entity
 
 import model "github.com/coze-dev/coze-studio/backend/crossdomain/knowledge/model"
 
+// Knowledge 知识库实体
+// 封装跨域知识库模型
 type Knowledge struct {
 	*model.Knowledge
 }
 
+// WhereKnowledgeOption 知识库查询条件选项
 type WhereKnowledgeOption struct {
 	KnowledgeIDs []int64
 	AppID        *int64
@@ -37,16 +44,20 @@ type WhereKnowledgeOption struct {
 	FormatType   *int64
 }
 
+// OrderType 排序类型
 type OrderType int32
 
+// 排序类型常量
 const (
-	OrderTypeAsc  OrderType = 1
-	OrderTypeDesc OrderType = 2
+	OrderTypeAsc  OrderType = 1 // 升序
+	OrderTypeDesc OrderType = 2 // 降序
 )
 
+// Order 排序字段
 type Order int32
 
+// 排序字段常量
 const (
-	OrderCreatedAt Order = 1
-	OrderUpdatedAt Order = 2
+	OrderCreatedAt Order = 1 // 按创建时间排序
+	OrderUpdatedAt Order = 2 // 按更新时间排序
 )

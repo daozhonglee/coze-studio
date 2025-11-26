@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// Package app 定义了应用(APP/Project)应用层服务
+//
+// 本包提供应用相关的应用层业务逻辑，包括：
+// - 应用的创建、更新、删除、复制
+// - 应用发布管理
+// - 资源复制和移动
+// - 版本管理
+//
+// 应用是承载多个工作流的容器，支持发布到不同的连接器。
 package app
 
 import (
@@ -30,18 +39,30 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/storage"
 )
 
+// ServiceComponents 应用应用服务依赖组件
 type ServiceComponents struct {
-	IDGen           idgen.IDGenerator
-	DB              *gorm.DB
-	OSS             storage.Storage
-	CacheCli        cache.Cmdable
+	// IDGen ID 生成器
+	IDGen idgen.IDGenerator
+	// DB 数据库连接
+	DB *gorm.DB
+	// OSS 对象存储服务
+	OSS storage.Storage
+	// CacheCli 缓存客户端
+	CacheCli cache.Cmdable
+	// ProjectEventBus 项目事件总线
 	ProjectEventBus search.ProjectEventBus
 
-	UserSVC      user.User
+	// UserSVC 用户领域服务
+	UserSVC user.User
+	// ConnectorSVC 连接器领域服务
 	ConnectorSVC connector.Connector
+	// VariablesSVC 变量领域服务
 	VariablesSVC variables.Variables
 }
 
+// InitService 初始化应用应用服务
+//
+// 创建仓储和领域服务
 func InitService(components *ServiceComponents) (*APPApplicationService, error) {
 	appRepo := repository.NewAPPRepo(&repository.APPRepoComponents{
 		IDGen:    components.IDGen,

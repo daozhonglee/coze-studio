@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Package service 定义了应用(APP)领域的服务层实现
+
 package service
 
 import (
@@ -39,23 +41,35 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// Components 应用服务依赖组件
+//
+// 用于初始化应用服务的依赖注入
 type Components struct {
+	// IDGen ID生成器
 	IDGen idgen.IDGenerator
-	DB    *gorm.DB
-
+	// DB 数据库连接
+	DB *gorm.DB
+	// APPRepo 应用仓储
 	APPRepo repository.AppRepository
 }
 
+// NewService 创建应用服务实例
 func NewService(components *Components) AppService {
 	return &appServiceImpl{
 		Components: components,
 	}
 }
 
+// appServiceImpl 应用服务实现
+//
+// 实现 AppService 接口，提供应用领域的业务逻辑处理
 type appServiceImpl struct {
 	*Components
 }
 
+// CreateDraftAPP 创建草稿应用
+//
+// 创建新的草稿应用并初始化默认的对话模板
 func (a *appServiceImpl) CreateDraftAPP(ctx context.Context, req *CreateDraftAPPRequest) (appID int64, err error) {
 	app := &entity.APP{
 		SpaceID: req.SpaceID,
@@ -78,6 +92,7 @@ func (a *appServiceImpl) CreateDraftAPP(ctx context.Context, req *CreateDraftAPP
 	return appID, nil
 }
 
+// GetDraftAPP 获取草稿应用
 func (a *appServiceImpl) GetDraftAPP(ctx context.Context, appID int64) (app *entity.APP, err error) {
 	app, exist, err := a.APPRepo.GetDraftAPP(ctx, appID)
 	if err != nil {
@@ -90,6 +105,7 @@ func (a *appServiceImpl) GetDraftAPP(ctx context.Context, appID int64) (app *ent
 	return app, nil
 }
 
+// DeleteDraftAPP 删除草稿应用
 func (a *appServiceImpl) DeleteDraftAPP(ctx context.Context, appID int64) (err error) {
 	err = a.APPRepo.DeleteDraftAPP(ctx, appID)
 	if err != nil {
@@ -99,6 +115,7 @@ func (a *appServiceImpl) DeleteDraftAPP(ctx context.Context, appID int64) (err e
 	return nil
 }
 
+// UpdateDraftAPP 更新草稿应用
 func (a *appServiceImpl) UpdateDraftAPP(ctx context.Context, req *UpdateDraftAPPRequest) (err error) {
 	app := &entity.APP{
 		ID:      req.APPID,
@@ -115,6 +132,7 @@ func (a *appServiceImpl) UpdateDraftAPP(ctx context.Context, req *UpdateDraftAPP
 	return nil
 }
 
+// GetAPPPublishRecord 获取应用发布记录
 func (a *appServiceImpl) GetAPPPublishRecord(ctx context.Context, req *GetAPPPublishRecordRequest) (record *entity.PublishRecord, exist bool, err error) {
 	record, exist, err = a.APPRepo.GetPublishRecord(ctx, &repository.GetPublishRecordRequest{
 		APPID:         req.APPID,
@@ -128,6 +146,9 @@ func (a *appServiceImpl) GetAPPPublishRecord(ctx context.Context, req *GetAPPPub
 	return record, exist, nil
 }
 
+// GetAPPAllPublishRecords 获取应用的所有发布记录
+//
+// 返回按发布时间降序排列的发布记录列表
 func (a *appServiceImpl) GetAPPAllPublishRecords(ctx context.Context, appID int64) (records []*entity.PublishRecord, err error) {
 	records, err = a.APPRepo.GetAPPAllPublishRecords(ctx, appID,
 		repository.WithAPPID(),
@@ -153,6 +174,9 @@ func (a *appServiceImpl) GetAPPAllPublishRecords(ctx context.Context, appID int6
 	return records, nil
 }
 
+// GetPublishConnectorList 获取可发布的连接器列表
+//
+// 返回白名单中允许的连接器信息
 func (a *appServiceImpl) GetPublishConnectorList(ctx context.Context, _ *GetPublishConnectorListRequest) (resp *GetPublishConnectorListResponse, err error) {
 	connectorMap, err := crossconnector.DefaultSVC().GetByIDs(ctx, entity.ConnectorIDWhiteList)
 	if err != nil {
@@ -174,6 +198,9 @@ func (a *appServiceImpl) GetPublishConnectorList(ctx context.Context, _ *GetPubl
 	return resp, nil
 }
 
+// GetDraftAPPResources 获取草稿应用关联的所有资源
+//
+// 聚合应用关联的插件、数据库、知识库等资源信息
 func (a *appServiceImpl) GetDraftAPPResources(ctx context.Context, appID int64) (resources []*entity.Resource, err error) {
 	plugins, err := crossplugin.DefaultSVC().GetAPPAllPlugins(ctx, appID)
 	if err != nil {

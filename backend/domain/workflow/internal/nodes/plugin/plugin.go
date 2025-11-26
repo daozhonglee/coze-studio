@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+// Package plugin 实现插件调用节点
+//
+// 插件节点用于在工作流中调用外部插件的 API，支持：
+// - 调用已安装的插件工具
+// - 传递参数和接收返回值
+// - 处理授权中断（OAuth 等）
+//
+// 插件是 Coze 平台的核心扩展机制，允许工作流与外部服务交互，
+// 如发送邮件、调用第三方 API、访问数据库等。
 package plugin
 
 import (
@@ -37,11 +46,17 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// Config 插件节点配置
+// 包含调用插件所需的标识信息
 type Config struct {
-	PluginID      int64
-	ToolID        int64
+	// PluginID 插件 ID
+	PluginID int64
+	// ToolID 工具/API ID，一个插件可包含多个工具
+	ToolID int64
+	// PluginVersion 插件版本号
 	PluginVersion string
-	PluginFrom    *bot_common.PluginFrom
+	// PluginFrom 插件来源，区分市场插件和自定义插件
+	PluginFrom *bot_common.PluginFrom
 }
 
 func (c *Config) Adapt(ctx context.Context, n *vo.Node, opts ...nodes.AdaptOption) (*schema.NodeSchema, error) {

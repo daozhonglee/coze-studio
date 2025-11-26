@@ -32,6 +32,10 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/sonic"
 )
 
+// SUGGESTION_PROMPT 后续问题建议生成的提示词模板
+//
+// 该提示词用于指导 LLM 根据用户问题和助手回答生成 3 个相关的后续问题。
+// 支持通过 suggest_persona 模板变量注入角色设定。
 const SUGGESTION_PROMPT = `
 # Role
 You are an AI assistant that quickly generates 3 relevant follow-up questions.
@@ -50,16 +54,36 @@ Analyze the user's question and the assistant's answer to suggest 3 unique, conc
 - The questions must be in the same language as the user's input.
 `
 
+// suggesterV3 后续问题建议生成器（V3 版本）
+//
+// 基于 Eino 框架实现，使用 LLM 生成后续问题建议。
 type suggesterV3 struct {
-	r einoCompose.Runnable[*vo.SuggestInfo, []string]
-}
-type state struct {
-	userMessage *schema.Message
-	answer      *schema.Message
+	r einoCompose.Runnable[*vo.SuggestInfo, []string] // Eino 可执行链
 }
 
+// state 链执行过程中的状态
+type state struct {
+	userMessage *schema.Message // 用户输入消息
+	answer      *schema.Message // 助手回答消息
+}
+
+// suggestRegexp 用于从 LLM 输出中提取 JSON 数组的正则表达式
 var suggestRegexp = regexp.MustCompile(`\[(.*?)\]`)
 
+// NewSuggester 创建后续问题建议生成器
+//
+// 使用 Eino 框架构建处理链：
+// 1. 提取用户输入和助手回答
+// 2. 应用提示词模板
+// 3. 调用 LLM 生成建议
+// 4. 解析 JSON 数组结果
+//
+// 参数：
+//   - chatModel: 聊天模型实例
+//
+// 返回值：
+//   - workflow.Suggester: 建议生成器接口实现
+//   - error: 创建失败时返回错误
 func NewSuggester(chatModel modelbuilder.BaseChatModel) (workflow.Suggester, error) {
 	chain := einoCompose.NewChain[*vo.SuggestInfo, []string](einoCompose.WithGenLocalState(func(ctx context.Context) (s *state) {
 		return &state{}
@@ -100,6 +124,15 @@ func NewSuggester(chatModel modelbuilder.BaseChatModel) (workflow.Suggester, err
 
 }
 
+// Suggest 生成后续问题建议
+//
+// 参数：
+//   - ctx: 上下文
+//   - info: 建议请求信息，包含用户输入和助手回答
+//
+// 返回值：
+//   - []string: 生成的后续问题建议列表
+//   - error: 生成失败时返回错误
 func (s *suggesterV3) Suggest(ctx context.Context, info *vo.SuggestInfo) ([]string, error) {
 	return s.r.Invoke(ctx, info)
 }

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file bot status 模块导出
+ */
 export { OriginStatus, renderWarningContent } from './origin-status';

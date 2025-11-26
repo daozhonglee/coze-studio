@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file context menu 模块导出
+ */
 export { createContextMenuPlugin } from './create-context-menu-plugin';
 export { MenuService } from './menu-registry';

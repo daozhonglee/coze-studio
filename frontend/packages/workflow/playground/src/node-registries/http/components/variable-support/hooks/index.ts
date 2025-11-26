@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file variable-support Hooks 导出
+ */
 export { useInterpolationContent } from './use-interpolation-content';
 export { useOptionsOperations } from './use-options-operations';
 export { useSelection } from './use-selection';

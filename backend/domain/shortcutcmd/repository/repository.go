@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// Package repository 定义了快捷指令(ShortcutCmd)领域的仓储接口
+//
+// 本包提供快捷指令数据的持久化操作抽象
 package repository
 
 import (
@@ -26,14 +29,23 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/idgen"
 )
 
+// NewShortCutCmdRepo 创建快捷指令仓储实例
 func NewShortCutCmdRepo(db *gorm.DB, idGen idgen.IDGenerator) ShortCutCmdRepo {
 	return dal.NewShortCutCmdDAO(db, idGen)
 }
 
+// ShortCutCmdRepo 快捷指令仓储接口
+//
+// 定义快捷指令的数据访问方法
 type ShortCutCmdRepo interface {
+	// List 列出快捷指令
 	List(ctx context.Context, lm *entity.ListMeta) ([]*entity.ShortcutCmd, error)
+	// Create 创建快捷指令
 	Create(ctx context.Context, shortcut *entity.ShortcutCmd) (*entity.ShortcutCmd, error)
+	// Update 更新快捷指令
 	Update(ctx context.Context, shortcut *entity.ShortcutCmd) (*entity.ShortcutCmd, error)
+	// GetByCmdID 根据快捷指令ID和状态获取
 	GetByCmdID(ctx context.Context, cmdID int64, isOnline int32) (*entity.ShortcutCmd, error)
+	// PublishCMDs 发布指定的快捷指令
 	PublishCMDs(ctx context.Context, objID int64, cmdIDs []int64) error
 }

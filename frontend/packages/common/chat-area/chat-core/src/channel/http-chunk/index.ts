@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file http chunk 模块导出
+ */
 import { FetchStreamErrorCode, fetchStream } from '@coze-arch/fetch-stream';
 
 import { ABORT_HTTP_CHUNK_MESSAGE } from '../constant';

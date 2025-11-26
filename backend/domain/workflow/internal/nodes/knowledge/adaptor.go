@@ -14,6 +14,20 @@
  * limitations under the License.
  */
 
+// Package knowledge 实现知识库相关节点
+//
+// 本包提供了工作流中与知识库交互的节点实现，包括：
+// - 知识库检索 (Retrieve)：从知识库中检索相关文档片段
+// - 知识库索引 (Indexer)：向知识库中添加新文档
+// - 知识库删除 (Deleter)：从知识库中删除文档
+//
+// 知识库是 Coze 平台的核心能力之一，用于实现 RAG (检索增强生成) 功能，
+// 让 AI 能够基于用户上传的文档进行问答。
+//
+// 本文件 (adaptor.go) 包含类型转换工具函数：
+// - 解析模式转换：快速/精准解析
+// - 分块类型转换：自定义/默认分块
+// - 检索类型转换：语义/混合/全文检索
 package knowledge
 
 import (
@@ -22,6 +36,9 @@ import (
 	knowledge "github.com/coze-dev/coze-studio/backend/crossdomain/knowledge/model"
 )
 
+// convertParsingType 将前端解析类型字符串转换为后端枚举
+// fast: 快速解析，速度快但可能丢失部分格式信息
+// accurate: 精准解析，保留更多格式信息但耗时较长
 func convertParsingType(p string) (knowledge.ParseMode, error) {
 	switch p {
 	case "fast":

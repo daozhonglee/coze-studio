@@ -14,6 +14,27 @@
  * limitations under the License.
  */
 
+// Package loop 实现循环节点
+//
+// 循环节点用于重复执行内部工作流，支持三种循环模式：
+//
+// 1. ByArray (数组遍历)：遍历输入数组的每个元素
+//   - 类似于 for-each 循环
+//   - 当有多个输入数组时，取最短数组长度作为循环次数
+//
+// 2. ByIteration (固定次数)：按指定次数循环
+//   - 类似于 for i := 0; i < n; i++ 循环
+//   - 通过 loopCount 参数指定循环次数
+//
+// 3. Infinite (无限循环)：持续循环直到触发 break
+//   - 类似于 while(true) 循环
+//   - 需要配合 break 节点使用
+//
+// 特性：
+// - 支持中间变量：在循环迭代间传递和累积状态
+// - 支持 break：提前终止循环
+// - 支持中断恢复：工作流中断后可从断点继续
+// - 顺序执行：与 batch 节点不同，loop 节点按顺序执行各迭代
 package loop
 
 import (
@@ -35,20 +56,32 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/lang/ptr"
 )
 
+// Loop 循环节点执行器
+// 支持数组遍历、固定次数循环和无限循环三种模式
 type Loop struct {
-	outputs    map[string]*vo.FieldSource
+	// outputs 输出字段映射，记录每个输出字段来自内部工作流的哪个节点
+	outputs map[string]*vo.FieldSource
+	// outputVars 输出变量映射，记录输出字段对应的中间变量名
 	outputVars map[string]string
-	inner      compose.Runnable[map[string]any, map[string]any]
-	nodeKey    vo.NodeKey
-
-	loopType         Type
-	inputArrays      []string
+	// inner 内部工作流，每次迭代执行的逻辑
+	inner compose.Runnable[map[string]any, map[string]any]
+	// nodeKey 节点唯一标识
+	nodeKey vo.NodeKey
+	// loopType 循环类型：数组遍历/固定次数/无限循环
+	loopType Type
+	// inputArrays 输入数组字段名列表
+	inputArrays []string
+	// intermediateVars 中间变量定义，用于跨迭代传递状态
 	intermediateVars map[string]*vo.TypeInfo
 }
 
+// Config 循环节点配置
 type Config struct {
-	LoopType         Type
-	InputArrays      []string
+	// LoopType 循环类型
+	LoopType Type
+	// InputArrays 输入数组字段名列表
+	InputArrays []string
+	// IntermediateVars 中间变量类型定义
 	IntermediateVars map[string]*vo.TypeInfo
 }
 

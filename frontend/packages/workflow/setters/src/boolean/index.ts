@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file boolean 模块导出
+ */
 export { Boolean } from './boolean';

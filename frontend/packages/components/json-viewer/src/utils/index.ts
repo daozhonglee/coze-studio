@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 工具函数导出
+ */
 export { generateFields } from './generate-field';
 export { generateStr2Link } from './generate-str-to-link';
 export { generateStrAvoidEscape } from './generate-str-avoid-escape';

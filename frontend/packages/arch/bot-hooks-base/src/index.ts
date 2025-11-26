@@ -14,8 +14,16 @@
  * limitations under the License.
  */
 
+/**
+ * @file 基础 Hooks 模块导出
+ * @description 提供通用的 React Hooks，包括路由配置、响应式、上传等
+ */
+
+/** 路由配置 Hook */
 export { useRouteConfig, TRouteConfigGlobal } from './use-route-config';
+/** 响应式判断 Hook */
 export { useIsResponsiveByRouteConfig } from './use-responsive';
+/** 登录状态 Hook */
 export { useLoggedIn } from './use-loggedin';
 export { useLineClamp } from './use-line-clamp';
 export { useInitialValue } from './use-initial-value';

@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+// utils.go 服务层工具函数
+//
+// 本文件提供工作流服务的辅助工具函数：
+//   - 工作流树验证
+//   - 验证结果转换
+//   - 版本号解析和比较
+
 package service
 
 import (
@@ -31,6 +38,15 @@ import (
 	"github.com/coze-dev/coze-studio/backend/types/errno"
 )
 
+// validateWorkflowTree 验证工作流树
+//
+// 执行完整的工作流验证，包括：
+//   - 连接检查
+//   - 循环检测
+//   - 嵌套流检查
+//   - 变量引用检查
+//   - 全局变量检查
+//   - 子工作流终止计划检查
 func validateWorkflowTree(ctx context.Context, config vo.ValidateTreeConfig) ([]*validate.Issue, error) {
 	c := &vo.Canvas{}
 	err := sonic.UnmarshalString(config.CanvasSchema, &c)

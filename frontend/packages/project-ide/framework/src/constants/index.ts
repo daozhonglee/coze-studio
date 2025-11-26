@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file src 常量定义导出
+ */
 export * from './uri';
 export { CustomCommand } from './commands';

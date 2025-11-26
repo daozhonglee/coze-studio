@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file memory/database 模块导出
+ * @description 提供 memory/database 相关功能
+ */
+
+
 export { useMemoryDebugModal } from './components/memory-debug-modal';
 
 export { VariableDebug } from './components/variable-debug';

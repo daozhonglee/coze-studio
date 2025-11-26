@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat-area/plugin-chat-background 模块导出
+ * @description 提供 chat-area/plugin-chat-background 相关功能
+ */
+
+
 import mitt from 'mitt';
 import { type PluginRegistryEntry } from '@coze-common/chat-area';
 

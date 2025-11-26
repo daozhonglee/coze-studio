@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file 表单装饰器导出
+ * @description 提供表单渲染的装饰器扩展，用于美化和增强表单展示
+ */
+
 import { type DecoratorExtension } from '@flowgram-adapter/free-layout-editor';
 
 import { style } from './style';
@@ -23,6 +28,17 @@ import { formItem } from './form-item';
 import { formCard, formCardAction } from './form-card';
 import { columnsTitle } from './columns-title';
 
+/**
+ * 表单装饰器集合
+ *
+ * 包含以下装饰器：
+ * - style: 基础样式
+ * - formLayout: 表单布局
+ * - formCard: 卡片式表单容器
+ * - formItem: 表单项
+ * - formItemFeedback: 表单项反馈
+ * - columnsTitle: 列标题
+ */
 export const decorators: DecoratorExtension[] = [
   style,
   formLayout,

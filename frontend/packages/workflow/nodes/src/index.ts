@@ -14,16 +14,29 @@
  * limitations under the License.
  */
 
+/**
+ * @file 工作流节点模块导出
+ * @description 提供工作流节点的类型定义、数据模型、服务和验证器
+ */
+
+/** 节点类型定义 */
 export * from './typings';
+/** 节点容器模块 */
 export * from './workflow-nodes-container-module';
+/** 节点实体数据 */
 export * from './entity-datas';
+/** 节点服务 */
 export * from './service';
+/** 节点工具函数 */
 export * from './utils';
+/** 节点常量 */
 export * from './constants';
+/** 节点验证器 */
 export {
   nodeMetaValidator,
   settingOnErrorValidator,
   outputTreeValidator,
   inputTreeValidator,
 } from './validators';
+/** 错误处理设置 */
 export * from './setting-on-error';

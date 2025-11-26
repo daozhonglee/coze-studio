@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+// Package openauth 定义了开放认证(OpenAuth)应用层服务
+//
+// 本包提供开放认证相关的应用层业务逻辑，包括：
+// - API Key 管理（创建、删除、列表）
+// - OpenAPI 认证和鉴权
 package openauth
 
 import (
@@ -23,10 +28,12 @@ import (
 	"github.com/coze-dev/coze-studio/backend/infra/idgen"
 )
 
+// openapiAuthDomainSVC OpenAPI 认证领域服务
 var (
 	openapiAuthDomainSVC openapiauth2.APIAuth
 )
 
+// InitService 初始化开放认证应用服务
 func InitService(db *gorm.DB, idGenSVC idgen.IDGenerator) *OpenAuthApplicationService {
 	openapiAuthDomainSVC = openapiauth2.NewService(&openapiauth2.Components{
 		IDGen: idGenSVC,

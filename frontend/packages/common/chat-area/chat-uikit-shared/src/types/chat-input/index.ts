@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file chat input 模块导出
+ */
 import {
   type ClipboardEventHandler,
   type PropsWithChildren,

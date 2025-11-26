@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Package prompt 定义了提示词(Prompt)领域的服务层实现
+
 package prompt
 
 import (
@@ -26,28 +28,34 @@ import (
 	"github.com/coze-dev/coze-studio/backend/pkg/lang/slices"
 )
 
+// promptService 提示词服务实现
 type promptService struct {
 	Repo repository.PromptRepository
 }
 
+// NewService 创建提示词服务实例
 func NewService(repo repository.PromptRepository) Prompt {
 	return &promptService{
 		Repo: repo,
 	}
 }
 
+// CreatePromptResource 创建提示词资源
 func (s *promptService) CreatePromptResource(ctx context.Context, p *entity.PromptResource) (int64, error) {
 	return s.Repo.CreatePromptResource(ctx, p)
 }
 
+// UpdatePromptResource 更新提示词资源
 func (s *promptService) UpdatePromptResource(ctx context.Context, promptID int64, name, description, promptText *string) error {
 	return s.Repo.UpdatePromptResource(ctx, promptID, name, description, promptText)
 }
 
+// GetPromptResource 获取提示词资源
 func (s *promptService) GetPromptResource(ctx context.Context, promptID int64) (*entity.PromptResource, error) {
 	return s.Repo.GetPromptResource(ctx, promptID)
 }
 
+// DeletePromptResource 删除提示词资源
 func (s *promptService) DeletePromptResource(ctx context.Context, promptID int64) error {
 	err := s.Repo.DeletePromptResource(ctx, promptID)
 	if err != nil {
@@ -57,6 +65,9 @@ func (s *promptService) DeletePromptResource(ctx context.Context, promptID int64
 	return nil
 }
 
+// ListOfficialPromptResource 列出官方提示词模板
+//
+// 从预定义的官方提示词列表中查询，支持按关键词过滤
 func (s *promptService) ListOfficialPromptResource(ctx context.Context, keyword string) ([]*entity.PromptResource, error) {
 	promptList := official.GetPromptList()
 
@@ -64,6 +75,7 @@ func (s *promptService) ListOfficialPromptResource(ctx context.Context, keyword 
 	return deepCopyPromptResource(promptList), nil
 }
 
+// deepCopyPromptResource 深拷贝提示词资源列表
 func deepCopyPromptResource(pl []*entity.PromptResource) []*entity.PromptResource {
 	return slices.Transform(pl, func(p *entity.PromptResource) *entity.PromptResource {
 		return &entity.PromptResource{
@@ -77,6 +89,9 @@ func deepCopyPromptResource(pl []*entity.PromptResource) []*entity.PromptResourc
 	})
 }
 
+// searchPromptResourceList 按关键词搜索提示词列表
+//
+// 支持在名称和内容中进行模糊匹配（忽略大小写）
 func searchPromptResourceList(ctx context.Context, resource []*entity.PromptResource, keyword string) []*entity.PromptResource {
 	if len(keyword) == 0 {
 		return resource

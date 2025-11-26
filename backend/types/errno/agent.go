@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
+// Package errno 定义业务错误码
+//
+// 本包定义各业务模块的错误码，按模块分段：
+// - Agent: 100 000 000 ~ 100 999 999
+// - App: 101 000 000 ~ 101 999 999
+// - Workflow: 102 000 000 ~ 102 999 999
+// - Plugin: 103 000 000 ~ 103 999 999
+// - Knowledge: 104 000 000 ~ 104 999 999
+// - 其他模块...
 package errno
 
 import (
 	"github.com/coze-dev/coze-studio/backend/pkg/errorx/code"
 )
 
-// single agent: 100 000 000 ~ 100 999 999
+// Agent 错误码: 100 000 000 ~ 100 999 999
 const (
 	ErrAgentInvalidParamCode               = 100000000
 	ErrAgentSupportedChatModelProtocol     = 100000001

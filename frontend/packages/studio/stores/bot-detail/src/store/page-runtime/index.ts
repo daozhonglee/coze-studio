@@ -14,5 +14,8 @@
  * limitations under the License.
  */
 
+/**
+ * @file store 页面运行时导出
+ */
 export { usePageRuntimeStore, type PageRuntime } from './store';
 export { DEFAULT_BOT_SKILL_BLOCK_COLLAPSIBLE_STATE } from './defaults';

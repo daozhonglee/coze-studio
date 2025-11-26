@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @file plugin-class 插件导出
+ */
 import { type CustomComponent } from '../../types/plugin-component';
 import { type ChatAreaPluginContext } from '../../types/plugin-class/chat-area-plugin-context';
 import { PluginMode, type PluginName } from '../../constants/plugin';

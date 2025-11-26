@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+/**
+ * @file input number 模块导出
+ */
 export { InputNumber, type InputNumberProps } from './input-number';
