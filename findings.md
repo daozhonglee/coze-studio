@@ -1,0 +1,201 @@
+# coze-studio 代码研究发现
+
+## 已确认事实
+
+- 当前 workspace 根目录是 `/Users/zhihu/code/m_code/ai/workflow`。
+- 用户要求研究的项目位于 `/Users/zhihu/code/m_code/ai/workflow/coze-studio`。
+- 初步扫描发现同级目录还存在 `dify`，但本次不纳入研究范围。
+- 初步未检出 `docs/code-research/RESEARCH_PLAN.md` 或已有研究文档。
+- `coze-studio` 目录下存在 `README.md` 与 `README.zh_CN.md`，后续应优先阅读这些顶层说明。
+- README 将 Coze Studio 定义为一站式 AI Agent 开发工具，覆盖 Prompt、RAG、Plugin、Workflow。
+- README 描述技术栈为后端 Golang、前端 React + TypeScript，并声称整体基于微服务架构和 DDD 原则。
+- README 中列出的主要功能模块包括模型服务、智能体、应用、工作流、插件、知识库、数据库、提示词、OpenAPI 与 Chat SDK。
+- 本地快速启动主入口是 `make web`，默认访问地址是 `http://localhost:8888/`。
+- 顶层主目录包括 `backend`、`frontend`、`idl`、`docker`、`helm`、`scripts`、`common`。
+- `backend` 采用明显的分层目录：`api`、`application`、`domain`、`infra`、`internal`、`bizpkg`、`types`、`pkg`。
+- `frontend` 包含 `apps/coze-studio`、`packages`、`infra`、`config`，说明前端是 Rush/monorepo 风格。
+- `idl` 按业务域拆分为 `app`、`conversation`、`workflow`、`plugin`、`data`、`passport`、`permission`、`resource` 等 Thrift 定义。
+- 部署目录同时提供 Docker Compose 与 Helm，运行依赖从文件名看包括 MySQL、Redis、Elasticsearch、Milvus、MinIO、RocketMQ、etcd、OceanBase 等。
+- `docs` 目录已有若干工作流调用链和包架构分析文档，可作为本次研究的参考材料。
+- 顶层 `Makefile` 暴露两条主要运行路径：`make web` 用 `docker/docker-compose.yml` 启动完整 Web 环境；`make debug` 用 `docker/docker-compose-debug.yml` 启动中间件、准备 Python、构建并启动本地 server。
+- 前端构建脚本是 `scripts/build_fe.sh`，后端构建/启动脚本是 `scripts/setup/server.sh`。
+- 后端静态资源目录是 `bin/resources/static`，`make server` 在目录不存在时会先触发前端构建。
+- 数据库维护使用 Atlas，包含同步迁移、dump schema、rehash、初始化 SQL 等目标。
+- 仓库同时存在 `backend/go.mod` 与大量前端 `package.json`，前端由 `rush.json` 统筹。
+- `backend/go.mod` 模块名是 `github.com/coze-dev/coze-studio/backend`，Go 版本为 1.24.0。
+- 后端关键依赖包括 Hertz、Eino、Eino 扩展模型/Embedding 组件、GORM、Redis、Milvus、MinIO/S3、Elasticsearch、RocketMQ、Sarama、Volcengine SDK、OpenAPI 工具等。
+- 前端 `rush.json` 使用 Rush 5.147.1、pnpm 8.15.8，Node 要求 `>=21`。
+- 前端工程通过 tags 标出 `team-arch`、`team-automation`、`team-data`、`team-studio` 等模块分工，能辅助理解包边界。
+- 前端包名显示主要能力群包括 `@coze-arch/*`、`@coze-workflow/*`、`@coze-data/*`、`@coze-common/*`、`@flowgram-adapter/*`。
+- 后端唯一明显主服务入口是 `backend/main.go`，其中引用 `backend/api/router` 注册路由。
+- 前端主应用包是 `@coze-studio/app`，位于 `frontend/apps/coze-studio`。
+- 前端应用包依赖 agent-ide、workflow playground、project、workspace、foundation、i18n、logger、API schema 等内部包，表明主应用承担聚合和路由壳职责。
+- 前端技术栈包括 React 18、React Router 6、Zustand、Rsbuild/Rspack、Tailwind、Vitest。
+- 后端 `main` 初始化顺序是：设置 crash 输出、加载 `.env` 或 `.env.{APP_ENV}`、设置日志级别、执行 `application.Init(ctx)`、启动 Hertz HTTP server。
+- 后端服务默认监听 `:8888`，支持通过 `LISTEN_ADDR` 覆盖；请求体默认上限约 200MB，支持 TLS 环境变量开关。
+- 后端中间件顺序具有语义：ContextCache、RequestInspector、SetHost、SetLogID、CORS、AccessLog、OpenAPI 鉴权、Session 鉴权、I18n。
+- 路由通过 `router.GeneratedRegister(s)` 注册，说明接口层有生成代码参与。
+- 前端路由默认从 `/` 跳转到 `/space`；`/sign` 和 `/oauth/confirm` 不要求登录；主要登录态页面是 `/space`、`/work_flow`、`/search`、`/explore`。
+- `/space/:space_id` 下承载开发首页、Agent IDE、Project IDE、资源库、知识库、数据库、插件详情等页面。
+- `/work_flow` 是独立工作流页面，`/explore` 提供插件市场与模板入口。
+- 后端 application 层覆盖 app、conversation、knowledge、memory、modelmgr、openauth、permission、plugin、prompt、search、shortcutcmd、singleagent、template、upload、user、workflow 等应用服务。
+- 后端 domain 层按业务域拆分，典型结构是 `entity`、`repository`、`service`、`internal/dal`，体现 DDD 风格。
+- conversation 域进一步拆为 agentrun、conversation、message 三块，说明对话运行、会话、消息是独立边界。
+- workflow 域包含 `internal/canvas`、`internal/compose`、`internal/execute`、`internal/nodes`、`internal/repo`、`variable` 等，说明其既负责画布描述，也负责运行时执行和变量管理。
+- infra 层提供 cache、coderunner、document、embedding、es、eventbus、idgen、orm、rdb、sse、storage 等基础能力，并为部分能力提供多种实现。
+- eventbus 支持 kafka、nats、nsq、pulsar、rmq 多种实现，storage 支持 minio、s3、tos。
+- `application.Init` 先初始化 `appinfra.AppDependencies`，再按 Basic Services、Primary Services、Complex Services 三层装配应用服务。
+- Basic Services 只依赖基础设施，包含 upload、openauth、prompt、modelmgr、connector、user、template、permission。
+- Primary Services 依赖基础服务，包含 plugin、memory、knowledge、workflow、shortcutcmd。
+- Complex Services 依赖主要服务，包含 singleagent、app、search、conversation。
+- `crossdomain` 包在初始化尾部统一 `SetDefaultSVC`，为 agent、agentrun、app、connector、conversation、database、knowledge、message、permission、plugin、search、upload、user、variables、workflow 等领域提供跨域访问门面。
+- `appinfra.Init` 装配 DB、Redis cache、ID 生成器、配置、ES、ImageX、资源/应用/知识事件生产者、重排、查询改写、NL2SQL、代码运行器、OCR、工作流内置模型、文档解析器、搜索存储管理器。
+- 工作流服务的组件依赖包括数据库、变量、插件、知识库、事件通知、Redis checkpoint、代码执行器和工作流内置 ChatModel。
+- API 层由 `backend/api/model`、`backend/api/router` 的生成代码和 `backend/api/handler/coze` 的业务 handler 组成。
+- `GeneratedRegister` 注册 `coze.Register(r)` 后再注册静态资源路由，说明后端同时承担 API 服务和前端静态资源服务。
+- 静态资源从运行目录 `resources/static` 读取，`/`、`/sign`、未匹配的非 API 路由都会回落到 `index.html`。
+- `/admin` 从 `resources/conf` 提供静态配置页面。
+- `NoRoute` 对 `/api/`、`/v1/`、`/v3/` API 路径返回 JSON 404，对其他路径返回前端页面。
+- `backend/api/router/coze/api.go` 根据 IDL 中的 HTTP 注解生成路由，覆盖 admin config、bot、upload、conversation、draftbot、project、knowledge、marketplace、memory、oauth、passport、plugin、resource、workflow 等路径。
+- Workflow handler 的基本模式是 `BindAndValidate` 请求、调用 `appworkflow.SVC`、再返回 JSON 或 SSE。
+- Workflow OpenAPI 包括 `/v1/workflow/run`、`/v1/workflow/stream_run`、`/v1/workflow/stream_resume`、`/v1/workflow/get_run_history`、`/v1/workflows/chat`、`/v1/workflows/:workflow_id` 等路径。
+- OpenAPI workflow 请求会预处理 `parameters` 字段，把非字符串参数 JSON 序列化为字符串，以适配下游模型。
+- 流式 workflow/chatflow 通过 Hertz SSE writer 输出，底层从 Eino `schema.StreamReader` 读取。
+- OpenAPI 错误对 `vo.WorkflowError` 做特殊处理，可将业务错误码和 debug URL 返回给调用方。
+- `backend/application/workflow/init.go` 自带中文说明，明确应用层是 API 层和领域层之间的桥梁。
+- Workflow 初始化会注册所有节点适配器、从 `resources/conf/workflow/config.yaml` 加载配置、创建 repository、设置全局 repository、创建领域服务、设置 OSS、设置代码执行器、追加 Eino 全局 token callback、设置事件总线、初始化节点图标缓存。
+- Workflow repository 依赖 IDGen、DB、Cache、对象存储、checkpoint store、内置 ChatModel 和 workflow 配置。
+- Workflow domain 文件显示核心内部包包括 compose、execute、nodes、repo、schema；实体包括 workflow、execution、reference、message、conversation、interrupt event、chatflow role。
+- Workflow 既作为可视化编排对象，也作为可执行对象和可包装为工具的能力存在。
+- `workflow.Service` 接口覆盖 CRUD、发布、画布验证、执行、工具化、应用工作流发布/复制、资源依赖、ChatFlow 角色、会话、建议等能力。
+- `workflow.Repository` 同时承担元数据、版本、草稿、引用关系、执行历史、interrupt、cancel signal、workflow-as-tool、对象 URL、checkpoint、ID 生成、配置和建议等持久化/运行支撑契约。
+- Workflow 领域服务实现使用组合方式嵌入 `asToolImpl`、`executableImpl`、`conversationImpl`，把工具化、执行、会话能力合并到主服务。
+- Workflow `Create` 会先创建元数据，再保存初始化画布作为草稿。
+- Workflow `Save` 会反序列化画布 schema，提取入口/出口参数，计算测试运行成功状态，生成 commitID，再调用 repository 创建或更新草稿。
+- Workflow 画布参数提取通过查找 Entry 节点输出与 Exit 节点输入完成，失败时记录警告以避免保存流程被非关键解析中断。
+- Workflow `ValidateTree` 会先验证当前画布，再递归检查未指定版本的子工作流草稿。
+- Workflow 执行服务支持同步、异步、单节点调试、流式执行、恢复、取消等模式。
+- `SyncExecute` 的主链路是获取 workflow entity、校验应用发布版本、解析画布、转换为 WorkflowSchema、创建 Eino Workflow、转换输入、准备 Runner、执行、收集最后事件、组装 WorkflowExecution。
+- `compose.NewWorkflow` 把 WorkflowSchema 编译为 Eino Workflow：初始化 schema、创建本地状态、处理复合节点、添加普通节点、记录 Exit 终止策略、按需启用 checkpoint、编译 Runner。
+- `WorkflowRunner.Prepare` 负责生成或复用执行 ID、处理中断恢复、启动流式容器、生成 Eino 执行选项、锁定恢复执行、创建执行记录、设置超时、启动事件处理 goroutine。
+- 中断恢复会根据中断事件路径判断顶层、复合节点或子工作流，并生成对应的 state modifier。
+- 运行时并发控制点包括恢复执行锁、可取消上下文、前后台不同超时、事件通道和流式容器清理。
+- Workflow 节点适配器通过 `RegisterAllNodeAdaptors` 在启动时集中注册，使用工厂函数为每次适配创建新的 Config 实例。
+- 已注册节点覆盖 Entry、Exit、Selector、Batch、Loop、Break、Continue、InputReceiver、JSON 序列化/反序列化、变量赋值、插件、代码执行、输出、变量聚合、文本处理、意图识别、问答、HTTP、知识库索引/检索/删除、数据库增删改查/自定义 SQL、LLM、会话和消息相关节点。
+- 分支适配器额外覆盖 Selector、IntentDetector、QuestionAnswer。
+- `backend/domain/workflow/internal/nodes` 按节点类型拆分实现目录，体现节点系统是 workflow 扩展点。
+- SingleAgent 应用服务依赖 IDGen、DB、Redis、对象存储、ImageX、项目事件总线、知识库、插件、工作流、用户、变量、连接器、数据库、快捷命令和 checkpoint store。
+- SingleAgent 领域接口采用草稿/发布双版本机制，覆盖草稿管理、发布版本、流式执行、发布历史、身份获取和弹窗计数。
+- AgentFlow 使用 Eino graph 构建智能体运行链：persona render、prompt variables、knowledge retriever、tools pre-retriever、knowledge pack、prompt template，然后进入 LLM 或 ReAct Agent。
+- AgentFlow 会根据 Agent 配置动态加载变量、知识库、模型、插件工具、工作流工具、数据库工具、变量工具。
+- 只要存在工具，AgentFlow 就切换为 ReAct Agent，要求模型支持 function call，并启用 checkpoint。
+- 工作流可被封装成 Agent 工具，部分工具可以配置为直接返回。
+- AgentFlow 可选构建 suggest graph，用于在回答后生成建议。
+- 前端 `frontend/apps/coze-studio/src/index.tsx` 初始化 feature flags、i18n、Markdown 样式后挂载 React 根节点。
+- 前端 `App` 只提供 Suspense 和 `RouterProvider`，真实页面由 router 和懒加载组件负责。
+- 前端顶层 `Layout` 调用 `useAppInit()` 并渲染 `GlobalLayout`，初始化和全局布局逻辑来自 `@coze-foundation/global-adapter`。
+- `frontend/apps/coze-studio/src` 本身很薄，更多业务实现下沉到 workspace 包，如 `@coze-agent-ide/*`、`@coze-workflow/*`、`@coze-project-ide/*`、`@coze-foundation/*`。
+- 前端 async components 显示路由页面均由包导出：登录来自 account-ui-adapter，空间布局来自 space-ui，Agent IDE 来自 agent-ide，Project IDE 来自 project-ide，WorkflowPage 来自 workflow playground，探索/搜索来自 community explore，OAuth 来自 open-auth。
+- `frontend/packages` 的主要包族包括 agent-ide、arch、common、community、components、data、devops、foundation、project-ide、studio、workflow。
+- `agent-ide` 包族覆盖智能体布局、配置区、聊天区、插件、prompt、发布、workflow 资源卡、model manager、onboarding 等。
+- `workflow` 包族覆盖 adapter、base、components、fabric-canvas、feature-encapsulate、history、nodes、playground、render、sdk、setters、test-run、variable。
+- `arch` 包族提供 API schema、bot-api、bot-http、i18n、logger、web-context、fetch-stream、埋点和环境等底层前端能力。
+- `foundation` 包族提供账户、全局布局、全局 store、空间 store 和空间 UI。
+- `project-ide` 包族提供应用式 IDE 的核心、框架、视图、业务数据、插件和工作流模块。
+- `@coze-studio/api-schema` 是前端 API schema 包，脚本 `update` 执行 `idl2ts gen ./`。
+- `@coze-studio/api-schema` 依赖 `@coze-arch/bot-http` 和 `@coze-arch/idl2ts-runtime`，开发依赖内部 `idl2ts-cli`。
+- 开源 API schema 当前显式导出 passport 和 marketplace/explore 相关 IDL。
+- MySQL schema 中核心业务表围绕 agent、app、conversation、knowledge、database、plugin/tool、variable、workflow、space、user 展开。
+- Agent 数据采用草稿/版本/发布记录三类表：`single_agent_draft`、`single_agent_version`、`single_agent_publish`，并用 `agent_tool_draft`、`agent_tool_version`、`agent_to_database` 保存关联资源。
+- App 数据采用 `app_draft`、`app_release_record`、`app_connector_release_ref`，会话模板和动态/静态会话也分 draft/online。
+- Workflow 数据采用 `workflow_meta`、`workflow_draft`、`workflow_version`、`workflow_snapshot`、`workflow_execution`、`workflow_reference`、`connector_workflow_version` 和 `chat_flow_role_config`。
+- `workflow_draft` 保存前端 canvas、输入输出参数、试运行成功状态、modified 和 commitID。
+- `workflow_version` 保存发布版本 canvas 和对应 commitID；`workflow_snapshot` 保存执行草稿时的 commitID 快照；`workflow_execution` 记录执行状态、输入输出、token、root execution、resume event、agent/app 绑定和同步模式。
+- `workflow_reference` 记录工作流直接引用关系，区分 subworkflow 和 tool，以及 referring biz type。
+- 变量数据由 `variables_meta` 和 `variable_instance` 表示，`biz_type` 区分 agent 和 app，空 version 表示草稿态。
+- 知识库由 `knowledge`、`knowledge_document`、review、slice 等表承载，并按文档类型区分文本、表格、图片。
+- MySQL schema 当前抽取到 51 张核心表。
+- 表域可分为身份与空间、Agent/App、Workflow、知识库、插件工具、会话消息、变量与数据库资源、模型配置、模板与文件资源。
+- Docker Compose 完整 Web 环境包含 mysql、redis、elasticsearch、minio、etcd、milvus、nsqlookupd、nsqd、nsqadmin、coze-server、coze-web。
+- `coze-server` 运行镜像 `cozedev/coze-studio-server:latest`，命令为 `/app/opencoze`，依赖 MySQL、Redis、Elasticsearch、MinIO、Milvus 健康。
+- `coze-web` 运行 Nginx 镜像 `cozedev/coze-studio-web:latest`，默认把宿主 `WEB_LISTEN_ADDR` 或 8888 暴露到容器 80。
+- MySQL 容器启动时先加载初始化 SQL，再等待 `workflow_version` 表存在，并使用 Atlas 将 `opencoze_latest_schema.hcl` 应用到数据库。
+- Elasticsearch 容器安装 smartcn analyzer，并运行 index schema 初始化脚本。
+- MinIO 启动时创建 bucket 并拷贝默认图标和官方插件图标。
+- Milvus 使用 etcd 和 MinIO，承担向量检索/知识库向量存储边界。
+- Docker Compose 默认消息队列是 NSQ；debug compose 中 RocketMQ 配置被注释，Helm 模板保留 RocketMQ namesrv/broker。
+- Helm chart 覆盖 server、web、MySQL、Redis、Elasticsearch、MinIO、etcd、Milvus、RocketMQ、OceanBase 等模板，说明部署层支持 MySQL/OceanBase 与不同消息队列演进。
+- EventBus 接口只定义 Producer、ConsumerService、ConsumerHandler、Message，具体实现放在 `impl` 下。
+- EventBus 实现通过环境变量 `MQ_TYPE` 选择 nsq、kafka、rmq、pulsar、nats，对消费者和生产者都使用同一选择逻辑。
+- Resource、App、Knowledge 三类事件生产者分别使用固定 topic/group 常量初始化。
+- 代码注释称 RocketMQ 是默认实现，但 Docker Compose 默认启动 NSQ；这意味着默认取决于环境配置和部署模板，而不是接口层硬编码。
+- Passport handler 处理注册、登录、登出、账户信息、密码重置、头像上传和资料更新。
+- 注册流程会校验邮箱格式，读取基础配置检查是否允许注册，调用用户领域服务创建用户，再自动登录并返回 session key。
+- 登录流程调用用户领域服务校验邮箱密码，返回用户信息和 session key。
+- 注册和登录 handler 都通过 Cookie 写入 `SessionKey`，作用域为 `/`，domain 来自请求 origin host，并开启 httpOnly。
+- 用户应用服务通过 `ctxutil.MustGetUIDFromCtx` 获取 SessionAuth 中间件写入的用户 ID，用于登出、账户信息、资料更新、空间列表等需要登录态的接口。
+- 头像上传会校验图片 MIME 类型，读取二进制内容后交给用户领域服务和对象存储处理。
+- `RequestInspectorMW` 将请求分为 Web API、OpenAPI、StaticFile 三类，默认是 Web API。
+- OpenAPI 认证路径由显式 path map 和正则 path map 维护，覆盖 chat、conversation、file upload、workflow、bot、datasets 等开放接口。
+- `OpenapiAuthMW` 只处理 OpenAPI 请求，从 Authorization Bearer 中解析 API key，MD5 后调用 OpenAuthApplication 校验，并将 OpenAPI 鉴权信息写入 context cache。
+- `SessionAuthMW` 只处理 Web API 请求，登录和注册路径在白名单中跳过；其他 Web API 必须携带 session cookie。
+- `AdminAuthMW` 基于 SessionAuth 写入的 session 和基础配置中的 admin email 白名单校验管理员权限。
+- 静态文件路径、`/space/*`、`/explore/*`、`/admin/*` 等由 RequestInspector 标记为 StaticFile，跳过 Web/OpenAPI 鉴权。
+- 对话运行 handler `/api/conversation/chat` 绑定 AgentRunRequest，校验 bot id、scene、content type，创建 SSE sender 后调用 ConversationSVC.Run。
+- OpenAPI `/v3/chat` 支持同步和流式两种模式，默认流式；`parameters` 字段会预处理为 JSON 字符串。
+- Conversation application 会校验 Agent、校验或创建会话、处理重新生成消息、校验快捷命令归属，并构造 AgentRunMeta。
+- AgentRunMeta 包含 conversation、agent、content、display content、space、user、section、预检索工具、draft mode、connector、content type 和扩展信息。
+- 对话多模态输入会被解析为 InputMetaData，图片/文件/音频/视频通过 ImageX 将资源 URI 转 URL。
+- agentrun domain 创建 Eino StreamReader/Writer 管道，在 goroutine 中运行 AgentRuntime，再把流式响应传给 application。
+- AgentRuntime 会获取 Agent 信息、处理 additional messages、加载历史消息、创建 run record、发送 created/in-progress 事件、保存输入消息，然后按 bot mode 选择 ChatflowRun 或 AgentStreamExecute。
+- 普通 AgentStreamExecute 通过 crossdomain agent 调用 SingleAgent 流式执行，并把 function call、tool response、knowledge、tool mid answer、tool as answer、answer 等事件转成消息事件和 SSE chunk。
+- 运行结束时 RunProcess 会根据错误状态把 run record 标记为 failed 或 completed，并写入 token usage。
+- 已有文档 `docs/20251111-1848-workflow-create-api-execution-path.md` 与代码结论一致：CreateWorkflow 经 API、application、domain、repository 创建 workflow_meta 和 workflow_draft，并发布资源事件更新搜索索引。
+- 已有文档 `docs/20251111-1849-workflow-save-api-execution-path.md` 与代码结论一致：SaveWorkflow 只保存画布和输入输出参数，不更新元数据，每次生成新 commitID，并根据 schema 差异继承或重置测试状态。
+- 已有文档 `docs/20251111-1847-workflow-test-run-call-chain.md` 与代码结论一致：TestRun 走 Debug/Draft/Async 执行，API 立即返回 executeID，实际执行和事件处理异步完成。
+
+## 待验证问题
+
+- 项目主要技术栈、单体或多模块组织方式是否与 README 描述一致？
+- 后端、前端、模型服务、工作流服务之间如何分层？
+- 核心业务对象及其持久化模型是什么？
+- 主要启动入口、构建入口和部署入口分别在哪里？
+- `backend` 的 DDD 分层是否按领域严格隔离，还是存在跨层快捷调用？
+- Python 环境在运行时承担什么职责，尤其是工作流代码节点还是其他执行逻辑？
+- 后端 Eino 和前端 FlowGram 分别在运行时/画布编辑器中承担的边界是什么？
+- 前端主路由如何映射到智能体、项目、工作流、资源等业务页面？
+- `router.GeneratedRegister` 的生成来源和 IDL 到 handler 的绑定关系是什么？
+- `application.Init` 初始化了哪些基础设施和领域服务？
+- 各 application service 的全局装配方式是否会影响测试隔离和二次开发？
+- `crossdomain` 默认服务门面是为解耦跨域调用，还是也承担全局服务定位器角色？
+- handler 到 application service 的调用是否都经过统一鉴权上下文和错误转换？
+- 为什么部分 workflow handler 返回 IDL response，部分手动包装 `map[string]any` 响应？
+- `service.RegisterAllNodeAdaptors` 注册了哪些节点，节点与前端面板 schema 如何对应？
+- `workflow.Repository` 职责较宽，是有意聚合运行时支撑，还是历史演进造成的接口膨胀？
+- workflow 执行历史、eventChan、SSE 输出之间的严格时序关系需要继续确认。
+- 前端节点面板展示是否完全来自后端 `NodeTypeMetas`，还是前端也维护了一份节点定义？
+- AgentFlow 的工具预检索如何决定哪些工具进入模型上下文？
+- `useAppInit` 在全局状态、鉴权、空间初始化中具体做了什么？
+- 前端 API schema 是否由 `idl` 生成，生成链路在哪里？
+- 其他前端 API 请求是否通过 `@coze-arch/bot-api` 或各业务包内生成 schema 访问？
+- MySQL schema 之外，Milvus/Elasticsearch/MinIO 中分别承载哪些知识库向量、搜索索引和文件对象？
+- `node_execution` 与 `workflow_execution` 的关系需要继续确认。
+- Docker 默认 NSQ 与后端 eventbus 多实现之间如何由环境变量选择？
+- README、代码注释和 Docker 默认配置对消息队列默认值的表述是否一致？
+- SessionAuth 中间件如何跳过公开接口、解析 Cookie，并将用户会话写入 context？
+- OpenAPI path map 与 IDL 路由之间是否有自动同步机制，还是需要手工维护？
+- ChatflowRun 与 Workflow OpenAPI Run 的执行路径是否共享同一套 workflow runtime？
+- 已有 workflow 文档中的 `workflow_drafts` 命名和当前 schema 的 `workflow_draft` 是否只是表述差异？
+
+## 后续阅读顺序
+
+1. 顶层 README 与依赖清单。
+2. 一级目录结构与工程配置。
+3. 服务入口、路由、协议和领域模型。
+4. 核心工作流与跨模块调用链。
+
+## 输出模板要求
+
+- 研究计划需要包含项目概述、研究专题和待解决疑问。
+- 架构、机制、数据流、依赖、工作流、学习路径专题都必须先解释“它是什么”和“为什么需要”，再描述实现。
+- 架构图、流程图和调用关系图使用 Mermaid。
